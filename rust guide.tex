@@ -1,0 +1,345 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{xparse}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+
+\lstdefinelanguage{Kotlin}{
+  comment=[l]{//},
+  commentstyle={\color{gray}\ttfamily},
+  emph={delegate, filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println, return@},
+  emphstyle={\color{OrangeRed}},
+  identifierstyle=\color{black},
+  keywords={abstract, actual, as, as?, break, by, class, companion, continue, data, do, dynamic, else, enum, expect, false, final, for, fun, get, if, import, in, interface, internal, is, null, object, override, package, private, public, return, set, super, suspend, this, throw, true, try, typealias, val, var, vararg, when, where, while},
+  keywordstyle={\color{NavyBlue}\bfseries},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[s]{"""*}{*"""},
+  ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Boolean, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String},
+  ndkeywordstyle={\color{BurntOrange}\bfseries},
+  sensitive=true,
+  stringstyle={\color{ForestGreen}\ttfamily},
+}
+
+\lstdefinelanguage{Rust}{%
+  sensitive%
+, morecomment=[l]{//}%
+, morecomment=[s]{/*}{*/}%
+, moredelim=[s][{\itshape\color[rgb]{0,0,0.75}}]{\#[}{]}%
+, morestring=[b]{"}%
+, alsodigit={}%
+, alsoother={}%
+, alsoletter={!}%
+%
+%
+% [1] reserve keywords
+% [2] traits
+% [3] primitive types
+% [4] type and value constructors
+% [5] identifier
+%
+, morekeywords={break, continue, else, for, if, in, loop, match, return, while}  % control flow keywords
+, morekeywords={as, const, let, move, mut, ref, static}  % in the context of variables
+, morekeywords={dyn, enum, fn, impl, Self, self, struct, trait, type, union, use, where}  % in the context of declarations
+, morekeywords={crate, extern, mod, pub, super}  % in the context of modularisation
+, morekeywords={unsafe}  % markers
+, morekeywords={abstract, alignof, become, box, do, final, macro, offsetof, override, priv, proc, pure, sizeof, typeof, unsized, virtual, yield}  % reserved identifiers
+%
+% grep 'pub trait [A-Za-z][A-Za-z0-9]*' -r . | sed 's/^.*pub trait \([A-Za-z][A-Za-z0-9]*\).*/\1/g' | sort -u | tr '\n' ',' | sed 's/^\(.*\),$/{\1}\n/g' | sed 's/,/, /g'
+, morekeywords=[2]{Add, AddAssign, Any, AsciiExt, AsInner, AsInnerMut, AsMut, AsRawFd, AsRawHandle, AsRawSocket, AsRef, Binary, BitAnd, BitAndAssign, Bitor, BitOr, BitOrAssign, BitXor, BitXorAssign, Borrow, BorrowMut, Boxed, BoxPlace, BufRead, BuildHasher, CastInto, CharExt, Clone, CoerceUnsized, CommandExt, Copy, Debug, DecodableFloat, Default, Deref, DerefMut, DirBuilderExt, DirEntryExt, Display, Div, DivAssign, DoubleEndedIterator, DoubleEndedSearcher, Drop, EnvKey, Eq, Error, ExactSizeIterator, ExitStatusExt, Extend, FileExt, FileTypeExt, Float, Fn, FnBox, FnMut, FnOnce, Freeze, From, FromInner, FromIterator, FromRawFd, FromRawHandle, FromRawSocket, FromStr, FullOps, FusedIterator, Generator, Hash, Hasher, Index, IndexMut, InPlace, Int, Into, IntoCow, IntoInner, IntoIterator, IntoRawFd, IntoRawHandle, IntoRawSocket, IsMinusOne, IsZero, Iterator, JoinHandleExt, LargeInt, LowerExp, LowerHex, MetadataExt, Mul, MulAssign, Neg, Not, Octal, OpenOptionsExt, Ord, OsStrExt, OsStringExt, Packet, PartialEq, PartialOrd, Pattern, PermissionsExt, Place, Placer, Pointer, Product, Put, RangeArgument, RawFloat, Read, Rem, RemAssign, Seek, Shl, ShlAssign, Shr, ShrAssign, Sized, SliceConcatExt, SliceExt, SliceIndex, Stats, Step, StrExt, Sub, SubAssign, Sum, Sync, TDynBenchFn, Terminal, Termination, ToOwned, ToSocketAddrs, ToString, Try, TryFrom, TryInto, UnicodeStr, Unsize, UpperExp, UpperHex, WideInt, Write}
+, morekeywords=[2]{Send}  % additional traits
+%
+, morekeywords=[3]{bool, char, f32, f64, i8, i16, i32, i64, isize, str, u8, u16, u32, u64, unit, usize, i128, u128}  % primitive types
+%
+, morekeywords=[4]{Err, false, None, Ok, Some, true}  % prelude value constructors
+% grep 'pub \(type\|struct\|enum\) [A-Za-z][A-Za-z0-9]*' -r . | sed 's/^.*pub \(type\|struct\|enum\) \([A-Za-z][A-Za-z0-9]*\).*/\2/g' | sort -u | tr '\n' ',' | sed 's/^\(.*\),$/{\1}\n/g' | sed 's/,/, /g'    
+, morekeywords=[3]{AccessError, Adddf3, AddI128, AddoI128, AddoU128, ADDRESS, ADDRESS64, addrinfo, ADDRINFOA, AddrParseError, Addsf3, AddU128, advice, aiocb, Alignment, AllocErr, AnonPipe, Answer, Arc, Args, ArgsInnerDebug, ArgsOs, Argument, Arguments, ArgumentV1, Ashldi3, Ashlti3, Ashrdi3, Ashrti3, AssertParamIsClone, AssertParamIsCopy, AssertParamIsEq, AssertUnwindSafe, AtomicBool, AtomicPtr, Attr, auxtype, auxv, BackPlace, BacktraceContext, Barrier, BarrierWaitResult, Bencher, BenchMode, BenchSamples, BinaryHeap, BinaryHeapPlace, blkcnt, blkcnt64, blksize, BOOL, boolean, BOOLEAN, BoolTrie, BorrowError, BorrowMutError, Bound, Box, bpf, BTreeMap, BTreeSet, Bucket, BucketState, Buf, BufReader, BufWriter, Builder, BuildHasherDefault, BY, BYTE, Bytes, CannotReallocInPlace, cc, Cell, Chain, CHAR, CharIndices, CharPredicateSearcher, Chars, CharSearcher, CharsError, CharSliceSearcher, CharTryFromError, Child, ChildPipes, ChildStderr, ChildStdin, ChildStdio, ChildStdout, Chunks, ChunksMut, ciovec, clock, clockid, Cloned, cmsgcred, cmsghdr, CodePoint, Color, ColorConfig, Command, CommandEnv, Component, Components, CONDITION, condvar, Condvar, CONSOLE, CONTEXT, Count, Cow, cpu, CRITICAL, CStr, CString, CStringArray, Cursor, Cycle, CycleIter, daddr, DebugList, DebugMap, DebugSet, DebugStruct, DebugTuple, Decimal, Decoded, DecodeUtf16, DecodeUtf16Error, DecodeUtf8, DefaultEnvKey, DefaultHasher, dev, device, Difference, Digit32, DIR, DirBuilder, dircookie, dirent, dirent64, DirEntry, Discriminant, DISPATCHER, Display, Divdf3, Divdi3, Divmoddi4, Divmodsi4, Divsf3, Divsi3, Divti3, dl, Dl, Dlmalloc, Dns, DnsAnswer, DnsQuery, dqblk, Drain, DrainFilter, Dtor, Duration, DwarfReader, DWORD, DWORDLONG, DynamicLibrary, Edge, EHAction, EHContext, Elf32, Elf64, Empty, EmptyBucket, EncodeUtf16, EncodeWide, Entry, EntryPlace, Enumerate, Env, epoll, errno, Error, ErrorKind, EscapeDebug, EscapeDefault, EscapeUnicode, event, Event, eventrwflags, eventtype, ExactChunks, ExactChunksMut, EXCEPTION, Excess, ExchangeHeapSingleton, exit, exitcode, ExitStatus, Failure, fd, fdflags, fdsflags, fdstat, ff, fflags, File, FILE, FileAttr, filedelta, FileDesc, FilePermissions, filesize, filestat, FILETIME, filetype, FileType, Filter, FilterMap, Fixdfdi, Fixdfsi, Fixdfti, Fixsfdi, Fixsfsi, Fixsfti, Fixunsdfdi, Fixunsdfsi, Fixunsdfti, Fixunssfdi, Fixunssfsi, Fixunssfti, Flag, FlatMap, Floatdidf, FLOATING, Floatsidf, Floatsisf, Floattidf, Floattisf, Floatundidf, Floatunsidf, Floatunsisf, Floatuntidf, Floatuntisf, flock, ForceResult, FormatSpec, Formatted, Formatter, Fp, FpCategory, fpos, fpos64, fpreg, fpregset, FPUControlWord, Frame, FromBytesWithNulError, FromUtf16Error, FromUtf8Error, FrontPlace, fsblkcnt, fsfilcnt, fsflags, fsid, fstore, fsword, FullBucket, FullBucketMut, FullDecoded, Fuse, GapThenFull, GeneratorState, gid, glob, glob64, GlobalDlmalloc, greg, group, GROUP, Guard, GUID, Handle, HANDLE, Handler, HashMap, HashSet, Heap, HINSTANCE, HMODULE, hostent, HRESULT, id, idtype, if, ifaddrs, IMAGEHLP, Immut, in, in6, Incoming, Infallible, Initializer, ino, ino64, inode, input, InsertResult, Inspect, Instant, int16, int32, int64, int8, integer, IntermediateBox, Internal, Intersection, intmax, IntoInnerError, IntoIter, IntoStringError, intptr, InvalidSequence, iovec, ip, IpAddr, ipc, Ipv4Addr, ipv6, Ipv6Addr, Ipv6MulticastScope, Iter, IterMut, itimerspec, itimerval, jail, JoinHandle, JoinPathsError, KDHELP64, kevent, kevent64, key, Key, Keys, KV, l4, LARGE, lastlog, launchpad, Layout, Lazy, lconv, Leaf, LeafOrInternal, Lines, LinesAny, LineWriter, linger, linkcount, LinkedList, load, locale, LocalKey, LocalKeyState, Location, lock, LockResult, loff, LONG, lookup, lookupflags, LookupHost, LPBOOL, LPBY, LPBYTE, LPCSTR, LPCVOID, LPCWSTR, LPDWORD, LPFILETIME, LPHANDLE, LPOVERLAPPED, LPPROCESS, LPPROGRESS, LPSECURITY, LPSTARTUPINFO, LPSTR, LPVOID, LPWCH, LPWIN32, LPWSADATA, LPWSAPROTOCOL, LPWSTR, Lshrdi3, Lshrti3, lwpid, M128A, mach, major, Map, mcontext, Metadata, Metric, MetricMap, mflags, minor, mmsghdr, Moddi3, mode, Modsi3, Modti3, MonitorMsg, MOUNT, mprot, mq, mqd, msflags, msghdr, msginfo, msglen, msgqnum, msqid, Muldf3, Mulodi4, Mulosi4, Muloti4, Mulsf3, Multi3, Mut, Mutex, MutexGuard, MyCollection, n16, NamePadding, NativeLibBoilerplate, nfds, nl, nlink, NodeRef, NoneError, NonNull, NonZero, nthreads, NulError, OccupiedEntry, off, off64, oflags, Once, OnceState, OpenOptions, Option, Options, OptRes, Ordering, OsStr, OsString, Output, OVERLAPPED, Owned, Packet, PanicInfo, Param, ParseBoolError, ParseCharError, ParseError, ParseFloatError, ParseIntError, ParseResult, Part, passwd, Path, PathBuf, PCONDITION, PCONSOLE, Peekable, PeekMut, Permissions, PhantomData, pid, Pipes, PlaceBack, PlaceFront, PLARGE, PoisonError, pollfd, PopResult, port, Position, Powidf2, Powisf2, Prefix, PrefixComponent, PrintFormat, proc, Process, PROCESS, processentry, protoent, PSRWLOCK, pthread, ptr, ptrdiff, PVECTORED, Queue, radvisory, RandomState, Range, RangeFrom, RangeFull, RangeInclusive, RangeMut, RangeTo, RangeToInclusive, RawBucket, RawFd, RawHandle, RawPthread, RawSocket, RawTable, RawVec, Rc, ReadDir, Receiver, recv, RecvError, RecvTimeoutError, ReentrantMutex, ReentrantMutexGuard, Ref, RefCell, RefMut, REPARSE, Repeat, Result, Rev, Reverse, riflags, rights, rlim, rlim64, rlimit, rlimit64, roflags, Root, RSplit, RSplitMut, RSplitN, RSplitNMut, RUNTIME, rusage, RwLock, RWLock, RwLockReadGuard, RwLockWriteGuard, sa, SafeHash, Scan, sched, scope, sdflags, SearchResult, SearchStep, SECURITY, SeekFrom, segment, Select, SelectionResult, sem, sembuf, send, Sender, SendError, servent, sf, Shared, shmatt, shmid, ShortReader, ShouldPanic, Shutdown, siflags, sigaction, SigAction, sigevent, sighandler, siginfo, Sign, signal, signalfd, SignalToken, sigset, sigval, Sink, SipHasher, SipHasher13, SipHasher24, size, SIZE, Skip, SkipWhile, Slice, SmallBoolTrie, sockaddr, SOCKADDR, sockcred, Socket, SOCKET, SocketAddr, SocketAddrV4, SocketAddrV6, socklen, speed, Splice, Split, SplitMut, SplitN, SplitNMut, SplitPaths, SplitWhitespace, spwd, SRWLOCK, ssize, stack, STACKFRAME64, StartResult, STARTUPINFO, stat, Stat, stat64, statfs, statfs64, StaticKey, statvfs, StatVfs, statvfs64, Stderr, StderrLock, StderrTerminal, Stdin, StdinLock, Stdio, StdioPipes, Stdout, StdoutLock, StdoutTerminal, StepBy, String, StripPrefixError, StrSearcher, subclockflags, Subdf3, SubI128, SuboI128, SuboU128, subrwflags, subscription, Subsf3, SubU128, Summary, suseconds, SYMBOL, SYMBOLIC, SymmetricDifference, SyncSender, sysinfo, System, SystemTime, SystemTimeError, Take, TakeWhile, tcb, tcflag, TcpListener, TcpStream, TempDir, TermInfo, TerminfoTerminal, termios, termios2, TestDesc, TestDescAndFn, TestEvent, TestFn, TestName, TestOpts, TestResult, Thread, threadattr, threadentry, ThreadId, tid, time, time64, timespec, TimeSpec, timestamp, timeval, timeval32, timezone, tm, tms, ToLowercase, ToUppercase, TraitObject, TryFromIntError, TryFromSliceError, TryIter, TryLockError, TryLockResult, TryRecvError, TrySendError, TypeId, U64x2, ucontext, ucred, Udivdi3, Udivmoddi4, Udivmodsi4, Udivmodti4, Udivsi3, Udivti3, UdpSocket, uid, UINT, uint16, uint32, uint64, uint8, uintmax, uintptr, ulflags, ULONG, ULONGLONG, Umoddi3, Umodsi3, Umodti3, UnicodeVersion, Union, Unique, UnixDatagram, UnixListener, UnixStream, Unpacked, UnsafeCell, UNWIND, UpgradeResult, useconds, user, userdata, USHORT, Utf16Encoder, Utf8Error, Utf8Lossy, Utf8LossyChunk, Utf8LossyChunksIter, utimbuf, utmp, utmpx, utsname, uuid, VacantEntry, Values, ValuesMut, VarError, Variables, Vars, VarsOs, Vec, VecDeque, vm, Void, WaitTimeoutResult, WaitToken, wchar, WCHAR, Weak, whence, WIN32, WinConsole, Windows, WindowsEnvKey, winsize, WORD, Wrapping, wrlen, WSADATA, WSAPROTOCOL, WSAPROTOCOLCHAIN, Wtf8, Wtf8Buf, Wtf8CodePoints, xsw, xucred, Zip, zx}
+%
+, morekeywords=[5]{assert!, assert_eq!, assert_ne!, cfg!, column!, compile_error!, concat!, concat_idents!, debug_assert!, debug_assert_eq!, debug_assert_ne!, env!, eprint!, eprintln!, file!, format!, format_args!, include!, include_bytes!, include_str!, line!, module_path!, option_env!, panic!, print!, println!, select!, stringify!, thread_local!, try!, unimplemented!, unreachable!, vec!, write!, writeln!}  % prelude macros
+}%
+
+\lstdefinestyle{colouredRust}%
+{ basicstyle=\ttfamily%
+, identifierstyle=%
+, commentstyle=\color[gray]{0.4}%
+, stringstyle=\color[rgb]{0, 0, 0.5}%
+, keywordstyle=\bfseries% reserved keywords
+, keywordstyle=[2]\color[rgb]{0.75, 0, 0}% traits
+, keywordstyle=[3]\color[rgb]{0, 0.5, 0}% primitive types
+, keywordstyle=[4]\color[rgb]{0, 0.5, 0}% type and value constructors
+, keywordstyle=[5]\color[rgb]{0, 0, 0.75}% macros
+, columns=spaceflexible%
+, keepspaces=true%
+, showspaces=false%
+, showtabs=false%
+, showstringspaces=true%
+}%
+
+\lstdefinestyle{boxed}{
+  style=colouredRust%
+, numbers=left%
+, firstnumber=auto%
+, numberblanklines=true%
+, frame=trbL%
+, numberstyle=\tiny%
+, frame=leftline%
+, numbersep=7pt%
+, framesep=5pt%
+, framerule=10pt%
+, xleftmargin=15pt%
+, backgroundcolor=\color[gray]{0.97}%
+, rulecolor=\color[gray]{0.90}%
+}
+
+\begin{document}
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+\lstset{language=Rust, style=colouredRust}
+\hyphenpenalty 10000
+\exhyphenpenalty 10000
+
+\title{A guide to Rust for Kotlin developers}
+\author{Ray Britton}
+\date{March 2019}
+
+\pagenumbering{gobble}
+\maketitle
+
+\newpage
+\pagenumbering{gobble}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\section{Introduction}
+
+This document should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similiar features.
+\newline
+This book is little more than a summary of the offical Rust book available at https://doc.rust-lang.org/stable/book
+Please read that book for a more through understanding and explanation of Rust.
+\newline
+\newline
+A lot of things you already know are going to be re-explained in this document for two reasons:
+\begin{enumerate}
+	\item as a refresher and just to make your understanding is correct
+	\item to help explain and draw out differences between the languages
+\end{enumerate}
+When code is shown inline it will appear as \lstinline[language=Kotlin]{Boolean} for Kotlin and \lstinline[language=Rust]{bool} for Rust.
+
+\subsection{Core differences}
+\begin{itemize}
+	\item Rust requires newlines to end with a semicolon.
+\end{itemize}
+
+\newpage
+\section{Types and Variables}
+\subsection{Primitives}
+In Kotlin there are few commonly used primitive types:
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+ Name & Bits & Type \\ 
+ \hline
+ Int & 32 & Signed Integer \\ 
+ Long & 64 & Signed Integer \\ 
+ Float & 32 & Floating Point \\ 
+ Double & 64 & Floating Point \\ 
+ Char & 32 & Character \\ 
+ Boolean & N/A & Boolean \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+Like in Java Strings are not primitives but are often treated as such, the number types are signed.
+Kotlin currently has unsigned versions of integers under discussion.
+\newline
+\newline
+Rust uses a different system for naming number types which a character followed by a number:
+
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ Character & Type \\ 
+ \hline
+ i & Signed Integer \\ 
+ f & Floating point \\ 
+ u & Unsigned Integer \\ 
+ \hline
+\end{tabular}
+\end{center}
+Floating points support 32 and 64 only but integers can be 8, 16, 32, 64, and 128; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
+\newline
+Booleans and Chars are the same (although the keyword is \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}).
+
+\subsection{Strings}
+In both Kotlin and Java, essentially, there is just one String type: \lstinline[language=Kotlin]{String}. Whether the text is hardcoded, from a file or user input the same class is used. In secret the \lstinline[language=Kotlin]{String} class has a backing array of \lstinline[language=Kotlin]{char}s, and the same array is used for results of methods using the original string. For example:
+\begin{lstlisting}[language=Kotlin,frame=single]
+val strOne = "Hello World"
+val strTwo = strOne.substr(0, 5)
+\end{lstlisting}
+ \lstinline{strTwo} uses the same chars as  \lstinline{strOne}, i.e. if memory address the 'H' of \lstinline{strOne} was \&0x4563 it's the same address for the 'H' in \lstinline{strTwo}.
+\newline
+\newline
+Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[language=Rust]{str}. A hardcoded string will be of type \lstinline[language=Rust]{str} and a string read from anywhere else maybe a \lstinline[language=Rust]{String} or \lstinline[language=Rust]{str} depending on what the method returns. They can be converted between themselves at any time infintely.
+\newline
+The \lstinline[language=Rust]{String} is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char arry and so has a fixed length.
+\newline
+Like with \lstinline[language=Kotlin]{String}s when you substring a \lstinline[language=Rust]{str} the new variable uses the original variables backing data, however unlike in Kotlin/Java where is unknown (and basically irrelevant as the backing array can't be changed without reflection) this is how all arrays work in Rust. Using part of an array is called slicing and changing the contents of slice (e.g. substring) will change the original variables data.
+\newline
+\newline
+It's also worthing notes that you can't actually directly substring with Rust as the language designers wanted you to be sure whether you meant bytes, characters or grapheme clusters; so the string has to be accessed in different ways to expose the individual parts.
+\subsection{Mutability}
+Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable based on type rather than by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo: i32 = 1;
+let mut bar: i32 = 2;
+\end{lstlisting}
+In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A variable can not become mutable:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo: i32 = 1;
+
+change(&mut foo);
+
+fn change(value: &mut i32) {
+	value += 1;
+}
+\end{lstlisting}
+This will not compile as \lstinline{foo} is immutable and so can't be made (or referenced as) mutable.
+
+\newpage
+\section{References}
+All variables can be passed as a reference, Rust will often automatically deference pointers which makes this quite pain less to use:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo = 10;
+print(foo);
+print_ref(foo);
+
+fn print(value: i32) {
+	println!(value); 
+	//Passed by value so no need to deference
+}
+
+fn print_ref(value: &i32) {
+	println!(value); //Automatically deferenced
+}
+
+
+let mut bar = 65;
+change(bar);
+
+fn change(value: &mut i32) {
+	*bar += 1; 
+	//Has to be deferenced as Rust doesn't perform 
+	//automatic deference with operators (as you 
+	//might want to do pointer math, it is
+	//currently under discussion though)
+} 
+
+\end{lstlisting}
+
+For clarity:
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ Symbols & Meaning \\ 
+ \hline
+ <No symbols> & Value, immutable \\ 
+ mut & Value, mutable \\ 
+ \& & Refernce, immutable \\ 
+ \&mut & Refernce, mutable \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\newpage
+\section{Borrowing and Ownership}
+In Kotlin a variable exists, and is available, while in it's scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods executon. Rust is basically the same and generally you'll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    
+    let a = String::from("Hello");
+    let b = a;
+    
+    println!("{}", a);
+}
+\end{lstlisting}
+
+This will not compile as \lstinline{b} has taken ownership of the data in \lstinline{a} and so \lstinline{a} can no longer be used.
+
+\begin{lstlisting}[language=Rust,frame=single,caption={Listing B}]
+fn main() {
+    
+    let a = 54;
+    let b = a;
+    
+    println!("{}", a);
+}
+\end{lstlisting}
+
+This will compile however as numbers have \lstinline[language=Rust]{Copy} implemented for them and so \lstinline{b} automatically makes a copy of \lstinline{a}s data, this can be replicated for the string example by doing:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    
+    let a = String::from("Hello");
+    let b = a.clone();
+    
+    println!("{}", a);
+}
+\end{lstlisting}
+
+Ownership and borrowing apply to all methods so:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    let a = String::from("Hello");
+    let b = return_param(a);
+    let c = length(b);
+
+    println!("{}", c);
+}
+
+fn return_param(param: String) -> String {
+	return param;
+}
+
+fn length(param: String) -> usize {
+	return param.len();
+}
+\end{lstlisting}
+
+When \lstinline{c} is printed both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
+\begin{lstlisting}[language=Rust,frame=single]
+fn length(param: &String) -> usize {
+	return param.len(); //automatically deferenced
+}
+
+//or
+
+fn length(param: String) -> (String, usize) {
+	return (param, param.len()); 
+}
+\end{lstlisting}
+
+References are just references and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once.
+
+\newpage
+\section{Classes, or the lack there of}
+
+
+\newpage
+\section{Method syntax}
+
+
+\newpage
+\section{Modules and Crates}
+
+\newpage
+\section{Macros}
+
+\newpage
+\section{Conclusion}
+Good luck!
+
+\end{document}
