@@ -1,9 +1,16 @@
 \documentclass[a4paper,11pt]{article}
 
 \usepackage{xparse}
+\usepackage{array}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
 \usepackage[margin=1.2in]{geometry}
+\usepackage{color}   
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linktoc=all,     
+}
 
 \lstdefinelanguage{Kotlin}{
   comment=[l]{//},
@@ -99,6 +106,7 @@
 \setlength{\parindent}{0mm}
 \hyphenpenalty 10000
 \exhyphenpenalty 10000
+\sffamily
 
 \title{A guide to Rust for Kotlin developers}
 \author{Ray Britton}
@@ -118,10 +126,14 @@
 This document should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similiar features.
 \newline
 \newline
-This book is little more than a summary of the offical Rust book available at https://doc.rust-lang.org/stable/book
-Please read that book for a more through understanding and explanation of Rust.
-\newline
-\newline
+This book is a summary of the offical Rust books, as well as forum threads, Github issues, and StackOverflow posts I've read and testing I've done.
+Please read the following books (in this order) for a much more complete understanding of Rust:
+\begin{itemize}
+  \item https://doc.rust-lang.org/stable/book
+  \item https://doc.rust-lang.org/stable/rust-by-example
+  \item https://doc.rust-lang.org/stable/edition-guide/rust-2018
+  \item https://doc.rust-lang.org/stable/reference
+\end{itemize}
 A lot of things you already know are going to be re-explained in this document for two reasons:
 \begin{enumerate}
 	\item as a refresher and just to make your understanding is correct
@@ -130,11 +142,13 @@ A lot of things you already know are going to be re-explained in this document f
 When code is shown inline it will appear as \lstinline[language=Kotlin]{Boolean} for Kotlin and \lstinline[language=Rust]{bool} for Rust.
 
 \subsection{Core differences}
+In Rust...
 \begin{itemize}
-	\item Rust requires newlines to end with a semicolon.
-  \item Rust has a offical and very opiniated linter - it should always be used.
-  \item Unfortunately Rust does not support default values for parameters or methods with the same name.
-  \item The naming scheme is \lstinline{snake_case} for methods and variables, and \lstinline{CamelCase} for Traits, Structs, Impls and Enums
+	\item lines to end with a semicolon.
+  \item there is an offical and very opiniated linter - it should always be used.
+  \item methods parameters can be variadic, named or have default values.
+  \item methods can have the same name as another in the same scope.
+  \item the naming scheme is \lstinline{snake_case} for methods and variables, and \lstinline{CamelCase} for Traits, Structs, Impls and Enums.
 \end{itemize}
 
 \newpage
@@ -142,9 +156,11 @@ When code is shown inline it will appear as \lstinline[language=Kotlin]{Boolean}
 \subsection{Primitives}
 In Kotlin there are few commonly used primitive types:
 
+\renewcommand{\arraystretch}{1.3}
+
 \begin{center}
-\begin{tabular}{ |c|c|c| } 
- \hline
+\begin{tabular}{ c|c|c } 
+ 
  Name & Bits & Type \\ 
  \hline
  Int & 32 & Signed Integer \\ 
@@ -153,7 +169,7 @@ In Kotlin there are few commonly used primitive types:
  Double & 64 & Floating Point \\ 
  Char & 32 & Character \\ 
  Boolean & N/A & Boolean \\ 
- \hline
+ 
 \end{tabular}
 \end{center}
 
@@ -164,16 +180,18 @@ Kotlin currently has unsigned versions of integers under discussion.
 Rust uses a different system for naming number types which a character followed by a number:
 
 \begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
+\begin{tabular}{ c|c } 
+
  Character & Type \\ 
  \hline
  i & Signed Integer \\ 
  f & Floating point \\ 
  u & Unsigned Integer \\ 
- \hline
+ 
 \end{tabular}
 \end{center}
+
+\renewcommand{\arraystretch}{1}
 Floating points support 32 and 64 only but integers can be 8, 16, 32, 64, and 128; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
 \newline
 Booleans and Chars are the same (although the keyword is \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
@@ -188,7 +206,39 @@ Like with \lstinline[language=Kotlin]{String}s when you substring a \lstinline[l
 \newline
 \newline
 It's also worthing notes that you can't actually directly substring with Rust as the language designers wanted you to be sure whether you meant bytes, characters or grapheme clusters; so the string has to be accessed in different ways to expose the individual parts.
+
 \subsection{Common types}
+\begin{center}
+\begin{tabular}{ |>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{5.8cm}|>{\raggedright\arraybackslash}p{5.8cm}| } 
+ \hline
+   & \textbf{Kotlin} & \textbf{Rust} \\ 
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Lists}} \\
+ \hline
+ \textbf{Type} & \lstinline[language=Kotlin]|List<T>|, \lstinline[language=Kotlin]|MutableList<T>|, \lstinline[language=Kotlin]|ArrayList<T>| & \lstinline[language=Rust]|Vec<T>| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new()| \\
+ \textbf{Creation methods} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Maps}} \\
+ \hline
+ \textbf{Type} & \lstinline[language=Kotlin]|Map<K, V>|, \lstinline[language=Kotlin]|MutableMap<K, V>|, \lstinline[language=Kotlin]|HashMap<K, V>| & \lstinline[language=Rust]|HashMap<K: Hash & Eq, V>| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|HashMap(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|HashMap::new()| \\
+ \textbf{Creation methods} & \lstinline[language=Kotlin]|mapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableMapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, etc & N/A \\
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Tuples}} \\
+ \hline
+ \textbf{Type} & & \\
+ \textbf{Constructor} & & \\
+ \textbf{Creation methods} & & \\
+ \hline
+ \multicolumn{3}{|c|}{\textbf{TODO}} \\
+ \hline
+ \textbf{Type} & & \\
+ \textbf{Constructor} & & \\
+ \textbf{Creation methods} & & \\
+ \hline
+\end{tabular}
+\end{center}
 
 \subsection{Mutability}
 Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable based on type rather than by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
@@ -516,8 +566,10 @@ struct Foo {}
  Debug & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|toString()|, use with \lstinline[language=Rust]|{:?}| instead of \lstinline[language=Rust]|{}| \\
  Clone & Implements the \lstinline[language=Rust]|clone()| method on the struct \\
  Copy & Allows structs to be copied instead of transfering ownership when assigned to new variable \\
- PartialEq & Implements basic equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
- PartialOrd & Implements basic comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| \\
+ PartialEq & Implements equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
+ PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (i.e. floating numbers)\\
+ Eq & Allows for === (is same object) checking, not valid for all types (i.e. floating numbers) \\
+ Ord & Same as PartialOrd but for types where comparison is always possible\\
  Hash & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|hashCode()|, required to use the \lstinline[language=Rust]|struct| as key in \lstinline[language=Rust]|HashMap|s \\
  Default & Implements a default value for all feilds, see below \\
  \hline
@@ -655,6 +707,7 @@ In file modules...
 
 \newpage
 \section{Crates}
+\subsection{Adding crates}
 Third party libraries are called \lstinline{Crates} (and are available from \lstinline{https://crates.io}). To add a crate, for example \lstinline{Serde}: 
 Add this line to \lstinline{Cargo.toml} after the \lstinline{[dependencies]} line:
 \begin{lstlisting}[language=Rust,frame=single]
@@ -670,6 +723,46 @@ You'll still need to import the individual parts of the crate you want to use, f
 use serde::json::{*};
 \end{lstlisting}
 \lstinline|{*}| means import everything in the module.
+
+\subsection{Not standard}
+Some funtionality built in to Java/Kotlin isn't part of the std lib and you'll need to use these crates to add it:
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{center}
+\begin{tabular}{ c|c|l } 
+
+ Functionality & Crate & Notes \\ 
+ \hline
+ Random numbers & \lstinline|rand| & Maintained by Rust team \\
+ Serialization & \lstinline|serde| & Also does XML, JSON, etc \\
+ Lazy variables & \lstinline|lazy_static| & Only static variables \\
+ Regex & \lstinline|regex| & Maintained by Rust team \\
+ Base64 & \lstinline|base64| & \\
+ UUID & \lstinline|uuid| & \\
+ 
+\end{tabular}
+\end{center}
+
+\subsection{Common crates}
+These crates are closest equalivent to the commonly used Kotlin libraries:
+\begin{center}
+\begin{tabular}{ c|c|l } 
+ Kotlin & Rust & Notes \\ 
+ \hline
+ GSON & Serde & Much more powerful and flexible than GSON \\
+ JodaTime & Chrono & Essentially the same \\
+ RxJava & RxRust & Abandoned, incomplete \\
+\end{tabular}
+\end{center}
+
+\renewcommand{\arraystretch}{1}
+
+\newpage
+\section{Result, Option and Exceptions}
+
+\newpage
+\section{Concurrency}
 
 \newpage
 \section{Macros}
