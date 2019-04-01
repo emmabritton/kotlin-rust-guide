@@ -638,7 +638,7 @@ Statements and expersions must have a semicolon at the end except if it's the la
 
 \subsection{Functional Programming}
 
-Rust supports higher order functions, using them is quite easy:
+Rust supports lambdas, using them is quite easy:
 
 \begin{lstlisting}[language=Rust,frame=single]
 let x = vec![1,2,3]; 
@@ -760,6 +760,55 @@ These crates are closest equalivent to the commonly used Kotlin libraries:
 
 \newpage
 \section{Result, Option and Exceptions}
+Instead of using try..catch and exceptions for error handling Rust uses \lstinline[language=Rust]{Result}, \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{panic!}.
+\newline
+\newline
+\lstinline[language=Rust]{Option<T>}s are the same as \lstinline[language=Kotlin]{Optional<T>}s and are created via \lstinline[language=Rust]{Some()} and \lstinline[language=Rust]{None}
+\begin{lstlisting}[language=Rust,frame=single]
+fn divide(numerator: f64, denominator: f64) -> Option<f64> {
+    if denominator == 0.0 {
+        None //notice no return and so no semicolon
+    } else {
+        Some(numerator / denominator)
+    }
+}
+
+fn main() {
+  let result = divide(2.0, 3.0);
+
+  match result {
+      Some(x) => println!("Result: {}", x),
+      None    => println!("Cannot divide by 0"),
+  }
+}
+\end{lstlisting}
+
+\lstinline[language=Rust]{Result<V, E>} is used for when a method may fail, it can contain the result or an error. It is created via \lstinline[language=Rust]{Ok()} and \lstinline[language=Rust]{Err()}
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn get(&self, idx: u32) -> Result<Item, String> {
+  if self.contains(idx) {
+    Ok(self[idx])
+  } else {
+    Err("404")
+  }
+}
+
+fn main() {
+  let result = foo.get(10);
+
+  match result {
+    Ok(item) => println!(item),
+    Err(e) => println!(e)
+  }
+}
+\end{lstlisting}
+
+You can also do the rough equalivent of  \lstinline[language=Kotlin]{var!!} with both \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{Result} by using \lstinline[language=Rust]{var.unwrap()} and \lstinline[language=Rust]{var.expect("some message")}. Both methods will crash the app if it's \lstinline[language=Rust]{Err}/\lstinline[language=Rust]{None}, \lstinline[language=Rust]{expect()} will also write the message to the console.
+\newline
+To avoid having to write \lstinline[language=Rust]{unwrap()} everytime if you're in a method that returns a \lstinline[language=Rust]{Result} you can just write \lstinline[language=Rust]{var?}, if \lstinline{var} is an \lstinline[language=Rust]{Err} the method will return the \lstinline[language=Rust]{Err} immeadiately.
+\newline
+To crash a Rust program you should use \lstinline[language=Rust]{panic!("message")}. This will print the message and stacktrace to the console.
 
 \newpage
 \section{Concurrency}
