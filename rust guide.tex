@@ -4,8 +4,12 @@
 \usepackage{array}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
-\usepackage[margin=1.2in]{geometry}
 \usepackage{color}   
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  margin=1in
+}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{
     colorlinks=false,
@@ -217,25 +221,25 @@ It's also worthing notes that you can't actually directly substring with Rust as
  \hline
  \textbf{Type} & \lstinline[language=Kotlin]|List<T>|, \lstinline[language=Kotlin]|MutableList<T>|, \lstinline[language=Kotlin]|ArrayList<T>| & \lstinline[language=Rust]|Vec<T>| \\
  \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new()| \\
- \textbf{Creation methods} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
+ \textbf{Shorthand} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
  \hline
  \multicolumn{3}{|c|}{\textbf{Maps}} \\
  \hline
  \textbf{Type} & \lstinline[language=Kotlin]|Map<K, V>|, \lstinline[language=Kotlin]|MutableMap<K, V>|, \lstinline[language=Kotlin]|HashMap<K, V>| & \lstinline[language=Rust]|HashMap<K: Hash & Eq, V>| \\
  \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|HashMap(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|HashMap::new()| \\
- \textbf{Creation methods} & \lstinline[language=Kotlin]|mapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableMapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, etc & N/A \\
+ \textbf{Shorthand} & \lstinline[language=Kotlin]|mapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableMapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, etc & N/A \\
  \hline
  \multicolumn{3}{|c|}{\textbf{Tuples}} \\
  \hline
- \textbf{Type} & & \\
- \textbf{Constructor} & & \\
- \textbf{Creation methods} & & \\
+ \textbf{Type} & \lstinline[language=Kotlin]|Pair<T1, T2>|, \lstinline[language=Kotlin]|Triple<T1, T2, T3>| & \lstinline[language=Rust]|(T1, T2...)| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|Pair(|\emph{value1, value2}\lstinline[language=Kotlin]|)| &  \lstinline[language=Rust]|(|\emph{value1, value2}...\lstinline[language=Rust]|)| \\
+ \textbf{Shorthand} & \emph{value1} \lstinline[language=Kotlin]|to| \emph{value2} & N/A \\
  \hline
  \multicolumn{3}{|c|}{\textbf{TODO}} \\
  \hline
- \textbf{Type} & & \\
- \textbf{Constructor} & & \\
- \textbf{Creation methods} & & \\
+ \textbf{Type} &  &  \\
+ \textbf{Constructor} &  &  \\
+ \textbf{Shorthand} &  &  \\
  \hline
 \end{tabular}
 \end{center}
@@ -318,7 +322,7 @@ fn main() {
 
 This will not compile as \lstinline{b} has taken ownership of the data in \lstinline{a} and so \lstinline{a} can no longer be used.
 
-\begin{lstlisting}[language=Rust,frame=single,caption={Listing B}]
+\begin{lstlisting}[language=Rust,frame=single]
 fn main() {
     
     let a = 54;
@@ -818,6 +822,24 @@ To crash a Rust program you should use \lstinline[language=Rust]{panic!("message
 
 \newpage
 \section{Testing}
+The standard in Rust is to have the tests in a module inside the module being tested, the test module needs to be annotated as do all the tests:
+\begin{lstlisting}[language=Rust,frame=single]
+//foo.rs 
+
+fn add(value1: i32, value2: i32) -> i32 {
+  value1 + value2
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_all() {
+        assert_eq!(2, add(1, 1));
+    }
+}
+\end{lstlisting}
 
 \newpage
 \section{Cargo}
