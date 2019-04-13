@@ -127,10 +127,10 @@
 \pagenumbering{arabic}
 \section{Introduction}
 
-This document should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similiar features.
+This document should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similar features.
 \newline
 \newline
-This book is a summary of the offical Rust books, as well as forum threads, Github issues, and StackOverflow posts I've read and testing I've done.
+This book is a summary of the official Rust books, as well as forum threads, GitHub issues, and StackOverflow posts I've read and testing I've done.
 Please read the following books (in this order) for a much more complete understanding of Rust:
 \begin{itemize}
   \item https://doc.rust-lang.org/stable/book
@@ -144,14 +144,15 @@ A lot of things you already know are going to be re-explained in this document f
 	\item to help explain and draw out differences between the languages
 \end{enumerate}
 When code is shown inline it will appear as \lstinline[language=Kotlin]{Boolean} for Kotlin and \lstinline[language=Rust]{bool} for Rust.
+Rust is designed so that the compiler can guarantee some level of correctness in regards to variable creation and access, and as such it will not compile code it can't predict; however this is sometimes necessary and so you can use the \lstinline[language=Rust]{unsafe} keyword to mark a block of code that you're guaranteeing will be safe.
 
 \subsection{Core differences}
 In Rust...
 \begin{itemize}
-	\item lines to end with a semicolon.
-  \item there is an offical and very opiniated linter - it should always be used.
-  \item methods parameters can be variadic, named or have default values.
-  \item methods can have the same name as another in the same scope.
+	\item lines have to end with a semicolon.
+  \item there is an official and very opinionated linter - it should always be used.
+  \item methods parameters can not be variadic, named or have default values.
+  \item methods can not have the same name as another in the same scope.
   \item the naming scheme is \lstinline{snake_case} for methods and variables, and \lstinline{CamelCase} for Traits, Structs, Impls and Enums.
 \end{itemize}
 
@@ -196,20 +197,36 @@ Rust uses a different system for naming number types which a character followed 
 \end{center}
 
 \renewcommand{\arraystretch}{1}
-Floating points support 32 and 64 only but integers can be 8, 16, 32, 64, and 128; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
+Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
 \newline
-Booleans and Chars are the same (although the keyword is \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
+Booleans and Chars are the same in both languages (although the keyword is \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
+
+\subsection{Mutability}
+Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable based on type rather than by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo: i32 = 1;
+let mut bar: i32 = 2;
+\end{lstlisting}
+In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A variable can not become mutable:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo: i32 = 1;
+
+change(&mut foo);
+
+fn change(value: &mut i32) {
+  value += 1;
+}
+\end{lstlisting}
+This will not compile as \lstinline{foo} is immutable and so can't be made (or referenced as) mutable.
 
 \subsection{Strings}
 In both Kotlin and Java, essentially, there is just one String type: \lstinline[language=Kotlin]{String}. Whether the text is hardcoded, from a file or user input the same class is used.
-Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[language=Rust]{str}. A hardcoded string will be of type \lstinline[language=Rust]{str} and a string read from anywhere else maybe a \lstinline[language=Rust]{String} or \lstinline[language=Rust]{str} depending on what the method returns. They can be converted between themselves at any time infintely.
+Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[language=Rust]{str}. A hardcoded string will be of type \lstinline[language=Rust]{&'static str} and a string read from anywhere else maybe a \lstinline[language=Rust]{String} or \lstinline[language=Rust]{&str} depending on what the method returns. They can be converted between themselves, in some circumstances.
 \newline
-The \lstinline[language=Rust]{String} is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char arry and so has a fixed length.
-\newline
-Like with \lstinline[language=Kotlin]{String}s when you substring a \lstinline[language=Rust]{str} the new variable uses the original variables backing data, however unlike in Kotlin/Java where is unknown (and basically irrelevant as the backing array can't be changed without reflection) this is how all arrays work in Rust. Using part of an array is called slicing and changing the contents of slice (e.g. substring) will change the original variables data.
+The \lstinline[language=Rust]{String} is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char array and so has a fixed length.
 \newline
 \newline
-It's also worthing notes that you can't actually directly substring with Rust as the language designers wanted you to be sure whether you meant bytes, characters or grapheme clusters; so the string has to be accessed in different ways to expose the individual parts.
+If you attempt to slice a string so it would cause a grapheme cluster to be broken Rust will panic. Use the \lstinline[language=Rust]|.chars()| method to access each cluster independently. As an example to get the length of a string in bytes you use \lstinline[language=Rust]{foo.len()} and to get the number of characters you use \lstinline[language=Rust]{foo.chars().count()}.
 
 \subsection{Common types}
 \begin{center}
@@ -243,24 +260,8 @@ It's also worthing notes that you can't actually directly substring with Rust as
  \hline
 \end{tabular}
 \end{center}
-
-\subsection{Mutability}
-Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable based on type rather than by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
-\begin{lstlisting}[language=Rust,frame=single]
-let foo: i32 = 1;
-let mut bar: i32 = 2;
-\end{lstlisting}
-In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A variable can not become mutable:
-\begin{lstlisting}[language=Rust,frame=single]
-let foo: i32 = 1;
-
-change(&mut foo);
-
-fn change(value: &mut i32) {
-	value += 1;
-}
-\end{lstlisting}
-This will not compile as \lstinline{foo} is immutable and so can't be made (or referenced as) mutable.
+\subsection{Constants}
+In Rust there are two types of constants \lstinline[language=Rust]{const} and \lstinline[language=Rust]{static}. \lstinline[language=Rust]{const} are immutable values hardcoded into the program. \lstinline[language=Rust]{static}s are optionally mutable values that are always available. Using mutable statics is \lstinline[language=Rust]{unsafe}.
 
 \newpage
 \section{References}
@@ -276,7 +277,7 @@ fn print(value: i32) {
 }
 
 fn print_ref(value: &i32) {
-	println!(value); //Automatically deferenced
+	println!(value); //Automatically dereferenced
 }
 
 
@@ -285,9 +286,9 @@ change(bar);
 
 fn change(value: &mut i32) {
 	*bar += 1; 
-	//Has to be deferenced as Rust doesn't perform 
+	//Has to be dereferenced as Rust doesn't perform 
 	//automatic deference with operators (as you 
-	//might want to do pointer math, it is
+	//might want to do pointer maths, it is
 	//currently under discussion though)
 } 
 
@@ -295,21 +296,19 @@ fn change(value: &mut i32) {
 
 For clarity:
 \begin{center}
-\begin{tabular}{ |c|c| } 
- \hline
+\begin{tabular}{ c|c } 
  Symbols & Meaning \\ 
  \hline
  <No symbols> & Value, immutable \\ 
  mut & Value, mutable \\ 
- \& & Refernce, immutable \\ 
- \&mut & Refernce, mutable \\ 
- \hline
+ \& & Reference, immutable \\ 
+ \&mut & Reference, mutable \\ 
 \end{tabular}
 \end{center}
 
 \newpage
 \section{Borrowing and Ownership}
-In Kotlin a variable exists, and is available, while in it's scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods executon. Rust is basically the same and generally you'll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.
+In Kotlin a variable exists, and is available, while in it's scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods execution. Rust is basically the same and generally you'll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
     
@@ -379,19 +378,19 @@ fn length(param: String) -> (String, usize) {
 
 References are just references and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once.
 
-Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop the generic items. The name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}.
+Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop the generic items. The name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable will always be available.
 
 \newpage
 \section{Classes, or the lack there of}
 
-In Kotlin there are Classes, Abstract Classes, Interfaces, and Extension methods. Each of these might be able to store data or provide funcationality or an API.
+In Kotlin there are Classes, Abstract Classes, Interfaces, and Extension methods. Each of these might be able to store data or provide functionality or an API.
 Rust has Traits, Structs and Impls.
 \newline
 \textbf{Kotlin}
 \begin{itemize}
-  \item An \lstinline[language=Kotlin]{Interface} can have methods but can not have variables (with values), and may extend another Interface. It can be supplmented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
-  \item A \lstinline[language=Kotlin]{Class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplmented with Extension methods or sub classed by other Classes or Abstract Classes.
-  \item An \lstinline[language=Kotlin]{abstract Class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplmented with Extension methods or sub classed by other Classes or Abstract Classes.
+  \item An \lstinline[language=Kotlin]{interface} can have methods but can not have variables (with values), and may extend another Interface. It can be supplemented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
+  \item A \lstinline[language=Kotlin]{class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
+  \item An \lstinline[language=Kotlin]{abstract class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
 \end{itemize}
 \textbf{Rust}
 \begin{itemize}
@@ -400,6 +399,8 @@ Rust has Traits, Structs and Impls.
   \item An \lstinline[language=Rust]{impl} is a collection of methods either matching a \lstinline[language=Rust]{Trait} (like a \lstinline[language=Kotlin]{Class} implementing an \lstinline[language=Kotlin]{Interface}) or free form from a \lstinline[language=Rust]{struct} (like a \lstinline[language=Kotlin]{Class}), but Impl are not allowed to have variables and if implementing a Trait can not have methods that are not defined in the Trait. An Impl may be defined repeatedly.
   \item \lstinline[language=Rust]{trait} and \lstinline[language=Rust]{impl} can used like Extension Methods (although the syntax is closer to Swift than Kotlin).
 \end{itemize}
+
+There is nothing like an \lstinline[language=Kotlin]{abstract class} in Rust.
 
 \newpage
 Some Kotlin examples:
@@ -417,10 +418,6 @@ class ClassA : ParentA { //includes methods from parent
   fun foo() {} //methods must be implemented
 }
 
-abstract class AbstractClassA : ParentB {
-  fun foobar() //no method body
-}
-
 class ClassB : AbstractClassA() {
   fun foo() {} //methods must be implemented
   fun bar() {} //from all parents
@@ -428,7 +425,7 @@ class ClassB : AbstractClassA() {
 }
 
 fun ParentA.example1() {} //Adds method called example1 to all
-fun ClassB.example2() {} //implementions and children of ParentA
+fun ClassB.example2() {} //implementations and children of ParentA
 \end{lstlisting}
 
 Some Rust examples:
@@ -445,39 +442,14 @@ trait TraitA { //API only
   fn bar();
 }
 
-trait TraitC : TraitA {
-  fn boo();
+trait TraitC : TraitA { 
+  fn boo(); //anything implementing TraitC must implement bar() and boo()
 }
 
-impl TraitA { //methods only, can have 
-  fn bar() {} //private methods
-}
-
-trait TraitB { //API only
-  fn foobar();
-}
-
-impl TraitB for StructA {
-  fn foobar() {} //methods only but can access
-}                //variables and methods from Struct
-                 //no private methods allowed
-\end{lstlisting}
-
-A \lstinline[language=Rust]{trait} can only be implemented if the \lstinline[language=Rust]{trait} or \lstinline[language=Rust]{struct} is defined in your app/lib. For example, if we want to add a pad method to String:
-
-\begin{lstlisting}[language=Rust,frame=single]
-trait Pad {
-  fn pad(&self) -> Self
-}
-
-impl Pad for String {
-  fn pad(&self) -> String {
-    return " ".to_string() + self;
-  }
+impl TraitA { //methods only, can not 
+  fn bar() {} //have private methods
 }
 \end{lstlisting}
-TODO
-but...
 
 \subsection{Deriving and implementing}
 Let's say you make a type: \lstinline{Person}. It will have a first name, last name, date of birth, and occupation. It will also have functions to get the whole name and their age.
@@ -569,13 +541,13 @@ struct Foo {}
  \hline
  Debug & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|toString()|, use with \lstinline[language=Rust]|{:?}| instead of \lstinline[language=Rust]|{}| \\
  Clone & Implements the \lstinline[language=Rust]|clone()| method on the struct \\
- Copy & Allows structs to be copied instead of transfering ownership when assigned to new variable \\
+ Copy & Allows structs to be copied instead of transferring ownership when assigned to new variable \\
  PartialEq & Implements equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
  PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (i.e. floating numbers)\\
  Eq & Allows for === (is same object) checking, not valid for all types (i.e. floating numbers) \\
  Ord & Same as PartialOrd but for types where comparison is always possible\\
  Hash & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|hashCode()|, required to use the \lstinline[language=Rust]|struct| as key in \lstinline[language=Rust]|HashMap|s \\
- Default & Implements a default value for all feilds, see below \\
+ Default & Implements a default value for all fields, see below \\
  \hline
 \end{tabular}
 \end{center}
@@ -603,7 +575,7 @@ fn main() {
   let foo2 = Foo {
     b: 45,
     d: "Foobar".to_string(),
-    ..Foo::default()
+    ..Self::default()
   };
 }
 \end{lstlisting}
@@ -638,7 +610,7 @@ impl Foo {
 }
 \end{lstlisting}
 
-Statements and expersions must have a semicolon at the end except if it's the last
+Statements and expressions must have a semicolon at the end except if it's the last
 
 \subsection{Functional Programming}
 
@@ -664,12 +636,10 @@ let method: Box<Fn(usize) -> i32> = {}
 \newline
 \lstinline{method} is a reference to a method
 
-TODO
-Box is a ...
-
+\lstinline[language=Rust]{Box} allows you to store values on the heap, this is sometimes necessary as the stack can only hold values with a known (at compile time) size, as the \lstinline[language=Rust]{Box} is just a pointer it has a known unlike, for example, lambdas.
 \newpage
 \section{Modules}
-When making a project in Rust you are required to have one file (for programs it's \lstinline{main.rs}, and \lstinline{lib.rs} for libraries), it's also the only file recongised by the compiler. To add a new file (called a \lstinline{module}) to your project you need to add the line (for a file named \lstinline{new_file.rs}):
+When making a project in Rust you are required to have one file (for programs it's \lstinline{main.rs}, and \lstinline{lib.rs} for libraries), it's also the only file recognised by the compiler. To add a new file (called a \lstinline{module}) to your project you need to add the line (for a file named \lstinline{new_file.rs}):
 \begin{lstlisting}[language=Rust,frame=single]
 mod new_file;
 \end{lstlisting}
@@ -749,7 +719,7 @@ Some funtionality built in to Java/Kotlin isn't part of the std lib and you'll n
 \end{center}
 
 \subsection{Common crates}
-These crates are closest equalivent to the commonly used Kotlin libraries:
+These crates are closest equivalent to the commonly used Kotlin libraries:
 \begin{center}
 \begin{tabular}{ c|c|l } 
  Kotlin & Rust & Notes \\ 
@@ -808,9 +778,9 @@ fn main() {
 }
 \end{lstlisting}
 
-You can also do the rough equalivent of  \lstinline[language=Kotlin]{var!!} with both \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{Result} by using \lstinline[language=Rust]{var.unwrap()} and \lstinline[language=Rust]{var.expect("some message")}. Both methods will crash the app if it's \lstinline[language=Rust]{Err}/\lstinline[language=Rust]{None}, \lstinline[language=Rust]{expect()} will also write the message to the console.
+You can also do the rough equivalent of  \lstinline[language=Kotlin]{var!!} with both \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{Result} by using \lstinline[language=Rust]{var.unwrap()} and \lstinline[language=Rust]{var.expect("some message")}. Both methods will crash the app if it's \lstinline[language=Rust]{Err}/\lstinline[language=Rust]{None}, \lstinline[language=Rust]{expect()} will also write the message to the console.
 \newline
-To avoid having to write \lstinline[language=Rust]{unwrap()} everytime if you're in a method that returns a \lstinline[language=Rust]{Result} you can just write \lstinline[language=Rust]{var?}, if \lstinline{var} is an \lstinline[language=Rust]{Err} the method will return the \lstinline[language=Rust]{Err} immeadiately.
+To avoid having to write \lstinline[language=Rust]{unwrap()} every time if you're in a method that returns a \lstinline[language=Rust]{Result} you can just write \lstinline[language=Rust]{var?}, if \lstinline{var} is an \lstinline[language=Rust]{Err} the method will return the \lstinline[language=Rust]{Err} immediately.
 \newline
 To crash a Rust program you should use \lstinline[language=Rust]{panic!("message")}. This will print the message and stacktrace to the console.
 
@@ -844,5 +814,7 @@ mod tests {
 \newpage
 \section{Cargo}
 
+\newpage
+\section{Tips and tricks}
 
 \end{document}
