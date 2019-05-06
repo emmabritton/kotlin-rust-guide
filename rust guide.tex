@@ -8,7 +8,7 @@
 \usepackage{geometry}
 \usepackage{forest}
 
-\definecolor{palered}{rgb}{1,0.7,0.7}
+\definecolor{palered}{rgb}{1,0.9,0.9}
 
 \geometry{
   a4paper,
@@ -208,7 +208,7 @@ Because of the limitations imposed by the JVM in Kotlin variables are mutable or
 let foo: i32 = 1;
 let mut bar: i32 = 2;
 \end{lstlisting}
-In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A variable can not become mutable:
+In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A immutable variable can not be referenced as mutable:
 \begin{lstlisting}[language=Rust,frame=single,backgroundcolor=\color{palered}]
 let foo: i32 = 1;
 
@@ -218,7 +218,24 @@ fn change(value: &mut i32) {
   value += 1;
 }
 \end{lstlisting}
-This will not compile as \lstinline{foo} is immutable and so can't be made (or referenced as) mutable.
+This will not compile as \lstinline{foo} is immutable and so can't be referenced as mutable.
+\newline
+This is fine because \lstinline{x} is being redeclared as mutable:
+\begin{lstlisting}[language=Rust,frame=single]
+fn foo() {
+    let x = vec![1,2,3];
+    bar(x);
+}
+
+fn bar(mut x: Vec<i32>) {
+    x.push(4);
+}
+
+fn main() {
+  let x = 0;
+  let mut y = x;
+}
+\end{lstlisting}
 
 \subsection{Strings}
 In both Kotlin and Java, essentially, there is just one String type: \lstinline[language=Kotlin]{String}. Whether the text is hardcoded, from a file or user input the same class is used.
