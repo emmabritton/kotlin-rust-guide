@@ -131,11 +131,11 @@
 \pagenumbering{arabic}
 \section{Introduction}
 
-This document should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similar features.
+This guide should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similar features.
 \newline
 \newline
 This book is a summary of the official Rust books, as well as forum threads, GitHub issues, and StackOverflow posts I've read and testing I've done.
-Please read the following books (in this order) for a much more complete understanding of Rust:
+Please read the following books (probably in this order) for a much more complete understanding of Rust:
 \begin{itemize}
   \item https://doc.rust-lang.org/stable/book
   \item https://doc.rust-lang.org/stable/rust-by-example
@@ -200,15 +200,15 @@ Rust uses prefixes to control the type of number:
 \renewcommand{\arraystretch}{1}
 Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
 \newline
-Booleans and Chars are the same in both languages (although the keyword is \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
+Booleans and Chars are the same in both languages (although it's \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
 
 \subsection{Mutability}
-Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable based on type rather than by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
+Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable sometimes based on type and sometimes by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
 \begin{lstlisting}[language=Rust,frame=single]
 let foo: i32 = 1;
 let mut bar: i32 = 2;
 \end{lstlisting}
-In the above snippet \lstinline{foo} will always be 1 but \lstinline{bar} can be changed. A immutable variable can not be referenced as mutable:
+In the above snippet \lstinline{foo} will always be 1 (in this scope) but \lstinline{bar} can be changed. A immutable variable can not be referenced as mutable:
 \begin{lstlisting}[language=Rust,frame=single,backgroundcolor=\color{palered}]
 let foo: i32 = 1;
 
@@ -241,7 +241,7 @@ fn main() {
 In both Kotlin and Java, essentially, there is just one String type: \lstinline[language=Kotlin]{String}. Whether the text is hardcoded, from a file or user input the same class is used.
 Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[language=Rust]{str}. A hardcoded string will be of type \lstinline[language=Rust]{&'static str} and a string read from anywhere else maybe a \lstinline[language=Rust]{String} or \lstinline[language=Rust]{&str} depending on what the method returns. They can be converted between themselves, in most circumstances.
 \newline
-The \lstinline[language=Rust]{String} is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char array and so has a fixed length.
+The \lstinline[language=Rust]{String} class is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char array and so has a fixed length.
 \newline
 \newline
 If you attempt to slice a string so it would cause a grapheme cluster to be broken Rust will panic. Use the \lstinline[language=Rust]|.chars()| method to access each cluster independently. So to get the length of a string in bytes you use \lstinline[language=Rust]{foo.len()} and to get the number of characters you use \lstinline[language=Rust]{foo.chars().count()}.
@@ -261,7 +261,7 @@ If you attempt to slice a string so it would cause a grapheme cluster to be brok
  \multicolumn{3}{|c|}{\textbf{Maps}} \\
  \hline
  \textbf{Type} & \lstinline[language=Kotlin]|Map<K, V>|, \lstinline[language=Kotlin]|MutableMap<K, V>|, \lstinline[language=Kotlin]|HashMap<K, V>| & \lstinline[language=Rust]|HashMap<K: Hash & Eq, V>| \\
- \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|HashMap(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|HashMap::new()| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|Map(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableMap(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|HashMap(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|HashMap::new()| \\
  \textbf{Shorthand} & \lstinline[language=Kotlin]|mapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableMapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, etc & N/A \\
  \hline
  \multicolumn{3}{|c|}{\textbf{Tuples}} \\
@@ -270,12 +270,6 @@ If you attempt to slice a string so it would cause a grapheme cluster to be brok
  \textbf{Constructor} & \lstinline[language=Kotlin]|Pair(|\emph{value1, value2}\lstinline[language=Kotlin]|)| &  \lstinline[language=Rust]|(|\emph{value1, value2}...\lstinline[language=Rust]|)| \\
  \textbf{Shorthand} & \emph{value1} \lstinline[language=Kotlin]|to| \emph{value2} & N/A \\
  \hline
- \multicolumn{3}{|c|}{\textbf{TODO}} \\
- \hline
- \textbf{Type} &  &  \\
- \textbf{Constructor} &  &  \\
- \textbf{Shorthand} &  &  \\
- \hline
 \end{tabular}
 \end{center}
 \subsection{Constants}
@@ -283,7 +277,7 @@ In Rust there are two types of constants \lstinline[language=Rust]{const} and \l
 
 \newpage
 \section{References}
-All variables can be passed as a reference, Rust will often automatically deference pointers which makes this quite painless to use:
+All variables can be passed as a reference by prefixing with a \lstinline[language=Rust]{&}, Rust will often automatically deference pointers if the value implements \lstinline[language=Rust]{Copy} which makes this quite painless to use:
 \begin{lstlisting}[language=Rust,frame=single]
 let foo = 10;
 print(foo);
@@ -311,7 +305,7 @@ For clarity:
  mut & Value, mutable \\ 
  \& & Reference, immutable \\ 
  \&mut & Reference, mutable \\
- * & Dereferenced 
+ \** & Dereferenced 
 \end{tabular}
 \end{center}
 
@@ -376,7 +370,9 @@ fn length(param: String) -> usize {
 When \lstinline{length} is run both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
 \begin{lstlisting}[language=Rust,frame=single]
 fn length(param: &String) -> usize {
-	return param.len(); //automatically deferenced
+	return param.len(); //not deferenced:
+  //because param is a reference len() will return it's result as a reference
+  //and because usize implements Copy it will be automatically deferenced
 }
 
 //or
@@ -537,7 +533,7 @@ impl fmt::Display for Person {
 }
 \end{lstlisting}
 
-You can now write \lstinline[language=Rust]{println!(person)}, there are many \lstinline[language=Rust]{trait}s that can be implemented for any \lstinline[language=Rust]{struct}.\newline
+You can now write \lstinline[language=Rust]|println!("{}", person)|, there are many \lstinline[language=Rust]{trait}s that can be implemented for any \lstinline[language=Rust]{struct}.\newline
 To avoid boilerplate Rust can automatically derive some \lstinline[language=Rust]{trait}s for \lstinline[language=Rust]{struct}s like so:
 \begin{lstlisting}[language=Rust,frame=single]
 #[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash, Default)]
@@ -554,7 +550,7 @@ struct Foo {}
  Copy & Allows structs to be copied instead of transferring ownership when assigned to new variable \\
  PartialEq & Implements equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
  PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (i.e. floating numbers)\\
- Eq & Allows for === (is same object) checking, not valid for all types (i.e. floating numbers) \\
+ Eq & Marker trait (like Sync) meaning that all fields can be always and correctly compared, not valid for all types (i.e. floating numbers) \\
  Ord & Same as PartialOrd but for types where comparison is always possible\\
  Hash & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|hashCode()|, required to use the \lstinline[language=Rust]|struct| as key in \lstinline[language=Rust]|HashMap|s \\
  Default & Implements a default value for all fields, see below \\
@@ -562,8 +558,7 @@ struct Foo {}
 \end{tabular}
 \end{center}
 
-
-All of these require all the fields in the struct to implement the same traits. Numbers, strings, etc implement all the built in derivable types.
+All of these require all the fields in the struct to implement the same traits. Numbers, strings, etc implement all the built in derivable types. As with \lstinline[language=Rust]{PartialEq} and \lstinline[language=Rust]{Eq} Rust often has two versions of a trait, one that is allowed to fail (and so will generally return \lstinline[language=Rust]{Result} or \lstinline[language=Rust]{Option}) and another that is not allowed to fail. In this case \lstinline[language=Rust]{Eq} will panic if something goes wrong, likewise there is \lstinline[language=Rust]{From} and \lstinline[language=Rust]{TryFrom} for converting structs, \lstinline[language=Rust]{From} can not fail and \lstinline[language=Rust]{TryFrom} can.
 
 \newpage
 \subsection{Default}
@@ -634,24 +629,22 @@ Rust supports lambdas, the parameters are written comma separated in pipes and t
 
 \begin{lstlisting}[language=Rust,frame=single]
 let x = vec![1,2,3]; 
-let y = x.map(|it| it + 1);
+let y = x.iter().map(|it| it + 1).collect();
 \end{lstlisting}
-
+Unfortunately with Rust, like Dart, map(), etc return a Map object that has to be converted back into a list using \lstinline[language=Rust]{collect()}.
+\newline
 Rust also supports higher order functions:
 \begin{lstlisting}[language=Rust,frame=single]
 fn foo(f: impl Fn(i32) -> i32)
 fn foo<F>(f: F) where F: Fn(i32) -> i32
 fn bar(f: impl MutFn(String) -> usize)
-let method: Box<Fn(usize) -> i32> = {}
 \end{lstlisting}
 
-\lstinline[language=Rust]{Fn} is a method that takes an immutable reference and returns a value
+\lstinline[language=Rust]{Fn} is a lambda that can not change external state
 \newline
-\lstinline[language=Rust]{FnMut} is a method that takes an mutable reference and returns a value
+\lstinline[language=Rust]{FnMut} is a method that can change external state
 \newline
-\lstinline[language=Rust]{FnOnce} is a method that takes a value and returns a value (dropping the original value)
-\newline
-\lstinline{method} is a reference to a method
+\lstinline[language=Rust]{FnOnce} is a method that can change external state, but is only allowed to be called once
 
 \lstinline[language=Rust]{Box} allows you to store values on the heap, this is sometimes necessary as the stack can only hold values with a known (at compile time) size, as the \lstinline[language=Rust]{Box} is just a pointer it has a known size unlike, for example, lambdas.
 \newpage
@@ -915,7 +908,7 @@ mod tests {
 \newpage
 \section{Cargo}
 
-To run and build programs from the command line you should always use cargo:
+To run and build programs from the command line you should always use cargo (outside of an IDE):
 
 \begin{lstlisting}[language=Rust,frame=single]
 //Build debug version
@@ -947,12 +940,158 @@ rustup component add clippy
 \end{lstlisting}
 
 \newpage
-\section{Tips and tricks}
+\section{Enums}
+Unfortunately enums in Rust work they do in Swift and so no default values can be provided and instead you have to add methods which use matches to provide values:
 
-//TODO Rc
+\begin{lstlisting}[language=Rust,frame=single]
+enum MobileOs {
+  Android, Ios, Windows
+}
 
+impl MobileOs {
+  fn status(&self) -> &str {
+    match self {
+      MobileOs::Android => return "alive",
+      MobileOs::Ios => return "alive",
+      MobileOs::Windows => return "dead",
+    }
+  }
+}
+
+fn main() {
+  println!("{}", MobileOs::Android.status());
+}
+\end{lstlisting}
+
+Thankfully they can also work like \lstinline[language=Kotlin]{sealed class}es:
+
+\begin{lstlisting}[language=Rust,frame=single]
+enum Example {
+  Foo { named_value: i32 },
+  Tuple(u8, u8),
+  Empty
+}
+
+fn main() {
+  let foo = Example::Foo { named_value: 45 };
+  let tuple = Example::Tuple(1, 2);
+  let empty = Example::Empty;
+}
+\end{lstlisting}
+
+\newpage
+\section{Tips, tricks and miscellaneous}
+
+\textbf{if let}
+\newline
+Like in Swift an \lstinline[language=Kotlin]{Option} can be unwrapped in an \lstinline|if| if there is a value:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn some_method(optional_string: Option<String>) {
+  if let Some(string_value) = optional_string {
+    println!("Does exist: {}", string_value);
+  }
+}
+\end{lstlisting}
+
+This also works for \lstinline[language=Rust]{Result} but use \lstinline[language=Rust]{Ok} instead of \lstinline[language=Rust]{Some}. If you need to handle both states you should use match:
+\begin{lstlisting}[language=Rust,frame=single]
+fn some_method(optional_string: Option<String>) {
+  match optional_string {
+    Some(string_value) => println!("Does exist: {}", string_value),
+    None => println!("No content")
+  }
+}
+\end{lstlisting}
+\medskip
+\textbf{Reference counting}
+\newline
+Sometimes you need bypass the borrow checker, for example, you want to use a reference as a pointer to an item in a collection or you're passing values between threads. To do this you use the \lstinline[language=Rust]{Arc} (Atomically Reference Counted) class, it adds a small overhead in the form of a count and some extra code to monitor and update the count. Arc will keep the value alive as long as any Arc value is still alive, when the last Arc value is dropped the value will be as well. To make multiple references to an value protected by Arc clone it:
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+  let some_heap_thing = Thing::new();
+  let arc_thing = Arc::new(some_heap_thing);
+  thread1(arc_thing.clone()); 
+  thread2(arc_thing.clone()); 
+}
+
+fun thread1(thing: Arc<Thing>) {
+  thing.methods_accessed_in_normal_way();
+}
+\end{lstlisting}
+
+The value in the Arc can not be mutable unless it's contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are \lstinline[language=Rust]{Mutex} and \lstinline[language=Rust]{RwLock}. The differences are that \lstinline[language=Rust]{RwLock} will allow any number of concurrent readers but only one writer and \lstinline[language=Rust]{Mutex} only allows one reader or writer at a time. To recreate the \lstinline[language=Rust]{CopyOnWriteArrayList} (a thread safe list) from Kotlin you can write:
+ \begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+  let copy_on_write_list = Arc::new(RwLock::new(vec![1,2]));
+   thread1(copy_on_write_list.clone());
+}
+
+fn thread1(list_arc: Arc<RwLock<Vec<i32>>>) {
+  let list = list_arc.lock.unwrap();
+
+  list.push(3);
+}
+\end{lstlisting}
+
+\lstinline{list} is just \lstinline[language=Rust]{Vec<i32>} but as long it's alive any other code that calls \lstinline[language=Rust]{unlock()} will block.
+\newline
+Note that generally you should use \lstinline[language=Rust]{Mutex} as it has better performance.
+\medskip
+\textbf{Named parameters}
+\newline
+As Rust doesn't support named parameters a pattern was created to attempt to recreate it without using macros.
+\newline
+The idea is that for methods with a lot of parameters, like a configuration method, you use a struct with the options and the method takes it as it's only parameter:
+ \begin{lstlisting}[language=Rust,frame=single]
+#[derive(Default)] //This pattern expects the struct to have a default version
+struct ServerConfig {
+  host: String, 
+  port: u32,
+  auth: AuthMode
+}
+
+fn main() {
+  let server = Server::new(ServerConfig {
+    host: "127.0.0.1",
+    port: 80,
+    ..ServerConfig::default()
+  });
+}
+\end{lstlisting}
+\medskip
+\textbf{Converting strings}
+\newline
+Often when writing a function that takes a piece of text you'll want to support both String and \&str to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
+The \lstinline[language=Rust]{Into} trait tells the compiler to allow any parameter that be coerced as that type to be passed in. Both String and \&str already have the \lstinline[language=Rust]{Into<String>} trait but it can also be implemented for any struct. \lstinline[language=Rust]{Into<X> for Y} is automatically implemented for any type that implements \lstinline[language=Rust]{From<Y> for X} which is actually how it's implemented for Strings and is the recommended approach.
+\begin{lstlisting}[language=Rust,frame=single]
+fn print<S: Into<String>>(value: S) {
+    println!("{}", value.into());
+}
+\end{lstlisting}
+Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic (unless the type supports it), for example with \lstinline[language=Rust]{Option<Into<String>>} as \lstinline[language=Rust]{Option} would need to have special support to know how to coerce the values.
 //TODO Formatting
 
-//TODO named param struct
+\newpage
+\section{Resources}
+
+When learning any new language it is very handy to be able to see how a pattern can be implemented in both languages at once, Kotlin provided to provided a Java to Kotlin converter to help with this - unfortunately there is not a Kotlin to Rust converter yet so I created a few repos:
+\medskip
+\textbf{Language Demo}
+\newline
+https://github.com/raybritton/lang-demo-rust
+\newline
+https://github.com/raybritton/lang-demo-kotlin
+\newline
+These both contain files with the common patterns (constants, lambdas, etc) implemented in both languages were possible, they are coded in the correct style for their respective languages. 
+\newline
+\newline
+\textbf{Roman Numerals}
+\newline
+https://github.com/raybritton/roman-rust
+\newline
+https://github.com/raybritton/roman-kotlin
+\newline
+These both contain a CLI program that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.\newline
 
 \end{document}
