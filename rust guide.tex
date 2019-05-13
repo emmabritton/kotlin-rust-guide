@@ -183,7 +183,7 @@ In Kotlin there are few commonly used primitive types:
 \end{center}
 All the numbers are signed. 
 
-Rust uses prefixes to control the type of number:
+Rust uses a prefix followed by the size to create a number (i.e. i32), these are the prefixes:
 
 \begin{center}
 \begin{tabular}{ c|c } 
@@ -315,14 +315,14 @@ In Kotlin a variable exists, and is available, while in it's scope. A global sta
 \begin{lstlisting}[language=Rust,frame=single,backgroundcolor=\color{palered}]
 fn main() {
     
-    let a = String::from("Hello");
-    let b = a;
+    let foo = String::from("Hello");
+    let bar = foo;
     
-    println!("{}", a);
+    println!("{}", foo);
 }
 \end{lstlisting}
 
-This will not compile as \lstinline{b} has taken ownership of the data in \lstinline{a} and so \lstinline{a} can no longer be used.
+This will not compile as \lstinline{bar} has taken ownership of the data in \lstinline{foo} and so \lstinline{foo} can no longer be used.
 
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
@@ -339,10 +339,10 @@ This will compile however as numbers have \lstinline[language=Rust]{Copy} implem
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
     
-    let a = String::from("Hello");
-    let b = a.clone();
+    let foo = String::from("Hello");
+    let bar = foo.clone();
     
-    println!("{}", a);
+    println!("{}", foo);
 }
 \end{lstlisting}
 This will only work when the type implemented \lstinline[language=Rust]{Clone}
@@ -384,7 +384,7 @@ fn length(param: String) -> (String, usize) {
 
 References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once.
 
-Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop the references. The name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available.
+Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop references. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available.
 
 \newpage
 \section{Classes, or the lack there of}
@@ -437,7 +437,7 @@ fun ClassB.example2() {} //implementations and children of ParentA
 Some Rust examples:
 \begin{lstlisting}[language=Rust,frame=single]
 struct StructA { //variables only
-  x: i32 = 0 
+  x: i32
 }
 
 impl StructA { //methods only, but can access
@@ -775,6 +775,7 @@ These crates are closest equivalent to the commonly used Kotlin libraries:
  GSON & Serde & Much more powerful and flexible than GSON \\
  JodaTime & Chrono & Essentially the same \\
  RxJava & RxRust & Abandoned, incomplete \\
+ JDBC & Diesel & Works with multiple databases \\
 \end{tabular}
 \end{center}
 
