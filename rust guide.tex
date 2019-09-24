@@ -118,7 +118,7 @@
 
 \title{A guide to Rust for Kotlin developers}
 \author{Ray Britton}
-\date{May 2019}
+\date{Sep 2019}
 
 \pagenumbering{gobble}
 \maketitle
@@ -198,7 +198,9 @@ Rust uses a prefix followed by the size to create a number (i.e. i32), these are
 \end{center}
 
 \renewcommand{\arraystretch}{1}
-Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (for 99\% of new Androids that is 64). For example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}.
+Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (most new Androids that is 64). As an example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}. 
+\newline
+Suffixes for literals exist in Rust like Kotlin but rather being for some types, suffixes exist for all primitives and they are the name of type, e.g. \lstinline[language=Rust]{3_i32} or \lstinline[language=Rust]{10.3f32}, the suffixes are only necessary if the compiler can not infer the type or if you want to specify it, floating point numbers can be written without the 0, i.e. \lstinline[language=Rust]{1.}
 \newline
 Booleans and Chars are the same in both languages (although it's \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
 
@@ -244,7 +246,7 @@ Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[lang
 The \lstinline[language=Rust]{String} class is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char array and so has a fixed length.
 \newline
 \newline
-If you attempt to slice a string so it would cause a grapheme cluster to be broken Rust will panic. Use the \lstinline[language=Rust]|.chars()| method to access each cluster independently. So to get the length of a string in bytes you use \lstinline[language=Rust]{foo.len()} and to get the number of characters you use \lstinline[language=Rust]{foo.chars().count()}.
+If you attempt to slice a string so it would cause a Unicode character to be broken Rust will panic. Use the \lstinline[language=Rust]|.chars()| method to access each character independently. So to get the length of a string in bytes you use \lstinline[language=Rust]{foo.len()} and to get the number of characters you use \lstinline[language=Rust]{foo.chars().count()}.
 
 \subsection{Common types}
 \begin{center}
@@ -255,7 +257,7 @@ If you attempt to slice a string so it would cause a grapheme cluster to be brok
  \multicolumn{3}{|c|}{\textbf{Lists}} \\
  \hline
  \textbf{Type} & \lstinline[language=Kotlin]|List<T>|, \lstinline[language=Kotlin]|MutableList<T>|, \lstinline[language=Kotlin]|ArrayList<T>| & \lstinline[language=Rust]|Vec<T>| \\
- \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new()| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new(), Vec::with_capacity(size)| \\
  \textbf{Shorthand} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
  \hline
  \multicolumn{3}{|c|}{\textbf{Maps}} \\
@@ -277,7 +279,7 @@ In Rust there are two types of constants \lstinline[language=Rust]{const} and \l
 
 \newpage
 \section{References}
-All variables can be passed as a reference by prefixing with a \lstinline[language=Rust]{&}, Rust will often automatically deference pointers if the value implements \lstinline[language=Rust]{Copy} which makes this quite painless to use:
+All variables can be passed as a reference by prefixing with a \lstinline[language=Rust]{&}, Rust will often automatically deference pointers which makes this quite painless to use:
 \begin{lstlisting}[language=Rust,frame=single]
 let foo = 10;
 print(foo);
@@ -367,7 +369,7 @@ fn length(param: String) -> usize {
 }
 \end{lstlisting}
 
-When \lstinline{length} is run both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
+When \lstinline{main} is executed both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
 \begin{lstlisting}[language=Rust,frame=single]
 fn length(param: &String) -> usize {
 	return param.len(); //not deferenced:
@@ -384,7 +386,7 @@ fn length(param: String) -> (String, usize) {
 
 References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once.
 
-Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop references. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available.
+Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop references. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available, i.e. a hardcoded value.
 
 \newpage
 \section{Classes, or the lack there of}
@@ -394,7 +396,7 @@ Rust has Traits, Structs and Impls.
 \newline
 \textbf{Kotlin}
 \begin{itemize}
-  \item An \lstinline[language=Kotlin]{interface} can have methods but can not have variables (with values), and may extend another Interface. It can be supplemented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
+  \item An \lstinline[language=Kotlin]{interface} can have methods but can not have variables with values, and may extend another Interface. It can be supplemented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
   \item A \lstinline[language=Kotlin]{class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
   \item An \lstinline[language=Kotlin]{abstract class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
 \end{itemize}
@@ -458,7 +460,7 @@ impl TraitA for StructA { //methods only, can not
 \end{lstlisting}
 \newpage
 \subsection{Deriving and implementing}
-Let's say you make a type: \lstinline{Person}. It will have a first name, last name, date of birth, and occupation. It will also have functions to get the whole name and their age.
+Let's say you make a type: \lstinline{Person}. It will have a first name, last name, date of birth, and occupation. It will also have functions to get the whole name and their age. (Note the usage )
 
 \begin{lstlisting}[language=Rust,frame=single]
 extern crate chrono;
@@ -466,33 +468,33 @@ extern crate chrono;
 use chrono::Date;
 use chrono::offset::{*};
 
-struct Person {
-  first_name: String,
-  last_name: String,
+struct Person<'a> {
+  first_name: &'a str,
+  last_name: &'a str,
   date_of_birth: Date<Utc>,
-  occupation: String
+  occupation: &'a str
 }
 
 //Constructors
-impl Person {
+impl <'a> Person<'a> {
   //no self param means this is a static method
-  fn new(first_name: &str, 
-      last_name: &str, 
+  fn new(first_name: &'a str, 
+      last_name: &'a str, 
       year: u32,
       month: u32, 
       day: u32, 
-      occupation: &str) -> Person {
-    return Person {
-      first_name: first_name.to_string(),
-      last_name: last_name.to_string(),
+      occupation: &'a str) -> Person {
+    return Person<'a> {
+      first_name,
+      last_name,
       date_of_birth: Utc.ymd(year as i32, month, day),
-      occupation: occupation.to_string()
+      occupation
     }
   }
 }
 
 //Methods
-impl Person {
+impl <'a> Person<'a> {
     //self param means this is an instance method
     fn whole_name(&self) -> String {
         return format!("{} {}", self.first_name, self.last_name);
@@ -533,7 +535,7 @@ impl fmt::Display for Person {
 }
 \end{lstlisting}
 
-You can now write \lstinline[language=Rust]|println!("{}", person)|, there are many \lstinline[language=Rust]{trait}s that can be implemented for any \lstinline[language=Rust]{struct}.\newline
+You can now write \lstinline[language=Rust]|println!("{}", person)|, there are many \lstinline[language=Rust]{trait}s that can be implemented for any \lstinline[language=Rust]{struct} that's part of your project.\newline
 To avoid boilerplate Rust can automatically derive some \lstinline[language=Rust]{trait}s for \lstinline[language=Rust]{struct}s like so:
 \begin{lstlisting}[language=Rust,frame=single]
 #[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash, Default)]
@@ -646,10 +648,10 @@ fn bar(f: impl MutFn(String) -> usize)
 \newline
 \lstinline[language=Rust]{FnOnce} is a method that can change external state, but is only allowed to be called once
 
-\lstinline[language=Rust]{Box} allows you to store values on the heap, this is sometimes necessary as the stack can only hold values with a known (at compile time) size, as the \lstinline[language=Rust]{Box} is just a pointer it has a known size unlike, for example, lambdas.
+\lstinline[language=Rust]{Box} allows you to store values on the heap, this is sometimes necessary as the stack can only hold values with a known size (at compile time), as the \lstinline[language=Rust]{Box} is just a pointer it has a known size unlike, for example, lambdas.
 \newpage
 \section{Modules}
-When making a project in Rust you are required to have one file (for programs it's \lstinline{main.rs}, and \lstinline{lib.rs} for libraries), it's also the only file recognised by the compiler. To add a new file (called a \lstinline{module}) to your project you need to add the line (for a file named \lstinline{new_file.rs}):
+When making a project in Rust you are required to have one file (for programs it's \lstinline{main.rs}, and \lstinline{lib.rs} for libraries), it's also the only file recognised by the compiler. To add a new file (called a \lstinline{module}) to your project you need to add the line (for a file named \lstinline{new_file.rs}) to main.rs or lib.rs:
 \begin{lstlisting}[language=Rust,frame=single]
 mod new_file;
 \end{lstlisting}
@@ -744,10 +746,14 @@ You'll still need to import the individual parts of the crate you want to use, f
 \begin{lstlisting}[language=Rust,frame=single]
 use serde::json::{*};
 \end{lstlisting}
-\lstinline|{*}| means import everything in the module.
+\lstinline|::Foo| means import just \lstinline|Foo|
+\newline
+\lstinline|::{Foo, Bar}| means import \lstinline|Foo| and \lstinline|Bar|
+\newline
+\lstinline|::{*}| means import everything in the module.
 
 \subsection{Not standard}
-Some functionality built in to Java/Kotlin isn't part of the std lib and you'll need to use these crates to add it:
+Some functionality built in to Java/Kotlin isn't part of the Rust std lib and you'll need to use these crates to add it:
 
 \renewcommand{\arraystretch}{1.3}
 
@@ -774,12 +780,10 @@ These crates are closest equivalent to the commonly used Kotlin libraries:
  \hline
  GSON & Serde & Much more powerful and flexible than GSON \\
  JodaTime & Chrono & Essentially the same \\
- RxJava & RxRust & Abandoned, incomplete \\
+ RxJava & RxRust & Alpha \\
  JDBC & Diesel & Works with multiple databases \\
 \end{tabular}
 \end{center}
-
-Rx may be incompatible with Rust because of the error handling and borrow system, instead you will probably have to use coroutines.
 
 \renewcommand{\arraystretch}{1}
 
@@ -881,9 +885,6 @@ fn main() {
 \end{lstlisting}
 
 This program will continually print out the value stored in \lstinline{number} until the thread reaches 10
-
-\newpage
-\section{Macros}
 
 \newpage
 \section{Testing}
