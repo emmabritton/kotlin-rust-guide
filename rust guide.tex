@@ -384,7 +384,7 @@ fn length(param: String) -> (String, usize) {
 }
 \end{lstlisting}
 
-References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once.
+References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).
 
 Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop references. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available, i.e. a hardcoded value.
 
@@ -1123,5 +1123,5 @@ https://github.com/raybritton/roman-rust
 https://github.com/raybritton/roman-kotlin
 \newline
 These both contain a CLI program that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.\newline
-
+https://limpet.net/mbrubeck/2019/02/07/rust-a-unique-perspective.html
 \end{document}
