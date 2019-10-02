@@ -1072,7 +1072,21 @@ fn print<S: Into<String>>(value: S) {
 }
 \end{lstlisting}
 Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic (unless the type supports it), for example with \lstinline[language=Rust]{Option<Into<String>>} as \lstinline[language=Rust]{Option} would need to have special support to know how to coerce the values.
-//TODO Formatting
+\newline
+\medskip
+\textbf{Interior mutability}
+\newline
+Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the Cell structs.
+
+\lstinline[language=Rust]{Cell} is a wrapper around a value that can be changed at any point.
+\newline
+\lstinline[language=Rust]{RefCell} is the same as Cell but allows the value to be exposed as a reference.
+\newline
+\lstinline[language=Rust]{RwLock} is the same as RefCell but can be shared across threads.
+\newline
+\lstinline[language=Rust]{Mutex} is the same as RefCell but can make references that can be shared across threads.
+
+All of these are \lstinline{safe}, they use reference counting and/or memory swapping to update values.
 
 \newpage
 \section{Common bugs/issues}
@@ -1081,9 +1095,7 @@ Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic
 \newline
 
 This is probably because the \lstinline[language=Rust]{struct} doesn't implement/derive \lstinline[language=Rust]{Clone}.
-
-\newline
-\newline
+\medskip
 \textbf{cannot move out of borrowed content when using unwrap()}
 \newline
 
