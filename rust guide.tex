@@ -760,14 +760,15 @@ Some functionality built in to Java/Kotlin isn't part of the Rust std lib and yo
 \begin{center}
 \begin{tabular}{ c|c|l } 
 
- Functionality & Crate & Notes \\ 
- \hline
- Random numbers & \lstinline|rand| & Maintained by Rust team \\
- Serialization & \lstinline|serde| & Does XML, JSON, protobuf etc \\
- Lazy static variables & \lstinline|lazy_static| & \\
- Regex & \lstinline|regex| & Maintained by Rust team \\
- Base64 & \lstinline|base64| & \\
- UUID & \lstinline|uuid| & \\
+Functionality & Crate & Notes \\ 
+\hline
+Random numbers & \lstinline|rand| & Maintained by Rust team \\
+Serialization & \lstinline|serde| & Does XML, JSON, protobuf etc \\
+Lazy static variables & \lstinline|lazy_static| & \\
+Regex & \lstinline|regex| & Maintained by Rust team \\
+Base64 & \lstinline|base64| & \\
+UUID & \lstinline|uuid| & \\
+Enum features & \lstinline|strum| & Enum features like variant names, properties, count, list \\
  
 \end{tabular}
 \end{center}
@@ -981,9 +982,11 @@ fn main() {
 }
 \end{lstlisting}
 
+When coming from other modern languages you be expecting the ability to get a variant count, list or names and add static values to each variant but unfortunately Rust enums do not support any of these features, but all of these can be added with the \lstinline{strum} crate. 
+
 \newpage
 \section{Tips and tricks}
-
+\medskip
 \textbf{if let}
 \newline
 Like in Swift an \lstinline[language=Kotlin]{Option} can be unwrapped in an \lstinline|if| if there is a value:
@@ -1005,6 +1008,7 @@ fn some_method(optional_string: Option<String>) {
   }
 }
 \end{lstlisting}
+\medskip
 \medskip
 \textbf{Reference counting}
 \newline
@@ -1040,28 +1044,8 @@ fn thread1(list_arc: Arc<RwLock<Vec<i32>>>) {
 \newline
 Note that generally you should use \lstinline[language=Rust]{Mutex} as it has better performance.
 \medskip
-\textbf{Named parameters}
-\newline
-As Rust doesn't support named parameters a pattern was created to attempt to recreate it without using macros.
-\newline
-The idea is that for methods with a lot of parameters, like a configuration method, you use a struct with the options and the method takes it as it's only parameter:
- \begin{lstlisting}[language=Rust,frame=single]
-#[derive(Default)] //This pattern expects the struct to have a default version
-struct ServerConfig {
-  host: String, 
-  port: u32,
-  auth: AuthMode
-}
-
-fn main() {
-  let server = Server::new(ServerConfig {
-    host: "127.0.0.1",
-    port: 80,
-    ..ServerConfig::default()
-  });
-}
-\end{lstlisting}
 \medskip
+\newline
 \textbf{Converting strings}
 \newline
 Often when writing a function that takes a piece of text you'll want to support both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
@@ -1072,6 +1056,7 @@ fn print<S: Into<String>>(value: S) {
 }
 \end{lstlisting}
 Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic (unless the type supports it), for example with \lstinline[language=Rust]{Option<Into<String>>} as \lstinline[language=Rust]{Option} would need to have special support to know how to coerce the values.
+\medskip
 \medskip
 \newline
 \textbf{Interior mutability}
@@ -1087,42 +1072,120 @@ Sometimes you need to have a mutable value but can only pass it around as a valu
 \lstinline[language=Rust]{Mutex} is the same as \lstinline[language=Rust]{RefCell} but can make references that can be shared across threads.
 
 All of these are \lstinline[language=Rust]{safe}, they use reference counting and/or memory swapping to update values.
+\medskip
+\medskip
+\newline
+\textbf{Formatting}
+\newline
+To format a string, the easiest (and correct) way is to use \lstinline[language=Rust]{format!(string, parameters...)}. String formatting in Rust uses \lstinline|{}| as parameters. 
+\newline
+
+Basics:
+\newline
+\lstinline[language=Rust]|"{}"| will print the result of Display::fmt(), this must be manually implemented
+\newline
+\lstinline[language=Rust]|"{:?}"| will print the result of Debug::fmt(), this can be derived
+\newline
+\lstinline[language=Rust]|"{:#?}"| will pretty print the result of Debug::fmt()
+\newline
+\lstinline[language=Rust]|"{example}"| will print parameter named \lstinline|example|
+\newline
+\lstinline[language=Rust]|"{2}"| will print the third parameter
+\newline
+
+Padding:
+\newline
+\lstinline[language=Rust]|"{:>5}"| Left pad with up to 5 spaces
+\newline
+\lstinline[language=Rust]|"{:<7}"| Right pad with up to 7 spaces
+\newline
+\lstinline[language=Rust]|"{:^22}"| Centre with up to 11 spaces on both sides
+\newline
+
+Padding with any character:
+\newline
+\lstinline[language=Rust]|"{:_>5}"| Left pad with up to 5 underscores
+\newline
+\lstinline[language=Rust]|"{:#<7}"| Right pad with up to 7 hashes
+\newline
+\lstinline[language=Rust]|"{:c^22}"| Centre with up to 11 'c's on both sides
+\newline
+
+Numbers:
+\newline
+\lstinline[language=Rust]|"{:.3}"| Will print 3 fractional digits (adding 0s on the end if necessary) but only if it's a floating point number
+\newline
+\lstinline[language=Rust]|"{:+3}"| Print sign 
+\newline
+\lstinline[language=Rust]|"{:03}"| Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0
+\newline
+
+Example:
+\newline
+\lstinline[language=Rust]|format!("{:>5} {named}", "Foo", named=123)|
+\newline
+The pattern string must be a literal, to have variable parts (such as variable length padding) use this syntax:
+\newline
+\lstinline[language=Rust]|("{1:.0$}", 1, 1.22)|
+\newline
+This will print 1.2, the syntax is \lstinline[language=Rust]|{value_index:.precision_index$}|
+\newline
+\lstinline[language=Rust]|("{1:=<0$}", 10, "test")| 
+\newline
+This will print test======, the syntax is \lstinline[language=Rust]|{value_index:padding_char<length_index$}|
+\newline
+
+
+Note that invalid parameter details are ignored silently and treated as \lstinline|{}|.
+\newline
+If debugging via logging consider using \lstinline[language=Rust]|dgb!()|:
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    let x;
+    x = dbg!(1 * 4);
+}
+\end{lstlisting}
+prints 
+\newline
+\lstinline[language=Rust]|[src/main.rs:3] 1 * 4 = 4|
 
 \newpage
 \section{Common bugs/issues}
-
 \textbf{Cloning a reference returns a reference despite the signature being a value}
 \newline
-
 This can because the \lstinline[language=Rust]{struct} doesn't implement/derive \lstinline[language=Rust]{Clone}.
 \medskip
 \newline
 \textbf{cannot move out of borrowed content when using unwrap()}
 \newline
-
 This is because \lstinline[language=Rust]{unwrap()} consumes the reference (it's signature is just \lstinline[language=Rust]{self}), to fix this use
 \lstinline[language=Rust]{variable.as_ref().unwrap()}.
+
+
 
 \newpage
 \section{Resources}
 
-When learning any new language it is very handy to be able to see how a pattern can be implemented in both languages at once, Kotlin provided to provided a Java to Kotlin converter to help with this - unfortunately there is not a Kotlin to Rust converter yet so I created a few repos:
+When learning any new language it is very handy to be able to see how a pattern can be implemented in both languages at once, Kotlin provided a Java to Kotlin converter to help with this - unfortunately there is not a Kotlin to Rust converter yet so I created a few repos:
 \medskip
+\newline
 \textbf{Language Demo}
 \newline
-https://github.com/raybritton/lang-demo-rust
-\newline
-https://github.com/raybritton/lang-demo-kotlin
+https://github.com/raybritton/lang-demo
 \newline
 These both contain files with the common patterns (constants, lambdas, etc) implemented in both languages were possible, they are coded in the correct style for their respective languages. 
 \newline
 \newline
 \textbf{Roman Numerals}
 \newline
-https://github.com/raybritton/roman-rust
+https://github.com/raybritton/rosetta-roman-numerals
 \newline
-https://github.com/raybritton/roman-kotlin
+This contains CLI programs created in multiple languages that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.
+\medskip
+\medskip
 \newline
-These both contain a CLI program that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.\newline
+\textbf{Further reading}
+\newline
 https://limpet.net/mbrubeck/2019/02/07/rust-a-unique-perspective.html
+
 \end{document}
