@@ -1064,29 +1064,29 @@ fn main() {
 \medskip
 \textbf{Converting strings}
 \newline
-Often when writing a function that takes a piece of text you'll want to support both String and \&str to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
-The \lstinline[language=Rust]{Into} trait tells the compiler to allow any parameter that be coerced as that type to be passed in. Both String and \&str already have the \lstinline[language=Rust]{Into<String>} trait but it can also be implemented for any struct. \lstinline[language=Rust]{Into<X> for Y} is automatically implemented for any type that implements \lstinline[language=Rust]{From<Y> for X} which is actually how it's implemented for Strings and is the recommended approach.
+Often when writing a function that takes a piece of text you'll want to support both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
+The \lstinline[language=Rust]{Into} trait tells the compiler to allow any parameter that be coerced as that type to be passed in. Both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} already have the \lstinline[language=Rust]{Into<String>} trait but it can also be implemented for any struct. \lstinline[language=Rust]{Into<X> for Y} is automatically implemented for any type that implements \lstinline[language=Rust]{From<Y> for X} which is actually how it's implemented for \lstinline[language=Rust]{String}s and is the recommended approach.
 \begin{lstlisting}[language=Rust,frame=single]
 fn print<S: Into<String>>(value: S) {
     println!("{}", value.into());
 }
 \end{lstlisting}
 Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic (unless the type supports it), for example with \lstinline[language=Rust]{Option<Into<String>>} as \lstinline[language=Rust]{Option} would need to have special support to know how to coerce the values.
-\newline
 \medskip
+\newline
 \textbf{Interior mutability}
 \newline
-Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the Cell structs.
+Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the \lstinline[language=Rust]{Cell} structs.
 
 \lstinline[language=Rust]{Cell} is a wrapper around a value that can be changed at any point.
 \newline
-\lstinline[language=Rust]{RefCell} is the same as Cell but allows the value to be exposed as a reference.
+\lstinline[language=Rust]{RefCell} is the same as \lstinline[language=Rust]{Cell} but allows the value to be exposed as a reference.
 \newline
-\lstinline[language=Rust]{RwLock} is the same as RefCell but can be shared across threads.
+\lstinline[language=Rust]{RwLock} is the same as \lstinline[language=Rust]{RefCell} but can be shared across threads.
 \newline
-\lstinline[language=Rust]{Mutex} is the same as RefCell but can make references that can be shared across threads.
+\lstinline[language=Rust]{Mutex} is the same as \lstinline[language=Rust]{RefCell} but can make references that can be shared across threads.
 
-All of these are \lstinline{safe}, they use reference counting and/or memory swapping to update values.
+All of these are \lstinline[language=Rust]{safe}, they use reference counting and/or memory swapping to update values.
 
 \newpage
 \section{Common bugs/issues}
@@ -1094,8 +1094,9 @@ All of these are \lstinline{safe}, they use reference counting and/or memory swa
 \textbf{Cloning a reference returns a reference despite the signature being a value}
 \newline
 
-This is probably because the \lstinline[language=Rust]{struct} doesn't implement/derive \lstinline[language=Rust]{Clone}.
+This can because the \lstinline[language=Rust]{struct} doesn't implement/derive \lstinline[language=Rust]{Clone}.
 \medskip
+\newline
 \textbf{cannot move out of borrowed content when using unwrap()}
 \newline
 
