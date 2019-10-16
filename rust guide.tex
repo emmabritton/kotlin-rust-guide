@@ -148,13 +148,12 @@ A lot of things you already know are going to be re-explained in this document f
 	\item as a refresher and just to make your understanding is correct
 	\item to help explain and draw out differences between the languages
 \end{enumerate}
-Rust is designed so that the compiler can guarantee some level of correctness in regards to variable access and destruction, and as such it will not compile code it can't predict; however this is sometimes necessary and so you can use the \lstinline[language=Rust]{unsafe} keyword to mark a block of code that you're guaranteeing will be safe.
+Rust is designed so that the compiler can guarantee some level of correctness in regards to variable access and destruction, and as such it will not compile code it can't predict.
 
-\subsection{Core differences}
+\subsection{Syntax differences}
 In Rust...
 \begin{itemize}
 	\item lines have to end with a semicolon.
-  \item there is an official and opinionated linter - it should always be used.
   \item methods parameters can not be variadic, named or have default values.
   \item methods can not have the same name as another in the same scope.
   \item the naming scheme is \lstinline{snake_case} for methods, variables and files; and \lstinline{CamelCase} for Traits, Structs, Impls and Enums.
@@ -183,7 +182,7 @@ In Kotlin there are few commonly used primitive types:
 \end{center}
 All the numbers are signed. 
 
-Rust uses a prefix followed by the size to create a number (i.e. i32), these are the prefixes:
+Rust uses a prefix followed by the size to create a number (e.g. i32), these are the prefixes:
 
 \begin{center}
 \begin{tabular}{ c|c } 
@@ -198,11 +197,11 @@ Rust uses a prefix followed by the size to create a number (i.e. i32), these are
 \end{center}
 
 \renewcommand{\arraystretch}{1}
-Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (most new Androids that is 64). As an example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}. 
+Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (most new computers that is 64). As an example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}. 
 \newline
-Suffixes for literals exist in Rust like Kotlin but rather being for some types, suffixes exist for all primitives and they are the name of type, e.g. \lstinline[language=Rust]{3_i32} or \lstinline[language=Rust]{10.3f32}, the suffixes are only necessary if the compiler can not infer the type or if you want to specify it, floating point numbers can be written without the 0, i.e. \lstinline[language=Rust]{1.}
+Suffixes for literals exist in Rust like Kotlin but rather being for some types, suffixes exist for all primitives and they are the name of type, e.g. \lstinline[language=Rust]{3_i32} or \lstinline[language=Rust]{10.3f32}, the suffixes are only necessary if the compiler can not infer the type or if you want to specify it, floating point numbers can be written without the 0, e.g. \lstinline[language=Rust]{1.}
 \newline
-Booleans and Chars are the same in both languages (although it's \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}).
+Booleans and Chars are the same in both languages although it's \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}.
 
 \subsection{Mutability}
 Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable sometimes based on type and sometimes by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
@@ -257,7 +256,7 @@ If you attempt to slice a string so it would cause a Unicode character to be bro
  \multicolumn{3}{|c|}{\textbf{Lists}} \\
  \hline
  \textbf{Type} & \lstinline[language=Kotlin]|List<T>|, \lstinline[language=Kotlin]|MutableList<T>|, \lstinline[language=Kotlin]|ArrayList<T>| & \lstinline[language=Rust]|Vec<T>| \\
- \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new(), Vec::with_capacity(size)| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new()|, \lstinline[language=Rust]|Vec::with_capacity(size)| \\
  \textbf{Shorthand} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
  \hline
  \multicolumn{3}{|c|}{\textbf{Maps}} \\
@@ -336,7 +335,7 @@ fn main() {
 }
 \end{lstlisting}
 
-This will compile however as numbers have \lstinline[language=Rust]{Copy} implemented for them and so \lstinline{num2} automatically makes a copy of \lstinline{num2}s data, this can be replicated for the string example by doing:
+This will compile however as numbers have \lstinline[language=Rust]{Copy} implemented for them and so \lstinline{num2} automatically makes a copy of \lstinline{num1}s data, this can be replicated for the string example by doing:
 
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
@@ -347,9 +346,9 @@ fn main() {
     println!("{}", foo);
 }
 \end{lstlisting}
-This will only work when the type implemented \lstinline[language=Rust]{Clone}
+This will only work when the type implemented \lstinline[language=Rust]{Clone}. Not all types support \lstinline[language=Rust]{Clone} as it may be impossible to copy it's data for example with file streams.
 \newpage
-Ownership and borrowing apply to all methods so:
+Ownership and borrowing apply to all methods:
 
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
@@ -372,9 +371,9 @@ fn length(param: String) -> usize {
 When \lstinline{main} is executed both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
 \begin{lstlisting}[language=Rust,frame=single]
 fn length(param: &String) -> usize {
-	return param.len(); //not deferenced:
+	return param.len(); //not dereferenced:
   //because param is a reference len() will return it's result as a reference
-  //and because usize implements Copy it will be automatically deferenced
+  //and because usize implements Copy it will be automatically dereferenced
 }
 
 //or
@@ -386,7 +385,7 @@ fn length(param: String) -> (String, usize) {
 
 References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).
 
-Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to instruct the compiler when to drop references. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available, i.e. a hardcoded value.
+Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available, i.e. a hardcoded value.
 
 \newpage
 \section{Classes, or the lack there of}
@@ -403,7 +402,7 @@ Rust has Traits, Structs and Impls.
 \textbf{Rust}
 \begin{itemize}
   \item A \lstinline[language=Rust]{trait} is like an interface, it defines a list of methods that must be implemented. It can extend other \lstinline[language=Rust]{trait}s.
-  \item A \lstinline[language=Rust]{struct} is like a class (or a struct from C), it has a list of variables but unlike a class does not have any methods. This can not extend anything.
+  \item A \lstinline[language=Rust]{struct} is the closest thing to a class but although it has a list of variables it class does not have any methods. This can not extend anything.
   \item An \lstinline[language=Rust]{impl} is a collection of methods either matching a \lstinline[language=Rust]{Trait} (like a \lstinline[language=Kotlin]{Class} implementing an \lstinline[language=Kotlin]{Interface}) or free form from a \lstinline[language=Rust]{struct} (like a \lstinline[language=Kotlin]{Class}), but Impl are not allowed to have variables and if implementing a Trait can not have methods that are not defined in the Trait. An Impl may be defined repeatedly.
   \item \lstinline[language=Rust]{trait} and \lstinline[language=Rust]{impl} can used like Extension Methods (although the syntax is closer to Swift than Kotlin).
 \end{itemize}
@@ -426,6 +425,8 @@ class ClassA : ParentA { //includes methods from parent
   fun foo() {} //methods must be implemented
 }
 
+abstract class AbstractClassA: ParentA, ParentB {}
+
 class ClassB : AbstractClassA() {
   fun foo() {} //methods must be implemented
   fun bar() {} //from all parents
@@ -433,7 +434,7 @@ class ClassB : AbstractClassA() {
 }
 
 fun ParentA.example1() {} //Adds method called example1 to all
-fun ClassB.example2() {} //implementations and children of ParentA
+//implementations and children of ParentA
 \end{lstlisting}
 
 Some Rust examples:
@@ -451,16 +452,16 @@ trait TraitA { //API only
 }
 
 trait TraitC : TraitA { 
-  fn boo(); //anything implementing TraitC must implement bar() and boo()
+  fn boo(); //anything implementing TraitC must implement TraitA separately
 }
 
 impl TraitA for StructA { //methods only, can not 
-  fn bar() {} //have private methods
-}
+  fn bar() {} //have methods not in the trait
+} 
 \end{lstlisting}
 \newpage
 \subsection{Deriving and implementing}
-Let's say you make a type: \lstinline{Person}. It will have a first name, last name, date of birth, and occupation. It will also have functions to get the whole name and their age. (Note the usage )
+Let's say you make a type: \lstinline{Person}. It has a first name, last name, date of birth, and occupation. It has functions to get the whole name and their age. 
 
 \begin{lstlisting}[language=Rust,frame=single]
 extern crate chrono;
@@ -519,8 +520,10 @@ fn main() {
 }
 \end{lstlisting}
 
+The \lstinline{'a} lifetime tells Rust that the \lstinline{&str}s will be available as long as the parent \lstinline{Person} is.
+
 The sample uses the \lstinline{chrono} crate, it is a simple to use date and time library. 
-If we want to print the object (i.e. create a Java \lstinline{toString()} method) we must implement the \lstinline{Display} like this:
+If we want to print the object we must implement the \lstinline{Display} like this:
 
 \begin{lstlisting}[language=Rust,frame=single]
 use std::fmt;
@@ -549,10 +552,10 @@ struct Foo {}
  \hline
  Debug & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|toString()|, use with \lstinline[language=Rust]|{:?}| instead of \lstinline[language=Rust]|{}| \\
  Clone & Implements the \lstinline[language=Rust]|clone()| method on the struct \\
- Copy & Allows structs to be copied instead of transferring ownership when assigned to new variable \\
+ Copy & Allows structs to be cloned automatically instead of transferring ownership when assigned to new variable \\
  PartialEq & Implements equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
- PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (i.e. floating numbers)\\
- Eq & Marker trait (like Sync) meaning that all fields can be always and correctly compared, not valid for all types (i.e. floating numbers) \\
+ PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (e.g. floating numbers)\\
+ Eq & Marker trait (like Sync) meaning that all fields can be always and correctly compared, not valid for all types (e.g. floating numbers) \\
  Ord & Same as PartialOrd but for types where comparison is always possible\\
  Hash & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|hashCode()|, required to use the \lstinline[language=Rust]|struct| as key in \lstinline[language=Rust]|HashMap|s \\
  Default & Implements a default value for all fields, see below \\
@@ -633,7 +636,7 @@ Rust supports lambdas, the parameters are written comma separated in pipes and t
 let x = vec![1,2,3]; 
 let y = x.iter().map(|it| it + 1).collect();
 \end{lstlisting}
-Unfortunately with Rust, like Dart, map(), etc return a Map object that has to be converted back into a list using \lstinline[language=Rust]{collect()}.
+Unfortunately with Rust (like Dart) map(), etc return a Map object that has to be converted back into a list using \lstinline[language=Rust]{collect()}.
 \newline
 Rust also supports higher order functions:
 \begin{lstlisting}[language=Rust,frame=single]
@@ -797,11 +800,11 @@ Instead of using try..catch and exceptions for error handling Rust uses \lstinli
 \begin{lstlisting}[language=Rust,frame=single]
 fn divide(numerator: f64, denominator: f64) -> Option<f64> {
     if denominator == 0.0 {
-        None //notice no return and so no semicolon
+        None //notice no return and no semicolon
     } else {
         Some(numerator / denominator)
-    }
-}
+    } //the last value in a method is automatically returned
+}  //assuming no return call
 
 fn main() {
   let result = divide(2.0, 3.0);
@@ -861,6 +864,9 @@ fn main() {
     //Make a copy of the arc, any number of copies can exist
     let thread_number = number.clone();
 
+    //move means this lambda is taking ownership of any variable
+    //it uses, this is necessary for lambdas executed in a different
+    //context e.g. in a different thread
     thread::spawn(move || {
         let mut i = 0;
         loop {
@@ -999,7 +1005,7 @@ fn some_method(optional_string: Option<String>) {
 }
 \end{lstlisting}
 
-This also works for \lstinline[language=Rust]{Result} but use \lstinline[language=Rust]{Ok} instead of \lstinline[language=Rust]{Some}. If you need to handle both states you should use match:
+This also works for \lstinline[language=Rust]{Result} but use \lstinline[language=Rust]{Ok} instead of \lstinline[language=Rust]{Some}. If you need to handle both states you should use match as an if let throws away the other value:
 \begin{lstlisting}[language=Rust,frame=single]
 fn some_method(optional_string: Option<String>) {
   match optional_string {
@@ -1203,6 +1209,8 @@ impl Point {
 }
 \end{lstlisting}
 
+While it does add a small cost to use wrapping types like \lstinline[language=Rust]{Rc}, they are still idiomatic and not a code smell unless you used them everywhere, although even then that might be the only practical solution. 
+
 \newpage
 \section{Resources}
 
@@ -1221,6 +1229,13 @@ These both contain files with the common patterns (constants, lambdas, etc) impl
 https://github.com/raybritton/rosetta-roman-numerals
 \newline
 This contains CLI programs created in multiple languages that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.
+\newline
+\newline
+\textbf{Tic-Tac-Toe}
+\newline
+https://github.com/sunjay/tic-tac-toe
+\newline
+This project is heavily commented and is an example of idiomatic and well written Rust.
 \medskip
 \medskip
 \newline
