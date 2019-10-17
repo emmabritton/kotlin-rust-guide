@@ -993,8 +993,8 @@ When coming from other modern languages you be expecting the ability to get a va
 \newpage
 \section{Tips and tricks}
 \medskip
-\textbf{if let}
-\newline
+\subsection{if let}
+
 Like in Swift an \lstinline[language=Kotlin]{Option} can be unwrapped in an \lstinline|if| if there is a value:
 
 \begin{lstlisting}[language=Rust,frame=single]
@@ -1016,8 +1016,8 @@ fn some_method(optional_string: Option<String>) {
 \end{lstlisting}
 \medskip
 \medskip
-\textbf{Reference counting}
-\newline
+\subsection{Reference counting}
+
 Sometimes you need bypass the borrow checker, for example, you want to use a reference as a pointer to an item in a collection or you're passing values between threads. To do this you use the \lstinline[language=Rust]{Arc} (Atomically Reference Counted) class, it adds a small overhead in the form of a count and some extra code to monitor and update the count. Arc will keep the value alive as long as any Arc value is still alive, when the last Arc value is dropped the value will be as well. To make multiple references to an value protected by Arc clone it:
 \begin{lstlisting}[language=Rust,frame=single]
 fn main() {
@@ -1052,8 +1052,8 @@ Note that generally you should use \lstinline[language=Rust]{Mutex} as it has be
 \medskip
 \medskip
 \newline
-\textbf{Converting strings}
-\newline
+\subsection{Converting strings}
+
 Often when writing a function that takes a piece of text you'll want to support both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
 The \lstinline[language=Rust]{Into} trait tells the compiler to allow any parameter that be coerced as that type to be passed in. Both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} already have the \lstinline[language=Rust]{Into<String>} trait but it can also be implemented for any struct. \lstinline[language=Rust]{Into<X> for Y} is automatically implemented for any type that implements \lstinline[language=Rust]{From<Y> for X} which is actually how it's implemented for \lstinline[language=Rust]{String}s and is the recommended approach.
 \begin{lstlisting}[language=Rust,frame=single]
@@ -1065,8 +1065,8 @@ Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic
 \medskip
 \medskip
 \newline
-\textbf{Interior mutability}
-\newline
+\subsection{Interior mutability}
+
 Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the \lstinline[language=Rust]{Cell} structs.
 
 \lstinline[language=Rust]{Cell} is a wrapper around a value that can be changed at any point.
@@ -1081,8 +1081,8 @@ All of these are \lstinline[language=Rust]{safe}, they use reference counting an
 \medskip
 \medskip
 \newline
-\textbf{Indexed Iteration}
-\newline
+\subsection{Indexed Iteration}
+
 Kotlin provides \lstinline[language=Kotlin]{forEach}, \lstinline[language=Kotlin]{map}, \lstinline[language=Kotlin]{filter}, etc for iterators but these only give you the element if you also need the index as Kotlin provides \lstinline[language=Kotlin]{forEachIndexed}, \lstinline[language=Kotlin]{mapIndexed}, \lstinline[language=Kotlin]{filterIndexed}, etc
 
 \begin{lstlisting}[language=Kotlin,frame=single]
@@ -1113,8 +1113,8 @@ This has the downside that all later operators must also handle the index as wel
 \medskip
 \medskip
 
-\textbf{Formatting}
-\newline
+\subsection{Formatting}
+
 To format a string, the easiest (and correct) way is to use \lstinline[language=Rust]{format!(string, parameters...)}. String formatting in Rust uses \lstinline|{}| as parameters. 
 \newline
 
@@ -1196,7 +1196,7 @@ This can because the \lstinline[language=Rust]{struct} doesn't implement/derive 
 \newline
 \textbf{cannot move out of borrowed content when using unwrap()}
 \newline
-This is because \lstinline[language=Rust]{unwrap()} consumes the reference (it's signature is just \lstinline[language=Rust]{self}), to fix this use
+This is because \lstinline[language=Rust]{unwrap()} consumes the reference (it's self parameter is just \lstinline[language=Rust]{self}), to fix this use
 \lstinline[language=Rust]{variable.as_ref().unwrap()}.
 
 \newpage
