@@ -371,4 +371,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+book/
+
 # End of https://www.gitignore.io/api/latex,linux,macos,windows,sublimetext
