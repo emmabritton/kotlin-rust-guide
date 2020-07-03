@@ -16,6 +16,7 @@ jobs:
         with:
           mdbook-version: '${{ steps.mdbook-version.outputs.MDBOOK_VERSION }}'
 
+      - run: cargo install mdbook-linkcheck
       - run: mdbook test
       - run: mdbook build
 
