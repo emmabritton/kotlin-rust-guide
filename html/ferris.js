@@ -37,7 +37,7 @@ function attachFerrises (type) {
 
 function attachFerris (element, type) {
   var a = document.createElement('a')
-  a.setAttribute('href', 'ch00-00-introduction.html#ferris')
+  a.setAttribute('href', 'intro.html')
   a.setAttribute('target', '_blank')
 
   var img = document.createElement('img')
