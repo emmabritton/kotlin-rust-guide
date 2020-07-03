@@ -2,6 +2,12 @@
 
 This is book comparing the differences and similarities between Kotlin and Rust, it also has a few useful tips and links.
 
+# Building/Testing
+
+[mdBook](https://github.com/rust-lang/mdBook) and [Linkcheck](https://github.com/Michael-F-Bryan/mdbook-linkcheck) must be installed:
+`cargo install mdbook`
+`cargo install mdbook-linkcheck`
+
 ## License 
 
 ```
