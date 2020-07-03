@@ -18,4 +18,4 @@ renderers = ["html"]
 additional-css = ["ferris.css"]
 additional-js = ["ferris.js"]
 
-[output.linkcheck]
+#[output.linkcheck]
