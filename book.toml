@@ -1,0 +1,21 @@
+[book]
+authors = ["Ray Britton"]
+description = "This book should help experienced Kotlin developers to quickly get up to speed with Rust"
+language = "en"
+multilingual = false
+title = "A guide to Rust for Kotlin developers"
+
+[rust]
+edition = "2018"
+
+[build]
+create-missing = false
+
+[preprocessor.links]
+renderers = ["html"]
+
+[output.html]
+additional-css = ["ferris.css"]
+additional-js = ["ferris.js"]
+
+[output.linkcheck]
