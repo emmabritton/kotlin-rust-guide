@@ -4,6 +4,7 @@
 
 - [Basics](./basics.md)
   - [Syntax differences](./basics_syntax.md)
+  - [Macros](./macros.md)
   - [Primitives](./basics_primitives.md)
 
 - [Types and variables](./types.md)
@@ -33,7 +34,7 @@
   - [Common crates](./crates_common.md)
 
 - [Result, Option and Exceptions](./result.md)
-  - [Result and exceptiosn](./result_exception.md)
+  - [Result and exceptions](./result_exception.md)
   - [Option and nulls](./result_option.md)
 
 - [Concurrency](./concurrency.md)
@@ -51,11 +52,9 @@
   - [Reference counting](./tips_refcount.md)
   - [Converting strings](./tips_strings.md)
   - [Interior mutability](./tips_intmut.md)
-  - [Indexed interation](./tips_enumiter.md)
+  - [Indexed iteration](./tips_enumiter.md)
   - [Formatting strings](./tips_formatting.md)
   - [For crates](./tips_crates.md)
-    - [Chrono](./tips_crates_chrono.md)
-      - [Formatting dates](./tips_crates_chrono_format.md)
 
 - [Common bugs/issues](./errors.md)
 
