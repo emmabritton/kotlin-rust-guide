@@ -7,5 +7,3 @@ fn print<S: Into<String>>(value: S) {
 	println!("{}", value.into());
 }
 ```
-
-Unfortunately you can’t use Into<String> as a generic (unless the type supports it), for example with Option<Into<String>> as Option would need to have special support to know how to coerce the values.

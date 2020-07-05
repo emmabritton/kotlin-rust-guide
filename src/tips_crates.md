@@ -2,7 +2,7 @@
 
 ## Date Formatting
 
-#### Chrono
+### Chrono
 
 Using `DateTimeFormat.forPattern("<pattern>").print(DateTime.now())` for Kotlin and `Utc::now().format("<pattern>")` for Rust.
 
@@ -16,7 +16,7 @@ Using `DateTimeFormat.forPattern("<pattern>").print(DateTime.now())` for Kotlin 
 
 ## JSON Parsing
 
-#### Serde
+### Serde
 
 Add this to `cargo.toml`:
 ```toml

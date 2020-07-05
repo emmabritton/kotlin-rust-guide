@@ -6,6 +6,7 @@
   - [Syntax differences](./basics_syntax.md)
   - [Macros](./macros.md)
   - [Primitives](./basics_primitives.md)
+  - [Error Handling](./basics_error.md)
 
 - [Types and variables](./types.md)
   - [Mutability](./types_mutability.md) 
