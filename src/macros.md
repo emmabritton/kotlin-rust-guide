@@ -1,8 +1,8 @@
 # Macros
 
-Rust uses macros a lot, this book doesn't cover them as they are beyond it's scope. Macro are invoked by the macro name then an exclamation mark, i.e. `example!`.
+Rust uses macros a lot, this book doesn't cover creating them as they are beyond it's scope but using them are quite simple. Macros are invoked by the macro name then an exclamation mark, i.e. `example!`.
 
-Macros can used like functions `example!()` but anything can follow the exclamation mark as macros are very powerful, for example:
+Macros can be used like functions `example!()` but anything can follow the exclamation mark as macros are very powerful, for example:
 
 ```rust,ignore
 println!("Hello World");
@@ -21,8 +21,8 @@ struct Foo {
 }
 ```
 
-The annotation macros will generate code for Structs like AutoValue does for classes.
+The annotation macros will generate code for Structs like AutoValue does for classes in Kotlin.
 
 Macros can generate Rust code at compile time or run and return a result at runtime like a method. 
 
-Most programs don't need their own macros but will use ones from std or crates.
+Most programs don't need their own macros but will often use ones from std or crates.

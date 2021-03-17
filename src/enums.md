@@ -36,3 +36,17 @@ fn main() {
 }
 ```
 When coming from other modern languages you be expecting the ability to get a variant count, list or names and add static values to each variant but unfortunately Rust enums do not support any of these features, but all of these can be added with the strum crate.
+
+### Strum
+
+The [strum crate](https://github.com/Peternator7/strum) adds many features to enums on a case by case basis.
+
+It provides:
+
+ * To and from string for enum variants
+ * Variant iterator
+ * Enum count
+ * Property values
+ * etc
+
+Each feature needs to be enabled by adding a derive macro.

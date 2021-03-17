@@ -1,6 +1,6 @@
 # References
 
-All variables can be passed as a reference by prefixing with a &:
+All variables can be passed as a reference by prefixing with a `&`, for example:
 ```rust
 fn main() {
 	let foo = 10; 

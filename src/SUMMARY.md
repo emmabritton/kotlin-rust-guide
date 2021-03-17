@@ -46,7 +46,6 @@
   - [Tools](./cargo_tools.md)
 
 - [Enums](./enums.md)
-  - [Useful crates](./enums_crates.md)
 
 - [Tips and tricks](./tips.md)
   - [if let](./tips_iflet.md)

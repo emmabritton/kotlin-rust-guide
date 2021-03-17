@@ -1,0 +1,1277 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{xparse}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{color}   
+\usepackage{geometry}
+\usepackage{forest}
+
+\definecolor{palered}{rgb}{1,0.93,0.93}
+
+\geometry{
+  a4paper,
+  margin=1in
+}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linktoc=all,     
+}
+
+\lstdefinelanguage{Kotlin}{
+  comment=[l]{//},
+  commentstyle={\color{gray}\ttfamily},
+  emph={delegate, filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println, return@},
+  emphstyle={\color{OrangeRed}},
+  identifierstyle=\color{black},
+  keywords={abstract, actual, as, as?, break, by, class, companion, continue, data, do, dynamic, else, enum, expect, false, final, for, fun, get, if, import, in, interface, internal, is, null, object, override, package, private, public, return, set, super, suspend, this, throw, true, try, typealias, val, var, vararg, when, where, while},
+  keywordstyle={\color{NavyBlue}\bfseries},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[s]{"""*}{*"""},
+  ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Boolean, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String},
+  ndkeywordstyle={\color{BurntOrange}\bfseries},
+  sensitive=true,
+  stringstyle={\color{ForestGreen}\ttfamily},
+}
+
+\lstdefinelanguage{Rust}{%
+  sensitive%
+, morecomment=[l]{//}%
+, morecomment=[s]{/*}{*/}%
+, moredelim=[s][{\itshape\color[rgb]{0,0,0.75}}]{\#[}{]}%
+, morestring=[b]{"}%
+, alsodigit={}%
+, alsoother={}%
+, alsoletter={!}%
+%
+%
+% [1] reserve keywords
+% [2] traits
+% [3] primitive types
+% [4] type and value constructors
+% [5] identifier
+%
+, morekeywords={break, continue, else, for, if, in, loop, match, return, while}  % control flow keywords
+, morekeywords={as, const, let, move, mut, ref, static}  % in the context of variables
+, morekeywords={dyn, enum, fn, impl, Self, self, struct, trait, type, union, use, where}  % in the context of declarations
+, morekeywords={crate, extern, mod, pub, super}  % in the context of modularisation
+, morekeywords={unsafe}  % markers
+, morekeywords={abstract, alignof, become, box, do, final, macro, offsetof, override, priv, proc, pure, sizeof, typeof, unsized, virtual, yield}  % reserved identifiers
+%
+% grep 'pub trait [A-Za-z][A-Za-z0-9]*' -r . | sed 's/^.*pub trait \([A-Za-z][A-Za-z0-9]*\).*/\1/g' | sort -u | tr '\n' ',' | sed 's/^\(.*\),$/{\1}\n/g' | sed 's/,/, /g'
+, morekeywords=[2]{Add, AddAssign, Any, AsciiExt, AsInner, AsInnerMut, AsMut, AsRawFd, AsRawHandle, AsRawSocket, AsRef, Binary, BitAnd, BitAndAssign, Bitor, BitOr, BitOrAssign, BitXor, BitXorAssign, Borrow, BorrowMut, Boxed, BoxPlace, BufRead, BuildHasher, CastInto, CharExt, Clone, CoerceUnsized, CommandExt, Copy, Debug, DecodableFloat, Default, Deref, DerefMut, DirBuilderExt, DirEntryExt, Display, Div, DivAssign, DoubleEndedIterator, DoubleEndedSearcher, Drop, EnvKey, Eq, Error, ExactSizeIterator, ExitStatusExt, Extend, FileExt, FileTypeExt, Float, Fn, FnBox, FnMut, FnOnce, Freeze, From, FromInner, FromIterator, FromRawFd, FromRawHandle, FromRawSocket, FromStr, FullOps, FusedIterator, Generator, Hash, Hasher, Index, IndexMut, InPlace, Int, Into, IntoCow, IntoInner, IntoIterator, IntoRawFd, IntoRawHandle, IntoRawSocket, IsMinusOne, IsZero, Iterator, JoinHandleExt, LargeInt, LowerExp, LowerHex, MetadataExt, Mul, MulAssign, Neg, Not, Octal, OpenOptionsExt, Ord, OsStrExt, OsStringExt, Packet, PartialEq, PartialOrd, Pattern, PermissionsExt, Place, Placer, Pointer, Product, Put, RangeArgument, RawFloat, Read, Rem, RemAssign, Seek, Shl, ShlAssign, Shr, ShrAssign, Sized, SliceConcatExt, SliceExt, SliceIndex, Stats, Step, StrExt, Sub, SubAssign, Sum, Sync, TDynBenchFn, Terminal, Termination, ToOwned, ToSocketAddrs, ToString, Try, TryFrom, TryInto, UnicodeStr, Unsize, UpperExp, UpperHex, WideInt, Write}
+, morekeywords=[2]{Send}  % additional traits
+%
+, morekeywords=[3]{bool, char, f32, f64, i8, i16, i32, i64, isize, str, u8, u16, u32, u64, unit, usize, i128, u128}  % primitive types
+%
+, morekeywords=[4]{Err, false, None, Ok, Some, true}  % prelude value constructors
+% grep 'pub \(type\|struct\|enum\) [A-Za-z][A-Za-z0-9]*' -r . | sed 's/^.*pub \(type\|struct\|enum\) \([A-Za-z][A-Za-z0-9]*\).*/\2/g' | sort -u | tr '\n' ',' | sed 's/^\(.*\),$/{\1}\n/g' | sed 's/,/, /g'    
+, morekeywords=[3]{AccessError, Adddf3, AddI128, AddoI128, AddoU128, ADDRESS, ADDRESS64, addrinfo, ADDRINFOA, AddrParseError, Addsf3, AddU128, advice, aiocb, Alignment, AllocErr, AnonPipe, Answer, Arc, Args, ArgsInnerDebug, ArgsOs, Argument, Arguments, ArgumentV1, Ashldi3, Ashlti3, Ashrdi3, Ashrti3, AssertParamIsClone, AssertParamIsCopy, AssertParamIsEq, AssertUnwindSafe, AtomicBool, AtomicPtr, Attr, auxtype, auxv, BackPlace, BacktraceContext, Barrier, BarrierWaitResult, Bencher, BenchMode, BenchSamples, BinaryHeap, BinaryHeapPlace, blkcnt, blkcnt64, blksize, BOOL, boolean, BOOLEAN, BoolTrie, BorrowError, BorrowMutError, Bound, Box, bpf, BTreeMap, BTreeSet, Bucket, BucketState, Buf, BufReader, BufWriter, Builder, BuildHasherDefault, BY, BYTE, Bytes, CannotReallocInPlace, cc, Cell, Chain, CHAR, CharIndices, CharPredicateSearcher, Chars, CharSearcher, CharsError, CharSliceSearcher, CharTryFromError, Child, ChildPipes, ChildStderr, ChildStdin, ChildStdio, ChildStdout, Chunks, ChunksMut, ciovec, clock, clockid, Cloned, cmsgcred, cmsghdr, CodePoint, Color, ColorConfig, Command, CommandEnv, Component, Components, CONDITION, condvar, Condvar, CONSOLE, CONTEXT, Count, Cow, cpu, CRITICAL, CStr, CString, CStringArray, Cursor, Cycle, CycleIter, daddr, DebugList, DebugMap, DebugSet, DebugStruct, DebugTuple, Decimal, Decoded, DecodeUtf16, DecodeUtf16Error, DecodeUtf8, DefaultEnvKey, DefaultHasher, dev, device, Difference, Digit32, DIR, DirBuilder, dircookie, dirent, dirent64, DirEntry, Discriminant, DISPATCHER, Display, Divdf3, Divdi3, Divmoddi4, Divmodsi4, Divsf3, Divsi3, Divti3, dl, Dl, Dlmalloc, Dns, DnsAnswer, DnsQuery, dqblk, Drain, DrainFilter, Dtor, Duration, DwarfReader, DWORD, DWORDLONG, DynamicLibrary, Edge, EHAction, EHContext, Elf32, Elf64, Empty, EmptyBucket, EncodeUtf16, EncodeWide, Entry, EntryPlace, Enumerate, Env, epoll, errno, Error, ErrorKind, EscapeDebug, EscapeDefault, EscapeUnicode, event, Event, eventrwflags, eventtype, ExactChunks, ExactChunksMut, EXCEPTION, Excess, ExchangeHeapSingleton, exit, exitcode, ExitStatus, Failure, fd, fdflags, fdsflags, fdstat, ff, fflags, File, FILE, FileAttr, filedelta, FileDesc, FilePermissions, filesize, filestat, FILETIME, filetype, FileType, Filter, FilterMap, Fixdfdi, Fixdfsi, Fixdfti, Fixsfdi, Fixsfsi, Fixsfti, Fixunsdfdi, Fixunsdfsi, Fixunsdfti, Fixunssfdi, Fixunssfsi, Fixunssfti, Flag, FlatMap, Floatdidf, FLOATING, Floatsidf, Floatsisf, Floattidf, Floattisf, Floatundidf, Floatunsidf, Floatunsisf, Floatuntidf, Floatuntisf, flock, ForceResult, FormatSpec, Formatted, Formatter, Fp, FpCategory, fpos, fpos64, fpreg, fpregset, FPUControlWord, Frame, FromBytesWithNulError, FromUtf16Error, FromUtf8Error, FrontPlace, fsblkcnt, fsfilcnt, fsflags, fsid, fstore, fsword, FullBucket, FullBucketMut, FullDecoded, Fuse, GapThenFull, GeneratorState, gid, glob, glob64, GlobalDlmalloc, greg, group, GROUP, Guard, GUID, Handle, HANDLE, Handler, HashMap, HashSet, Heap, HINSTANCE, HMODULE, hostent, HRESULT, id, idtype, if, ifaddrs, IMAGEHLP, Immut, in, in6, Incoming, Infallible, Initializer, ino, ino64, inode, input, InsertResult, Inspect, Instant, int16, int32, int64, int8, integer, IntermediateBox, Internal, Intersection, intmax, IntoInnerError, IntoIter, IntoStringError, intptr, InvalidSequence, iovec, ip, IpAddr, ipc, Ipv4Addr, ipv6, Ipv6Addr, Ipv6MulticastScope, Iter, IterMut, itimerspec, itimerval, jail, JoinHandle, JoinPathsError, KDHELP64, kevent, kevent64, key, Key, Keys, KV, l4, LARGE, lastlog, launchpad, Layout, Lazy, lconv, Leaf, LeafOrInternal, Lines, LinesAny, LineWriter, linger, linkcount, LinkedList, load, locale, LocalKey, LocalKeyState, Location, lock, LockResult, loff, LONG, lookup, lookupflags, LookupHost, LPBOOL, LPBY, LPBYTE, LPCSTR, LPCVOID, LPCWSTR, LPDWORD, LPFILETIME, LPHANDLE, LPOVERLAPPED, LPPROCESS, LPPROGRESS, LPSECURITY, LPSTARTUPINFO, LPSTR, LPVOID, LPWCH, LPWIN32, LPWSADATA, LPWSAPROTOCOL, LPWSTR, Lshrdi3, Lshrti3, lwpid, M128A, mach, major, Map, mcontext, Metadata, Metric, MetricMap, mflags, minor, mmsghdr, Moddi3, mode, Modsi3, Modti3, MonitorMsg, MOUNT, mprot, mq, mqd, msflags, msghdr, msginfo, msglen, msgqnum, msqid, Muldf3, Mulodi4, Mulosi4, Muloti4, Mulsf3, Multi3, Mut, Mutex, MutexGuard, MyCollection, n16, NamePadding, NativeLibBoilerplate, nfds, nl, nlink, NodeRef, NoneError, NonNull, NonZero, nthreads, NulError, OccupiedEntry, off, off64, oflags, Once, OnceState, OpenOptions, Option, Options, OptRes, Ordering, OsStr, OsString, Output, OVERLAPPED, Owned, Packet, PanicInfo, Param, ParseBoolError, ParseCharError, ParseError, ParseFloatError, ParseIntError, ParseResult, Part, passwd, Path, PathBuf, PCONDITION, PCONSOLE, Peekable, PeekMut, Permissions, PhantomData, pid, Pipes, PlaceBack, PlaceFront, PLARGE, PoisonError, pollfd, PopResult, port, Position, Powidf2, Powisf2, Prefix, PrefixComponent, PrintFormat, proc, Process, PROCESS, processentry, protoent, PSRWLOCK, pthread, ptr, ptrdiff, PVECTORED, Queue, radvisory, RandomState, Range, RangeFrom, RangeFull, RangeInclusive, RangeMut, RangeTo, RangeToInclusive, RawBucket, RawFd, RawHandle, RawPthread, RawSocket, RawTable, RawVec, Rc, ReadDir, Receiver, recv, RecvError, RecvTimeoutError, ReentrantMutex, ReentrantMutexGuard, Ref, RefCell, RefMut, REPARSE, Repeat, Result, Rev, Reverse, riflags, rights, rlim, rlim64, rlimit, rlimit64, roflags, Root, RSplit, RSplitMut, RSplitN, RSplitNMut, RUNTIME, rusage, RwLock, RWLock, RwLockReadGuard, RwLockWriteGuard, sa, SafeHash, Scan, sched, scope, sdflags, SearchResult, SearchStep, SECURITY, SeekFrom, segment, Select, SelectionResult, sem, sembuf, send, Sender, SendError, servent, sf, Shared, shmatt, shmid, ShortReader, ShouldPanic, Shutdown, siflags, sigaction, SigAction, sigevent, sighandler, siginfo, Sign, signal, signalfd, SignalToken, sigset, sigval, Sink, SipHasher, SipHasher13, SipHasher24, size, SIZE, Skip, SkipWhile, Slice, SmallBoolTrie, sockaddr, SOCKADDR, sockcred, Socket, SOCKET, SocketAddr, SocketAddrV4, SocketAddrV6, socklen, speed, Splice, Split, SplitMut, SplitN, SplitNMut, SplitPaths, SplitWhitespace, spwd, SRWLOCK, ssize, stack, STACKFRAME64, StartResult, STARTUPINFO, stat, Stat, stat64, statfs, statfs64, StaticKey, statvfs, StatVfs, statvfs64, Stderr, StderrLock, StderrTerminal, Stdin, StdinLock, Stdio, StdioPipes, Stdout, StdoutLock, StdoutTerminal, StepBy, String, StripPrefixError, StrSearcher, subclockflags, Subdf3, SubI128, SuboI128, SuboU128, subrwflags, subscription, Subsf3, SubU128, Summary, suseconds, SYMBOL, SYMBOLIC, SymmetricDifference, SyncSender, sysinfo, System, SystemTime, SystemTimeError, Take, TakeWhile, tcb, tcflag, TcpListener, TcpStream, TempDir, TermInfo, TerminfoTerminal, termios, termios2, TestDesc, TestDescAndFn, TestEvent, TestFn, TestName, TestOpts, TestResult, Thread, threadattr, threadentry, ThreadId, tid, time, time64, timespec, TimeSpec, timestamp, timeval, timeval32, timezone, tm, tms, ToLowercase, ToUppercase, TraitObject, TryFromIntError, TryFromSliceError, TryIter, TryLockError, TryLockResult, TryRecvError, TrySendError, TypeId, U64x2, ucontext, ucred, Udivdi3, Udivmoddi4, Udivmodsi4, Udivmodti4, Udivsi3, Udivti3, UdpSocket, uid, UINT, uint16, uint32, uint64, uint8, uintmax, uintptr, ulflags, ULONG, ULONGLONG, Umoddi3, Umodsi3, Umodti3, UnicodeVersion, Union, Unique, UnixDatagram, UnixListener, UnixStream, Unpacked, UnsafeCell, UNWIND, UpgradeResult, useconds, user, userdata, USHORT, Utf16Encoder, Utf8Error, Utf8Lossy, Utf8LossyChunk, Utf8LossyChunksIter, utimbuf, utmp, utmpx, utsname, uuid, VacantEntry, Values, ValuesMut, VarError, Variables, Vars, VarsOs, Vec, VecDeque, vm, Void, WaitTimeoutResult, WaitToken, wchar, WCHAR, Weak, whence, WIN32, WinConsole, Windows, WindowsEnvKey, winsize, WORD, Wrapping, wrlen, WSADATA, WSAPROTOCOL, WSAPROTOCOLCHAIN, Wtf8, Wtf8Buf, Wtf8CodePoints, xsw, xucred, Zip, zx}
+%
+, morekeywords=[5]{assert!, assert_eq!, assert_ne!, cfg!, column!, compile_error!, concat!, concat_idents!, debug_assert!, debug_assert_eq!, debug_assert_ne!, env!, eprint!, eprintln!, file!, format!, format_args!, include!, include_bytes!, include_str!, line!, module_path!, option_env!, panic!, print!, println!, select!, stringify!, thread_local!, try!, unimplemented!, unreachable!, vec!, write!, writeln!}  % prelude macros
+}%
+
+\lstdefinestyle{colouredRust}%
+{ basicstyle=\ttfamily%
+, identifierstyle=%
+, commentstyle=\color[gray]{0.4}%
+, stringstyle=\color[rgb]{0, 0, 0.5}%
+, keywordstyle=\bfseries% reserved keywords
+, keywordstyle=[2]\color[rgb]{0.75, 0, 0}% traits
+, keywordstyle=[3]\color[rgb]{0, 0.5, 0}% primitive types
+, keywordstyle=[4]\color[rgb]{0, 0.5, 0}% type and value constructors
+, keywordstyle=[5]\color[rgb]{0, 0, 0.75}% macros
+, columns=spaceflexible%
+, keepspaces=true%
+, showspaces=false%
+, showtabs=false%
+, showstringspaces=true%
+}%
+
+\lstdefinestyle{boxed}{
+  style=colouredRust%
+, numbers=left%
+, firstnumber=auto%
+, numberblanklines=true%
+, frame=trbL%
+, numberstyle=\tiny%
+, frame=leftline%
+, numbersep=7pt%
+, framesep=5pt%
+, framerule=10pt%
+, xleftmargin=15pt%
+, backgroundcolor=\color[gray]{0.97}%
+, rulecolor=\color[gray]{0.90}%
+}
+
+\begin{document}
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+\lstset{language=Rust, style=colouredRust}
+\setlength{\parindent}{0mm}
+\hyphenpenalty 10000
+\exhyphenpenalty 10000
+\sffamily
+
+\title{A guide to Rust for Kotlin developers}
+\author{Ray Britton}
+\date{October 2019}
+
+\pagenumbering{gobble}
+\maketitle
+
+\newpage
+\pagenumbering{gobble}
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\section{Introduction}
+
+This guide should help developers experienced with Kotlin quickly and easily learn the basics of Rust by comparing the major differences but also how the languages, by the nature of them both being modern languages, have quite a few similar features.
+\newline
+\newline
+This book is a summary of the official Rust books, as well as forum threads, GitHub issues, and StackOverflow posts I've read and testing I've done.
+Please read the following books (probably in this order) for a much more complete understanding of Rust:
+\begin{itemize}
+  \item https://doc.rust-lang.org/stable/book
+  \item https://doc.rust-lang.org/stable/rust-by-example
+  \item https://doc.rust-lang.org/stable/edition-guide/rust-2018
+  \item https://doc.rust-lang.org/cargo/
+  \item https://doc.rust-lang.org/stable/reference
+\end{itemize}
+A lot of things you already know are going to be re-explained in this document for two reasons:
+\begin{enumerate}
+	\item as a refresher and just to make your understanding is correct
+	\item to help explain and draw out differences between the languages
+\end{enumerate}
+Rust is designed so that the compiler can guarantee some level of correctness in regards to variable access and destruction, and as such it will not compile code it can't predict.
+
+\subsection{Syntax differences}
+In Rust...
+\begin{itemize}
+	\item lines have to end with a semicolon.
+  \item methods parameters can not be variadic, named or have default values.
+  \item methods can not have the same name as another in the same scope.
+  \item the naming scheme is \lstinline{snake_case} for methods, variables and files; and \lstinline{CamelCase} for Traits, Structs, Impls and Enums.
+\end{itemize}
+
+\newpage
+\section{Types and Variables}
+\subsection{Primitives}
+In Kotlin there are few commonly used primitive types:
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{center}
+\begin{tabular}{ c|c|c } 
+ 
+ Name & Bits & Type \\ 
+ \hline
+ Int & 32 & Signed Integer \\ 
+ Long & 64 & Signed Integer \\ 
+ Float & 32 & Floating Point \\ 
+ Double & 64 & Floating Point \\ 
+ Char & 32 & Character \\ 
+ Boolean & N/A & Boolean \\ 
+ 
+\end{tabular}
+\end{center}
+All the numbers are signed. 
+
+Rust uses a prefix followed by the size to create a number (e.g. i32), these are the prefixes:
+
+\begin{center}
+\begin{tabular}{ c|c } 
+
+ Character & Type \\ 
+ \hline
+ i & Signed Integer \\ 
+ f & Floating point \\ 
+ u & Unsigned Integer \\ 
+ 
+\end{tabular}
+\end{center}
+
+\renewcommand{\arraystretch}{1}
+Floating points support 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: \lstinline[language=Rust]{isize} and \lstinline[language=Rust]{usize} these are whatever the word size is for the CPU (most new computers that is 64). As an example the equivalent to a Kotlin \lstinline[language=Kotlin]{Int} is \lstinline[language=Rust]{i32} and a \lstinline[language=Kotlin]{Double} is \lstinline[language=Rust]{f64}. 
+\newline
+Suffixes for literals exist in Rust like Kotlin but rather being for some types, suffixes exist for all primitives and they are the name of type, e.g. \lstinline[language=Rust]{3_i32} or \lstinline[language=Rust]{10.3f32}, the suffixes are only necessary if the compiler can not infer the type or if you want to specify it, floating point numbers can be written without the 0, e.g. \lstinline[language=Rust]{1.}
+\newline
+Booleans and Chars are the same in both languages although it's \lstinline[language=Rust]{bool} instead of \lstinline[language=Kotlin]{Boolean}, and \lstinline[language=Rust]{char} instead of \lstinline[language=Kotlin]{Char}.
+
+\subsection{Mutability}
+Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable sometimes based on type and sometimes by notation, in Rust (and some other languages such as Swift) all data types are both immutable and mutable and their mutability is controlled via notation:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo: i32 = 1;
+let mut bar: i32 = 2;
+\end{lstlisting}
+In the above snippet \lstinline{foo} will always be 1 (in this scope) but \lstinline{bar} can be changed. A immutable variable can not be referenced as mutable:
+\begin{lstlisting}[language=Rust,frame=single,backgroundcolor=\color{palered}]
+let foo: i32 = 1;
+
+change(&mut foo);
+
+fn change(value: &mut i32) {
+  value += 1;
+}
+\end{lstlisting}
+This will not compile as \lstinline{foo} is immutable and so can't be referenced as mutable.
+\newline
+This is fine because \lstinline{x} is being redeclared as mutable:
+\begin{lstlisting}[language=Rust,frame=single]
+fn foo() {
+    let x = vec![1,2,3];
+    bar(x);
+}
+
+fn bar(mut x: Vec<i32>) {
+    x.push(4);
+}
+
+fn main() {
+  let x = 0;
+  let mut y = x;
+}
+\end{lstlisting}
+
+\subsection{Strings}
+In both Kotlin and Java, essentially, there is just one String type: \lstinline[language=Kotlin]{String}. Whether the text is hardcoded, from a file or user input the same class is used.
+Rust has two String types: \lstinline[language=Rust]{String} and \lstinline[language=Rust]{str}. A hardcoded string will be of type \lstinline[language=Rust]{&'static str} and a string read from anywhere else maybe a \lstinline[language=Rust]{String} or \lstinline[language=Rust]{&str} depending on what the method returns. They can be converted between themselves, in most circumstances.
+\newline
+The \lstinline[language=Rust]{String} class is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A \lstinline[language=Rust]{str} is a char array and so has a fixed length.
+\newline
+\newline
+If you attempt to slice a string so it would cause a Unicode character to be broken Rust will panic. Use the \lstinline[language=Rust]|.chars()| method to access each character independently. So to get the length of a string in bytes you use \lstinline[language=Rust]{foo.len()} and to get the number of characters you use \lstinline[language=Rust]{foo.chars().count()}.
+
+\subsection{Common types}
+\begin{center}
+\begin{tabular}{ |>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{5.8cm}|>{\raggedright\arraybackslash}p{5.8cm}| } 
+ \hline
+   & \textbf{Kotlin} & \textbf{Rust} \\ 
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Lists}} \\
+ \hline
+ \textbf{Type} & \lstinline[language=Kotlin]|List<T>|, \lstinline[language=Kotlin]|MutableList<T>|, \lstinline[language=Kotlin]|ArrayList<T>| & \lstinline[language=Rust]|Vec<T>| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|List(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableList(|\emph{size},\emph{default}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|ArrayList(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|Vec::new()|, \lstinline[language=Rust]|Vec::with_capacity(size)| \\
+ \textbf{Shorthand} & \lstinline[language=Kotlin]|listOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableListOf(|\emph{vararg items}\lstinline[language=Kotlin]|)|, etc & \lstinline[language=Rust]|vec![|\emph{size};\emph{default}\lstinline[language=Rust]|]|, \lstinline[language=Rust]|vec![|\emph{vararg items}\lstinline[language=Rust]|]| \\
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Maps}} \\
+ \hline
+ \textbf{Type} & \lstinline[language=Kotlin]|Map<K, V>|, \lstinline[language=Kotlin]|MutableMap<K, V>|, \lstinline[language=Kotlin]|HashMap<K, V>| & \lstinline[language=Rust]|HashMap<K: Hash & Eq, V>| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|Map(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|MutableMap(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|HashMap(|\emph{size}|\emph{Collection}\lstinline[language=Kotlin]|)| & \lstinline[language=Rust]|HashMap::new()| \\
+ \textbf{Shorthand} & \lstinline[language=Kotlin]|mapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, \lstinline[language=Kotlin]|mutableMapOf(|\emph{vararg pairs}\lstinline[language=Kotlin]|)|, etc & N/A \\
+ \hline
+ \multicolumn{3}{|c|}{\textbf{Tuples}} \\
+ \hline
+ \textbf{Type} & \lstinline[language=Kotlin]|Pair<T1, T2>|, \lstinline[language=Kotlin]|Triple<T1, T2, T3>| & \lstinline[language=Rust]|(T1, T2...)| \\
+ \textbf{Constructor} & \lstinline[language=Kotlin]|Pair(|\emph{value1, value2}\lstinline[language=Kotlin]|)| &  \lstinline[language=Rust]|(|\emph{value1, value2}...\lstinline[language=Rust]|)| \\
+ \textbf{Shorthand} & \emph{value1} \lstinline[language=Kotlin]|to| \emph{value2} & N/A \\
+ \hline
+\end{tabular}
+\end{center}
+\subsection{Constants}
+In Rust there are two types of constants \lstinline[language=Rust]{const} and \lstinline[language=Rust]{static}. \lstinline[language=Rust]{const} are immutable values hardcoded into the program. \lstinline[language=Rust]{static}s are optionally mutable values that are always available. Using mutable statics is \lstinline[language=Rust]{unsafe}.
+
+\newpage
+\section{References}
+All variables can be passed as a reference by prefixing with a \lstinline[language=Rust]{&}, Rust will often automatically deference pointers which makes this quite painless to use:
+\begin{lstlisting}[language=Rust,frame=single]
+let foo = 10;
+print(foo);
+print_ref(foo);
+
+fn print(value: i32) {
+	println!(value); 
+	//Passed by value so no need to deference
+}
+
+fn print_ref(value: &i32) {
+	println!(value); //Automatically dereferenced
+}
+
+\end{lstlisting}
+
+Dereferencing a variable moves the value.
+
+For clarity:
+\begin{center}
+\begin{tabular}{ c|c } 
+ Symbols & Meaning \\ 
+ \hline
+ <No symbols> & Value, immutable \\ 
+ mut & Value, mutable \\ 
+ \& & Reference, immutable \\ 
+ \&mut & Reference, mutable \\
+ \** & Dereferenced 
+\end{tabular}
+\end{center}
+
+\newpage
+\section{Borrowing and Ownership}
+In Kotlin a variable exists, and is available, while in it's scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods execution. Rust is basically the same and generally you'll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.
+\begin{lstlisting}[language=Rust,frame=single,backgroundcolor=\color{palered}]
+fn main() {
+    
+    let foo = String::from("Hello");
+    let bar = foo;
+    
+    println!("{}", foo);
+}
+\end{lstlisting}
+
+This will not compile as \lstinline{bar} has taken ownership of the data in \lstinline{foo} and so \lstinline{foo} can no longer be used.
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    
+    let num1 = 54;
+    let num2 = a;
+    
+    println!("{}", num1);
+}
+\end{lstlisting}
+
+This will compile however as numbers have \lstinline[language=Rust]{Copy} implemented for them and so \lstinline{num2} automatically makes a copy of \lstinline{num1}s data, this can be replicated for the string example by doing:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    
+    let foo = String::from("Hello");
+    let bar = foo.clone();
+    
+    println!("{}", foo);
+}
+\end{lstlisting}
+This will only work when the type implemented \lstinline[language=Rust]{Clone}. Not all types support \lstinline[language=Rust]{Clone} as it may be impossible to copy it's data for example with file streams.
+\newpage
+Ownership and borrowing apply to all methods:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    let a = String::from("Hello");
+    let b = return_param(a);
+    let c = length(b);
+
+    println!("{}", c);
+}
+
+fn return_param(param: String) -> String {
+	return param;
+}
+
+fn length(param: String) -> usize {
+	return param.len();
+}
+\end{lstlisting}
+
+When \lstinline{main} is executed both \lstinline{a} and \lstinline{b} are lost, \lstinline{length} takes ownership of the string and it is dropped at the end of \lstinline{length}, to keep \lstinline{b} in memory either of the following changes could be made:
+\begin{lstlisting}[language=Rust,frame=single]
+fn length(param: &String) -> usize {
+	return param.len(); //not dereferenced:
+  //because param is a reference len() will return it's result as a reference
+  //and because usize implements Copy it will be automatically dereferenced
+}
+
+//or
+
+fn length(param: String) -> (String, usize) {
+	return (param, param.len()); 
+}
+\end{lstlisting}
+
+References are just pointers and so don't take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).
+
+Rust supports generics like Kotlin and they are expressed like this: \lstinline{Vec<Item>}, occasionally you might see \lstinline{Vec<'a Item>} the \lstinline{'a} is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn't matter but the standard names are \lstinline{'a}, \lstinline{'b} and \lstinline{'c}, except for \lstinline{'static} which means the variable must always be available, i.e. a hardcoded value.
+
+\newpage
+\section{Classes, or the lack there of}
+
+In Kotlin there are Classes, Abstract Classes, Interfaces, and Extension methods. Each of these might be able to store data or provide functionality or an API.
+Rust has Traits, Structs and Impls.
+\newline
+\textbf{Kotlin}
+\begin{itemize}
+  \item An \lstinline[language=Kotlin]{interface} can have methods but can not have variables with values, and may extend another Interface. It can be supplemented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
+  \item A \lstinline[language=Kotlin]{class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
+  \item An \lstinline[language=Kotlin]{abstract class} can have variables and methods, and may extend a Class, an Abstract Class and/or an Interface. It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
+\end{itemize}
+\textbf{Rust}
+\begin{itemize}
+  \item A \lstinline[language=Rust]{trait} is like an interface, it defines a list of methods that must be implemented. It can extend other \lstinline[language=Rust]{trait}s.
+  \item A \lstinline[language=Rust]{struct} is the closest thing to a class but although it has a list of variables it class does not have any methods. This can not extend anything.
+  \item An \lstinline[language=Rust]{impl} is a collection of methods either matching a \lstinline[language=Rust]{Trait} (like a \lstinline[language=Kotlin]{Class} implementing an \lstinline[language=Kotlin]{Interface}) or free form from a \lstinline[language=Rust]{struct} (like a \lstinline[language=Kotlin]{Class}), but Impl are not allowed to have variables and if implementing a Trait can not have methods that are not defined in the Trait. An Impl may be defined repeatedly.
+  \item \lstinline[language=Rust]{trait} and \lstinline[language=Rust]{impl} can used like Extension Methods (although the syntax is closer to Swift than Kotlin).
+\end{itemize}
+
+There is nothing like an \lstinline[language=Kotlin]{abstract class} in Rust.
+
+\newpage
+Some Kotlin examples:
+\begin{lstlisting}[language=Kotlin,frame=single]
+interface ParentA {
+  fun foo() //no method body, just an api
+}
+
+interface ParentB : ParentA { //includes methods from parent
+  fun bar() //no method body, just an api
+}
+
+class ClassA : ParentA { //includes methods from parent
+  var x = 0; //allowed to have variables with values
+  fun foo() {} //methods must be implemented
+}
+
+abstract class AbstractClassA: ParentA, ParentB {}
+
+class ClassB : AbstractClassA() {
+  fun foo() {} //methods must be implemented
+  fun bar() {} //from all parents
+  fun foobar() {}
+}
+
+fun ParentA.example1() {} //Adds method called example1 to all
+//implementations and children of ParentA
+\end{lstlisting}
+
+Some Rust examples:
+\begin{lstlisting}[language=Rust,frame=single]
+struct StructA { //variables only
+  x: i32
+}
+
+impl StructA { //methods only, but can access
+  fn foo() {}  //variables from Struct 
+}              //private methods allowed
+
+trait TraitA { //API only
+  fn bar();
+}
+
+trait TraitC : TraitA { 
+  fn boo(); //anything implementing TraitC must implement TraitA separately
+}
+
+impl TraitA for StructA { //methods only, can not 
+  fn bar() {} //have methods not in the trait
+} 
+\end{lstlisting}
+\newpage
+\subsection{Deriving and implementing}
+Let's say you make a type: \lstinline{Person}. It has a first name, last name, date of birth, and occupation. It has functions to get the whole name and their age. 
+
+\begin{lstlisting}[language=Rust,frame=single]
+extern crate chrono;
+
+use chrono::Date;
+use chrono::offset::{*};
+
+struct Person<'a> {
+  first_name: &'a str,
+  last_name: &'a str,
+  date_of_birth: Date<Utc>,
+  occupation: &'a str
+}
+
+//Constructors
+impl <'a> Person<'a> {
+  //no self param means this is a static method
+  fn new(first_name: &'a str, 
+      last_name: &'a str, 
+      year: u32,
+      month: u32, 
+      day: u32, 
+      occupation: &'a str) -> Person {
+    return Person<'a> {
+      first_name,
+      last_name,
+      date_of_birth: Utc.ymd(year as i32, month, day),
+      occupation
+    }
+  }
+}
+
+//Methods
+impl <'a> Person<'a> {
+    //self param means this is an instance method
+    fn whole_name(&self) -> String {
+        return format!("{} {}", self.first_name, self.last_name);
+    }  
+    
+    fn age_in_years(&self) -> i32 {
+        let weeks = Utc::today().signed_duration_since(self.date_of_birth)
+            .num_weeks();
+        return (weeks / 52) as i32;
+    }
+}
+
+fn main() {
+    //Double colon is for static methods
+    let person = Person::new("John", "Smith", 1988, 07, 10, "Author");
+    
+    //Period is for instance methods
+    println!("{} is a {} who is {} years old.", 
+        person.whole_name(), 
+        person.occupation, 
+        person.age_in_years());
+}
+\end{lstlisting}
+
+The \lstinline{'a} lifetime tells Rust that the \lstinline{&str}s will be available as long as the parent \lstinline{Person} is.
+
+The sample uses the \lstinline{chrono} crate, it is a simple to use date and time library. 
+If we want to print the object we must implement the \lstinline{Display} like this:
+
+\begin{lstlisting}[language=Rust,frame=single]
+use std::fmt;
+
+impl fmt::Display for Person {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        return write!(f, "({} {}, {})", 
+            self.first_name, 
+            self.last_name, 
+            self.occupation);
+    }
+}
+\end{lstlisting}
+
+You can now write \lstinline[language=Rust]|println!("{}", person)|, there are many \lstinline[language=Rust]{trait}s that can be implemented for any \lstinline[language=Rust]{struct} that's part of your project.\newline
+To avoid boilerplate Rust can automatically derive some \lstinline[language=Rust]{trait}s for \lstinline[language=Rust]{struct}s like so:
+\begin{lstlisting}[language=Rust,frame=single]
+#[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash, Default)]
+struct Foo {}
+\end{lstlisting}
+
+\begin{center}
+\begin{tabular}{ |c|p{12cm}| } 
+ \hline
+ Trait & Use \\ 
+ \hline
+ Debug & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|toString()|, use with \lstinline[language=Rust]|{:?}| instead of \lstinline[language=Rust]|{}| \\
+ Clone & Implements the \lstinline[language=Rust]|clone()| method on the struct \\
+ Copy & Allows structs to be cloned automatically instead of transferring ownership when assigned to new variable \\
+ PartialEq & Implements equality checking and enables use of the == and != operators on the \lstinline[language=Rust]|struct| \\
+ PartialOrd & Implements comparison and enables use of the > and < operators on the \lstinline[language=Rust]|struct| for types where the comparison may be impossible (e.g. floating numbers)\\
+ Eq & Marker trait (like Sync) meaning that all fields can be always and correctly compared, not valid for all types (e.g. floating numbers) \\
+ Ord & Same as PartialOrd but for types where comparison is always possible\\
+ Hash & Automatically generates the equivalent of \lstinline[language=Kotlin]|data class|es \lstinline[language=Kotlin]|hashCode()|, required to use the \lstinline[language=Rust]|struct| as key in \lstinline[language=Rust]|HashMap|s \\
+ Default & Implements a default value for all fields, see below \\
+ \hline
+\end{tabular}
+\end{center}
+
+All of these require all the fields in the struct to implement the same traits. Numbers, strings, etc implement all the built in derivable types. As with \lstinline[language=Rust]{PartialEq} and \lstinline[language=Rust]{Eq} Rust often has two versions of a trait, one that is allowed to fail (and so will generally return \lstinline[language=Rust]{Result} or \lstinline[language=Rust]{Option}) and another that is not allowed to fail. In this case \lstinline[language=Rust]{Eq} will panic if something goes wrong, likewise there is \lstinline[language=Rust]{From} and \lstinline[language=Rust]{TryFrom} for converting structs, \lstinline[language=Rust]{From} can not fail and \lstinline[language=Rust]{TryFrom} can.
+
+\newpage
+\subsection{Default}
+
+If you implement a \lstinline[language=Rust]{struct} where all the fields have all implemented \lstinline[language=Rust]{Default} then you don't have to write out every field when making a new instance of the \lstinline[language=Rust]{struct}:
+
+\begin{lstlisting}[language=Rust,frame=single]
+#[derive(Default)]
+struct Foo {
+  a: i32,
+  b: i32,
+  c: i32,
+  d: String
+}
+
+fn main() {
+  let foo = Foo::default();
+
+  //You can also supply some of the fields and leave the rest to Default:
+  let foo2 = Foo {
+    b: 45,
+    d: "Foobar".to_string(),
+    ..Self::default()
+  };
+
+  //This is also the syntax for copying:
+  let foo3 = Foo {
+    a: 10,
+    ..foo
+  }
+}
+\end{lstlisting}
+
+\newpage
+\section{Method syntax}
+\subsection{this/self}
+
+A method in a \lstinline[language=Rust]{impl} for a \lstinline[language=Rust]{struct} may have a param for the \lstinline[language=Rust]{struct}, it must always be the first parameter and does not have a name:
+\begin{center}
+\begin{tabular}{ |c|p{12cm}| } 
+ \hline
+ Parameter & Meaning \\ 
+ \hline
+ <None> & A static method (accessed via ::) \\
+ self & The object itself (this means unless the method returns Self it will dropped after this method) \\ 
+ \&self  & A immutable reference to itself \\ 
+ \&mut self & A mutable reference to itself \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+An example:
+\begin{lstlisting}[language=Rust,frame=single]
+struct Foo {}
+
+impl Foo {
+  fn static() {}
+  fn mutate(&mut self) {}
+  fn clone_and_convert(&self) -> Bar {}
+  fn convert_permanently(self) -> Bar {}
+}
+\end{lstlisting}
+
+
+\subsection{Functional Programming}
+
+Rust supports lambdas, the parameters are written comma separated in pipes and the body only requires curly braces if it goes over multiple lines:
+
+\begin{lstlisting}[language=Rust,frame=single]
+let x = vec![1,2,3]; 
+let y = x.iter().map(|it| it + 1).collect();
+\end{lstlisting}
+Unfortunately with Rust (like Dart) map(), etc return a Map object that has to be converted back into a list using \lstinline[language=Rust]{collect()}.
+\newline
+Rust also supports higher order functions:
+\begin{lstlisting}[language=Rust,frame=single]
+fn foo(f: impl Fn(i32) -> i32)
+fn foo<F>(f: F) where F: Fn(i32) -> i32
+fn bar(f: impl MutFn(String) -> usize)
+\end{lstlisting}
+
+\lstinline[language=Rust]{Fn} is a lambda that can not change external state
+\newline
+\lstinline[language=Rust]{FnMut} is a method that can change external state
+\newline
+\lstinline[language=Rust]{FnOnce} is a method that can change external state, but is only allowed to be called once
+
+\lstinline[language=Rust]{Box} allows you to store values on the heap, this is sometimes necessary as the stack can only hold values with a known size (at compile time), as the \lstinline[language=Rust]{Box} is just a pointer it has a known size unlike, for example, lambdas.
+\newpage
+\section{Modules}
+When making a project in Rust you are required to have one file (for programs it's \lstinline{main.rs}, and \lstinline{lib.rs} for libraries), it's also the only file recognised by the compiler. To add a new file (called a \lstinline{module}) to your project you need to add the line (for a file named \lstinline{new_file.rs}) to main.rs or lib.rs:
+\begin{lstlisting}[language=Rust,frame=single]
+mod new_file;
+\end{lstlisting}
+
+Using the following code base:
+\begin{lstlisting}[language=Rust,frame=single]
+//main.rs 
+mod foo; //all Rust files must be referenced here for the compiler to find them
+mod bar;
+
+use crate::bar::foobar;
+
+fn main() {
+  foobar();
+}
+
+
+//foo.rs
+pub fn public_method() {}
+fn private_method() {}
+
+
+//bar.rs
+use crate::foo::public_method;
+
+pub fn foobar() {}
+\end{lstlisting}
+
+The \lstinline{foo} module has two methods \lstinline{public_method} and \lstinline{private_method}. \lstinline{private_method} is only accessible inside the \lstinline{foo} module.
+The \lstinline{bar} module imports the \lstinline{public_method} method from the \lstinline{foo} module.
+\newline
+\lstinline{crate} means this project, if using a third party library (for example \lstinline{serde}) you would write \lstinline{serde::foo::bar;}.
+\newpage
+\subsection{Directories}
+
+When organising code it is common to group files in a directory. This requires a \lstinline{mod.rs} file per directory, at minimum it must reference the other files in the directory to expose them to the compiler:
+\newline
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[project
+  [main.rs]
+  [foo.rs]
+  [bar
+    [mod.rs]
+    [inner.rs]
+  ]
+]
+\end{forest}
+
+\begin{lstlisting}[language=Rust,frame=single]
+//main.rs 
+mod foo;
+mod bar;
+
+//bar/mod.rs
+mod inner;
+\end{lstlisting}
+
+This would expose all files to the compiler.
+
+\newpage
+\section{Crates}
+\subsection{Adding crates}
+Third party libraries are called \lstinline{Crates} (and are available from \lstinline{https://crates.io}). To add a crate, for example \lstinline{Serde}, add this line to \lstinline{Cargo.toml} after the \lstinline{[dependencies]} line:
+\begin{lstlisting}[language=Rust,frame=single]
+serde = "1.0.0"
+\end{lstlisting}
+Add this line to \lstinline{main.rs} at the top:
+\begin{lstlisting}[language=Rust,frame=single]
+extern crate serde;
+\end{lstlisting}
+
+You'll still need to import the individual parts of the crate you want to use, for example:
+\begin{lstlisting}[language=Rust,frame=single]
+use serde::json::{*};
+\end{lstlisting}
+\lstinline|::Foo| means import just \lstinline|Foo|
+\newline
+\lstinline|::{Foo, Bar}| means import \lstinline|Foo| and \lstinline|Bar|
+\newline
+\lstinline|::{*}| means import everything in the module.
+
+\subsection{Not standard}
+Some functionality built in to Java/Kotlin isn't part of the Rust std lib and you'll need to use these crates to add it:
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{center}
+\begin{tabular}{ c|c|l } 
+
+Functionality & Crate & Notes \\ 
+\hline
+Random numbers & \lstinline|rand| & Maintained by Rust team \\
+Serialization & \lstinline|serde| & Does XML, JSON, protobuf etc \\
+Lazy static variables & \lstinline|lazy_static| & \\
+Regex & \lstinline|regex| & Maintained by Rust team \\
+Base64 & \lstinline|base64| & \\
+UUID & \lstinline|uuid| & \\
+Enum features & \lstinline|strum| & Enum features like variant names, properties, count, list \\
+ 
+\end{tabular}
+\end{center}
+
+\subsection{Common crates}
+These crates are closest equivalent to the commonly used Kotlin libraries:
+\begin{center}
+\begin{tabular}{ c|c|l } 
+ Kotlin & Rust & Notes \\ 
+ \hline
+ GSON & Serde & Much more powerful and flexible than GSON \\
+ JodaTime & Chrono & Essentially the same \\
+ RxJava & RxRust & Alpha \\
+ JDBC & Diesel & Works with multiple databases \\
+\end{tabular}
+\end{center}
+
+\renewcommand{\arraystretch}{1}
+
+\newpage
+\section{Result, Option and Exceptions}
+Instead of using try..catch and exceptions for error handling Rust uses \lstinline[language=Rust]{Result}, \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{panic!}.
+\newline
+\newline
+\lstinline[language=Rust]{Option<T>}s are the same as \lstinline[language=Kotlin]{Optional<T>}s and are created via \lstinline[language=Rust]{Some()} and \lstinline[language=Rust]{None}
+\begin{lstlisting}[language=Rust,frame=single]
+fn divide(numerator: f64, denominator: f64) -> Option<f64> {
+    if denominator == 0.0 {
+        None //notice no return and no semicolon
+    } else {
+        Some(numerator / denominator)
+    } //the last value in a method is automatically returned
+}  //assuming no return call
+
+fn main() {
+  let result = divide(2.0, 3.0);
+
+  match result {
+      Some(x) => println!("Result: {}", x),
+      None    => println!("Cannot divide by 0"),
+  }
+}
+\end{lstlisting}
+
+\lstinline[language=Rust]{Result<V, E>} is used for when a method may fail, it can contain the result or an error. It is created via \lstinline[language=Rust]{Ok()} and \lstinline[language=Rust]{Err()}
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn get(&self, idx: u32) -> Result<Item, String> {
+  if self.contains(idx) {
+    Ok(self[idx])
+  } else {
+    Err("404")
+  }
+}
+
+fn main() {
+  let result = foo.get(10);
+
+  match result {
+    Ok(item) => println!(item),
+    Err(e) => println!(e)
+  }
+}
+\end{lstlisting}
+
+You can also do the equivalent of \lstinline[language=Kotlin]{var!!} with both \lstinline[language=Rust]{Option} and \lstinline[language=Rust]{Result} by using \lstinline[language=Rust]{var.unwrap()} and \lstinline[language=Rust]{var.expect("some message")}. Both methods will crash the app if it's \lstinline[language=Rust]{Err}/\lstinline[language=Rust]{None}, \lstinline[language=Rust]{expect()} will also write the message to the console.
+\newline
+To avoid having to write \lstinline[language=Rust]{unwrap()} every time if you're in a method that returns a \lstinline[language=Rust]{Result} you can just write \lstinline[language=Rust]{var?}, if \lstinline{var} is an \lstinline[language=Rust]{Err} the method will return the \lstinline[language=Rust]{Err} immediately.
+\newline
+To crash a Rust program you should use \lstinline[language=Rust]{panic!("message")}. This will print the message and stacktrace to the console.
+
+\newpage
+\section{Concurrency}
+
+To pass values safely between threads you need to use Mutexes or Atomic values in most languages, Rust is no different. For example:
+\begin{lstlisting}[language=Rust,frame=single]
+use std::thread;
+use std::sync::atomic::{AtomicI8, Ordering};
+use std::sync::Arc;
+use std::time::Duration;
+
+fn main() {
+    //AtomicXX implement Sync meaning they can be used 
+    //in multiple threads safely
+    //Arc (Atomically Reference Counted) allows for multiple, independent
+    //references of a single value to exist outside of the borrow checker
+    //for a tiny overhead by counting the number of references that
+    //exist (like in Swift) 
+    let number = Arc::new(AtomicI8::new(0i8));
+    //Make a copy of the arc, any number of copies can exist
+    let thread_number = number.clone();
+
+    //move means this lambda is taking ownership of any variable
+    //it uses, this is necessary for lambdas executed in a different
+    //context e.g. in a different thread
+    thread::spawn(move || {
+        let mut i = 0;
+        loop {
+            //ordering controls how the atomic value is set/read
+            //You should probably always use SeqCst
+            thread_number.store(i, Ordering::SeqCst);
+            i += 1;
+            thread::sleep(Duration::from_millis(500));
+            if i > 10 {
+                break;
+            }
+        }
+        println!("Done");
+    });
+
+    loop {
+        println!("{}", number.load(Ordering::SeqCst));
+        if number.load(Ordering::SeqCst) >= 10 {
+            break;
+        }
+    }
+}
+\end{lstlisting}
+
+This program will continually print out the value stored in \lstinline{number} until the thread reaches 10
+
+\newpage
+\section{Testing}
+The standard in Rust is to have the tests in a module inside the module being tested, the test module needs to be annotated as do all the tests:
+\begin{lstlisting}[language=Rust,frame=single]
+//foo.rs 
+
+fn add(value1: i32, value2: i32) -> i32 {
+  value1 + value2
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_all() {
+        assert_eq!(2, add(1, 1));
+    }
+}
+\end{lstlisting}
+
+\newpage
+\section{Cargo}
+
+To run and build programs from the command line you should always use cargo (outside of an IDE):
+
+\begin{lstlisting}[language=Rust,frame=single]
+//Build debug version
+cargo build
+
+//Run debug version
+cargo run
+
+//Run tests
+cargo test
+
+//Build release version
+cargo build --release
+\end{lstlisting}
+
+Other command line options:
+
+\begin{lstlisting}[language=Rust,frame=single]
+//Format all code
+cargo fmt
+
+//Linter
+cargo clippy
+
+//These have to be installed first by
+rustup update
+rustup component add rustfmt
+rustup component add clippy
+\end{lstlisting}
+
+\newpage
+\section{Enums}
+Unfortunately enums in Rust work they do in Swift and so no default values can be provided and instead you have to add methods which use matches to provide values:
+
+\begin{lstlisting}[language=Rust,frame=single]
+enum MobileOs {
+  Android, Ios, Windows
+}
+
+impl MobileOs {
+  fn status(&self) -> &str {
+    match self {
+      MobileOs::Android => return "alive",
+      MobileOs::Ios => return "alive",
+      MobileOs::Windows => return "dead",
+    }
+  }
+}
+
+fn main() {
+  println!("{}", MobileOs::Android.status());
+}
+\end{lstlisting}
+
+Thankfully they can also work like \lstinline[language=Kotlin]{sealed class}es:
+
+\begin{lstlisting}[language=Rust,frame=single]
+enum Example {
+  Foo { named_value: i32 },
+  Tuple(u8, u8),
+  Empty
+}
+
+fn main() {
+  let foo = Example::Foo { named_value: 45 };
+  let tuple = Example::Tuple(1, 2);
+  let empty = Example::Empty;
+}
+\end{lstlisting}
+
+When coming from other modern languages you be expecting the ability to get a variant count, list or names and add static values to each variant but unfortunately Rust enums do not support any of these features, but all of these can be added with the \lstinline{strum} crate. 
+
+\newpage
+\section{Tips and tricks}
+\medskip
+\subsection{if let}
+
+Like in Swift an \lstinline[language=Kotlin]{Option} can be unwrapped in an \lstinline|if| if there is a value:
+
+\begin{lstlisting}[language=Rust,frame=single]
+fn some_method(optional_string: Option<String>) {
+  if let Some(string_value) = optional_string {
+    println!("Does exist: {}", string_value);
+  }
+}
+\end{lstlisting}
+
+This also works for \lstinline[language=Rust]{Result} but use \lstinline[language=Rust]{Ok} instead of \lstinline[language=Rust]{Some}. If you need to handle both states you should use match as an if let throws away the other value:
+\begin{lstlisting}[language=Rust,frame=single]
+fn some_method(optional_string: Option<String>) {
+  match optional_string {
+    Some(string_value) => println!("Does exist: {}", string_value),
+    None => println!("No content")
+  }
+}
+\end{lstlisting}
+\medskip
+\medskip
+\subsection{Reference counting}
+
+Sometimes you need bypass the borrow checker, for example, you want to use a reference as a pointer to an item in a collection or you're passing values between threads. To do this you use the \lstinline[language=Rust]{Arc} (Atomically Reference Counted) class, it adds a small overhead in the form of a count and some extra code to monitor and update the count. Arc will keep the value alive as long as any Arc value is still alive, when the last Arc value is dropped the value will be as well. To make multiple references to an value protected by Arc clone it:
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+  let some_heap_thing = Thing::new();
+  let arc_thing = Arc::new(some_heap_thing);
+  thread1(arc_thing.clone()); 
+  thread2(arc_thing.clone()); 
+}
+
+fun thread1(thing: Arc<Thing>) {
+  thing.methods_accessed_in_normal_way();
+}
+\end{lstlisting}
+
+The value in the Arc can not be mutable unless it's contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are \lstinline[language=Rust]{Mutex} and \lstinline[language=Rust]{RwLock}. The differences are that \lstinline[language=Rust]{RwLock} will allow any number of concurrent readers but only one writer and \lstinline[language=Rust]{Mutex} only allows one reader or writer at a time. To recreate the \lstinline[language=Rust]{CopyOnWriteArrayList} (a thread safe list) from Kotlin you can write:
+ \begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+  let copy_on_write_list = Arc::new(RwLock::new(vec![1,2]));
+   thread1(copy_on_write_list.clone());
+}
+
+fn thread1(list_arc: Arc<RwLock<Vec<i32>>>) {
+  let list = list_arc.lock.unwrap();
+
+  list.push(3);
+}
+\end{lstlisting}
+
+\lstinline{list} is just \lstinline[language=Rust]{Vec<i32>} but as long it's alive any other code that calls \lstinline[language=Rust]{unlock()} will block.
+\newline
+Note that generally you should use \lstinline[language=Rust]{Mutex} as it has better performance.
+\medskip
+\medskip
+\newline
+\subsection{Converting strings}
+
+Often when writing a function that takes a piece of text you'll want to support both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} to be more convenient to the caller. This is best achieved by using \lstinline[language=Rust]{Into<String>}
+The \lstinline[language=Rust]{Into} trait tells the compiler to allow any parameter that be coerced as that type to be passed in. Both \lstinline[language=Rust]{String} and \lstinline[language=Rust]{&str} already have the \lstinline[language=Rust]{Into<String>} trait but it can also be implemented for any struct. \lstinline[language=Rust]{Into<X> for Y} is automatically implemented for any type that implements \lstinline[language=Rust]{From<Y> for X} which is actually how it's implemented for \lstinline[language=Rust]{String}s and is the recommended approach.
+\begin{lstlisting}[language=Rust,frame=single]
+fn print<S: Into<String>>(value: S) {
+    println!("{}", value.into());
+}
+\end{lstlisting}
+Unfortunately you can't use \lstinline[language=Rust]{Into<String>} as a generic (unless the type supports it), for example with \lstinline[language=Rust]{Option<Into<String>>} as \lstinline[language=Rust]{Option} would need to have special support to know how to coerce the values.
+\medskip
+\medskip
+\newline
+\subsection{Interior mutability}
+
+Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the \lstinline[language=Rust]{Cell} structs.
+
+\lstinline[language=Rust]{Cell} is a wrapper around a value that can be changed at any point.
+\newline
+\lstinline[language=Rust]{RefCell} is the same as \lstinline[language=Rust]{Cell} but allows the value to be exposed as a reference.
+\newline
+\lstinline[language=Rust]{RwLock} is the same as \lstinline[language=Rust]{RefCell} but can be shared across threads.
+\newline
+\lstinline[language=Rust]{Mutex} is the same as \lstinline[language=Rust]{RefCell} but can make references that can be shared across threads.
+
+All of these are \lstinline[language=Rust]{safe}, they use reference counting and/or memory swapping to update values.
+\medskip
+\medskip
+\newline
+\subsection{Indexed Iteration}
+
+Kotlin provides \lstinline[language=Kotlin]{forEach}, \lstinline[language=Kotlin]{map}, \lstinline[language=Kotlin]{filter}, etc for iterators but these only give you the element if you also need the index as Kotlin provides \lstinline[language=Kotlin]{forEachIndexed}, \lstinline[language=Kotlin]{mapIndexed}, \lstinline[language=Kotlin]{filterIndexed}, etc
+
+\begin{lstlisting}[language=Kotlin,frame=single]
+fun example(list: List<String>) {
+  list.forEach { element ->
+    println(element)
+  }
+
+  list.forEachIndexed { i, element ->
+    println("${i}: ${element}")
+  }
+}
+\end{lstlisting}
+
+Rust also has this feature but it works differently, instead of different methods the iterator type is changed via \lstinline[language=Rust]{enumerate}:
+\begin{lstlisting}[language=Rust,frame=single]
+fn example(list: Vec<String>) {
+    list.iter()
+        .for_each(|element| println!("{}", element));
+        
+    list.iter()
+        .enumerate()
+        .for_each(|(i, element)| println!("{}: {}", i, element));
+}
+\end{lstlisting}
+This has the downside that all later operators must also handle the index as well. 
+
+\medskip
+\medskip
+
+\subsection{Formatting}
+
+To format a string, the easiest (and correct) way is to use \lstinline[language=Rust]{format!(string, parameters...)}. String formatting in Rust uses \lstinline|{}| as parameters. 
+\newline
+
+Basics:
+\newline
+\lstinline[language=Rust]|"{}"| will print the result of Display::fmt(), this must be manually implemented
+\newline
+\lstinline[language=Rust]|"{:?}"| will print the result of Debug::fmt(), this can be derived
+\newline
+\lstinline[language=Rust]|"{:#?}"| will pretty print the result of Debug::fmt()
+\newline
+\lstinline[language=Rust]|"{example}"| will print parameter named \lstinline|example|
+\newline
+\lstinline[language=Rust]|"{2}"| will print the third parameter
+\newline
+
+Padding:
+\newline
+\lstinline[language=Rust]|"{:>5}"| Left pad with up to 5 spaces
+\newline
+\lstinline[language=Rust]|"{:<7}"| Right pad with up to 7 spaces
+\newline
+\lstinline[language=Rust]|"{:^22}"| Centre with up to 11 spaces on both sides
+\newline
+
+Padding with any character:
+\newline
+\lstinline[language=Rust]|"{:_>5}"| Left pad with up to 5 underscores
+\newline
+\lstinline[language=Rust]|"{:#<7}"| Right pad with up to 7 hashes
+\newline
+\lstinline[language=Rust]|"{:c^22}"| Centre with up to 11 'c's on both sides
+\newline
+
+Numbers:
+\newline
+\lstinline[language=Rust]|"{:.3}"| Will print 3 fractional digits (adding 0s on the end if necessary) but only if it's a floating point number
+\newline
+\lstinline[language=Rust]|"{:+3}"| Print sign 
+\newline
+\lstinline[language=Rust]|"{:03}"| Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0
+\newline
+
+Example:
+\newline
+\lstinline[language=Rust]|format!("{:>5} {named}", "Foo", named=123)|
+\newline
+The pattern string must be a literal, to have variable parts (such as variable length padding) use this syntax:
+\newline
+\lstinline[language=Rust]|("{1:.0$}", 1, 1.22)|
+\newline
+This will print 1.2, the syntax is \lstinline[language=Rust]|{value_index:.precision_index$}|
+\newline
+\lstinline[language=Rust]|("{1:=<0$}", 10, "test")| 
+\newline
+This will print test======, the syntax is \lstinline[language=Rust]|{value_index:padding_char<length_index$}|
+\newline
+
+
+Note that invalid parameter details are ignored silently and treated as \lstinline|{}|.
+\newline
+If debugging via logging consider using \lstinline[language=Rust]|dgb!()|:
+\begin{lstlisting}[language=Rust,frame=single]
+fn main() {
+    let x;
+    x = dbg!(1 * 4);
+}
+\end{lstlisting}
+prints 
+\newline
+\lstinline[language=Rust]|[src/main.rs:3] 1 * 4 = 4|
+
+\newpage
+\section{Common bugs/issues}
+\textbf{Cloning a reference returns a reference despite the signature being a value}
+\newline
+This can because the \lstinline[language=Rust]{struct} doesn't implement/derive \lstinline[language=Rust]{Clone}.
+\medskip
+\newline
+\textbf{cannot move out of borrowed content when using unwrap()}
+\newline
+This is because \lstinline[language=Rust]{unwrap()} consumes the reference (it's self parameter is just \lstinline[language=Rust]{self}), to fix this use
+\lstinline[language=Rust]{variable.as_ref().unwrap()}.
+
+\newpage
+\section{Architecture/Coding approach}
+
+Kotlin is an object orientated language which means that generally data and methods are grouped together in classes and it's very rare to have methods outside of classes even though Kotlin fully supports this. Also classes can extend each other so a lot of frameworks (such as Android or AWT) rely heavily on inheritance to provide functionality to classes.
+
+Rust is a data orientated language, and programs will more resemble C programs where a program may be made of a few methods and a few \lstinline[language=Rust]{struct}s without any \lstinline[language=Rust]{impl}s.
+And as \lstinline[language=Rust]{impl} inheritance is impossible in Rust and \lstinline[language=Rust]{trait} inheritance doesn't really add much use, composition is used a lot.
+\newline
+
+That said grouping logic and data is still fine and done with Rust:
+
+\begin{lstlisting}[language=Kotlin,frame=single]
+class Point(
+  val x: Float,
+  val y: Float
+) {
+  fun distanceTo(other: Point): Float {...}
+
+  fun angleTo(other: Point): Float {...}
+}
+\end{lstlisting}
+can become
+\begin{lstlisting}[language=Kotlin,frame=single]
+struct Point {
+  x: f32,
+  y: f32
+}
+
+impl Point {
+  fn new(x: f32, y: 32) {
+    return Point {x, y};
+  }
+}
+
+impl Point {
+  fn distance_to(other: Point): f32 {...}
+
+  fn angle_to(other: Point): f32 {...}
+}
+\end{lstlisting}
+
+While it does add a small cost to use wrapping types like \lstinline[language=Rust]{Rc}, they are still idiomatic and not a code smell unless you used them everywhere, although even then that might be the only practical solution. 
+
+\newpage
+\section{Resources}
+
+When learning any new language it is very handy to be able to see how a pattern can be implemented in both languages at once, Kotlin provided a Java to Kotlin converter to help with this - unfortunately there is not a Kotlin to Rust converter yet so I created a few repos:
+\medskip
+\newline
+\textbf{Language Demo}
+\newline
+https://bitbucket.org/raybritton/kotlin-rust-comparison
+\newline
+These both contain files with the common patterns (constants, lambdas, etc) implemented in both languages were possible, they are coded in the correct style for their respective languages. 
+\newline
+\newline
+\textbf{Roman Numerals}
+\newline
+https://github.com/raybritton/rosetta-roman-numerals
+\newline
+This contains CLI programs created in multiple languages that converts Roman numerals into decimal numbers and vice versa, the programs have the same methods, tests and functionality.
+\newline
+\newline
+\textbf{Tic-Tac-Toe}
+\newline
+https://github.com/sunjay/tic-tac-toe
+\newline
+This project is heavily commented and is an example of idiomatic and well written Rust.
+\medskip
+\medskip
+\newline
+\textbf{Further reading}
+\newline
+https://limpet.net/mbrubeck/2019/02/07/rust-a-unique-perspective.html
+
+\end{document}

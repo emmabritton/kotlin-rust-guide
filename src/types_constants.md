@@ -16,3 +16,5 @@ lazy_static! {
 	let A_STRING = String::from("Any text");
 }
 ```
+
+//TODO const fn

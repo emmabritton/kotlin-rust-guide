@@ -14,9 +14,10 @@ fn main() {
     //Arc (Atomically Reference Counted) allows for multiple, independent
     //references of a single value to exist outside of the borrow checker
     //for a tiny overhead by counting the number of references that
-    //exist (like in Swift) 
+    //exist
     let number = Arc::new(AtomicI8::new(0i8));
-    //Make a copy of the arc, any number of copies can exist
+    //Make a copy of the arc, any number of copies can exist but
+    //the each copy has to be moved into it's thread
     let thread_number = number.clone();
 
     //move means this lambda is taking ownership of any variable
