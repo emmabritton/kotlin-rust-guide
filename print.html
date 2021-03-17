@@ -1095,15 +1095,20 @@ fn thread1(thing: Arc&lt;Thing&gt;) {
 </span></code></pre></pre>
 <p>The value in the Arc can not be mutable unless it’s contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are Mutex and RwLock. The differences are that RwLock will allow any number of concurrent readers but only one writer and Mutex only allows one reader or writer at a time. </p>
 <h1 id="converting-strings"><a class="header" href="#converting-strings">Converting strings</a></h1>
-<p>Often when writing a function that takes a piece of text you’ll want to support both <code>String</code> and <code>&amp;str</code> to be more convenient to the caller. This is best achieved by using <code>Into&lt;String&gt;</code>. The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. <code>&amp;str</code> already has the <code>Into&lt;String&gt;</code> trait but it can also be implemented for any struct. <code>Into&lt;X&gt;</code> for Y is automatically implemented for any type that implements <code>From&lt;Y&gt;</code> for X which is actually how it’s implemented for Strings and is the recommended approach.</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn print&lt;S: Into&lt;String&gt;&gt;(value: S) { 
+<p>Often when writing a function that takes a piece of text you’ll want to support both <code>String</code> and <code>&amp;str</code> to be more convenient to the caller. This is best achieved by using <code>&amp;str</code> or <code>Into&lt;String&gt;</code>. </p>
+<p><code>String</code> can be converted to <code>&amp;str</code> like this:</p>
+<pre><code class="language-rust ignore does_not_compile">let text = String::new();
+print(&amp;text);
+</code></pre>
+<p>The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. <code>&amp;str</code> already has the <code>Into&lt;String&gt;</code> trait but it can also be implemented for any struct. <code>Into&lt;X&gt;</code> for Y is automatically implemented for any type that implements <code>From&lt;Y&gt;</code> for X which is actually how it’s implemented for Strings and is the recommended approach. </p>
+<pre><code class="language-rust ignore does_not_compile">fn print(value: &amp;str) { 
+	println!(&quot;{}&quot;, value;
+}
+
+fn print&lt;S: Into&lt;String&gt;&gt;(value: S) { 
 	println!(&quot;{}&quot;, value.into());
 }
-<span class="boring">}
-</span></code></pre></pre>
+</code></pre>
 <h1 id="interior-mutability"><a class="header" href="#interior-mutability">Interior mutability</a></h1>
 <p>Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the <code>Cell</code> structs.</p>
 <p><code>Cell</code> is a wrapper around a value that can be changed at any point.</p>
@@ -1230,9 +1235,9 @@ fn convert(json: String, example: Example) {
 </code></pre>
 <h1 id="common-bugsissues"><a class="header" href="#common-bugsissues">Common bugs/issues</a></h1>
 <h3 id="cloning-a-reference-returns-a-reference-despite-the-signature-being-a-value"><a class="header" href="#cloning-a-reference-returns-a-reference-despite-the-signature-being-a-value">Cloning a reference returns a reference despite the signature being a value</a></h3>
-<p>This can because the struct doesn’t implement/derive Clone.</p>
+<p>This can because the struct doesn’t implement/derive <code>Clone</code></p>
 <h3 id="cannot-move-out-of-borrowed-content-when-using-unwrap"><a class="header" href="#cannot-move-out-of-borrowed-content-when-using-unwrap">cannot move out of borrowed content when using unwrap()</a></h3>
-<p>This is because unwrap() consumes the reference (it’s self parameter is just <code>self</code>), to fix this use variable.as_ref().unwrap().</p>
+<p>This is because <code>unwrap()</code> consumes the reference (it’s self parameter is just <code>self</code>), to fix this use <code>variable.as_ref().unwrap()</code>.</p>
 <h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
 <p>Kotlin is an object orientated language which means that generally data and methods are grouped together in classes and it’s very rare to have methods outside of classes even though Kotlin fully supports this. Also classes can extend each other so a lot of frameworks (such as Android or AWT) rely heavily on inheritance to provide functionality to classes.</p>
 <p>Rust is a data orientated language, and programs will more resemble C programs where a program may be made of a few methods and a few structs without any impls. And as impl inheritance is impossible in Rust and trait inheritance doesn’t really add much use, composition is used a lot.</p>

@@ -167,9 +167,9 @@
                     <main>
                         <h1 id="common-bugsissues"><a class="header" href="#common-bugsissues">Common bugs/issues</a></h1>
 <h3 id="cloning-a-reference-returns-a-reference-despite-the-signature-being-a-value"><a class="header" href="#cloning-a-reference-returns-a-reference-despite-the-signature-being-a-value">Cloning a reference returns a reference despite the signature being a value</a></h3>
-<p>This can because the struct doesn’t implement/derive Clone.</p>
+<p>This can because the struct doesn’t implement/derive <code>Clone</code></p>
 <h3 id="cannot-move-out-of-borrowed-content-when-using-unwrap"><a class="header" href="#cannot-move-out-of-borrowed-content-when-using-unwrap">cannot move out of borrowed content when using unwrap()</a></h3>
-<p>This is because unwrap() consumes the reference (it’s self parameter is just <code>self</code>), to fix this use variable.as_ref().unwrap().</p>
+<p>This is because <code>unwrap()</code> consumes the reference (it’s self parameter is just <code>self</code>), to fix this use <code>variable.as_ref().unwrap()</code>.</p>
 
                     </main>
 
