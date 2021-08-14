@@ -15,13 +15,13 @@ let foo = dsl! {
 }
 
 //At compile time this will invoke the example macro with Foo as the parameter
-#[derive(example)]
+#[Example]
 struct Foo {
 
 }
 ```
 
-The annotation macros will generate code for Structs like AutoValue does for classes in Kotlin.
+The annotation macros will generate code for Structs like in Kotlin.
 
 Macros can generate Rust code at compile time or run and return a result at runtime like a method. 
 

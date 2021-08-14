@@ -6,3 +6,8 @@ In both Kotlin and Java, essentially, there is just one String type: String. Whe
 If you attempt to slice a string so it would cause a Unicode character to be broken Rust will panic. Use the .chars() method to access each character independently. So to get the length of a string in bytes you use foo.len() and to get the number of characters you use foo.chars().count(). 
 
 Note that std Rust has limited supported for unicode and you may need to use crates to add missing features, this is because unicode changes regularly and the unicode table is quite large and has to be compiled into your program.
+
+| Name | Description | 
+| - | - |
+| unicode-segmentation | Used to iterate over grapheme clusters |
+| unicode-normalization | Converts char + modifier into single character, this is vital if you need to compare Unicode strings |

@@ -7,6 +7,7 @@ Often when writing a function that takes a piece of text you’ll want to suppor
 let text = String::new();
 print(&text);
 ``` 
+(Actually it's converted to `&String` as adding a `&` just makes it a reference but rust treats `&String` as `&str` when passed a parameter)
 
 The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. `&str` already has the `Into<String>` trait but it can also be implemented for any struct. `Into<X>` for Y is automatically implemented for any type that implements `From<Y>` for X which is actually how it’s implemented for Strings and is the recommended approach. 
 

@@ -1,17 +1,17 @@
 # Classes, or the lack there of
 
-In Kotlin has Classes, Abstract Classes, Interfaces, and Extension methods. Rust has Traits, Structs, and Impls. 
+In Kotlin has Classes, Abstract Classes, Interfaces, and extension methods. Rust has Traits, Structs, and Impls. 
 
 #### Kotlin
-* An interface can have methods but can not have variables with values, and may extend another Interface. It can be supplemented with Extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
-* A class can have variables and methods, and may extend a Class, an Abstract Class and/or Interface(s). It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
-* An abstract class can have variables and methods, and may extend a Class, an Abstract Class and/or Interface(s). It can be supplemented with Extension methods or sub classed by other Classes or Abstract Classes.
+* An interface can have methods but can not have variables with values, and may extend another Interface. It can be supplemented with extension methods or sub classed by other Classes, Abstract Classes or Interfaces.
+* A class can have variables and methods, and may extend a Class, an Abstract Class and/or Interface(s). It can be supplemented with extension methods or sub classed by other Classes or Abstract Classes.
+* An abstract class can have variables and methods, and may extend a Class, an Abstract Class and/or Interface(s). It can be supplemented with extension methods or sub classed by other Classes or Abstract Classes.
 
 #### Rust
 * A trait is like an interface, it defines a list of methods that must be implemented. It can extend other traits, although this is rare.
 * A struct is the closest thing to a class but although it has a list of variables it does not have any methods. This can not extend anything.
 * An impl is a collection of methods either matching a Trait (like a Class implementing an Interface) or free form from a struct (like a Class), but Impl are not allowed to have variables and if implementing a Trait can not have methods that are not defined in the Trait. An Impl may be defined repeatedly.
-* trait and impl can used like Extension Methods (although the syntax is closer to Swift than Kotlin).
+* trait and impl can used like extension Methods (although the syntax is closer to Swift than Kotlin).
 
 There is nothing like an abstract class in Rust.
 

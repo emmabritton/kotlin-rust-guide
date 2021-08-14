@@ -2,7 +2,7 @@
 
 In Kotlin a variable exists, and is available, while in it’s scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods execution. Rust is basically the same and generally you’ll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.
 
-This will not compile as bar has taken ownership of the data in foo and so foo can no longer be used:
+This will not compile as `bar` has taken ownership of the data in `foo` and so `foo` can no longer be used:
 ```rust,does_not_compile,ignore
 let foo = String::from("Hello"); 
 let bar = foo;
@@ -22,11 +22,12 @@ let foo = String::from("Hello");
 let bar = foo.clone();
 println!("{}", foo);
 ```
-This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data for example with file streams.
+This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data, for example with network streams.
 Ownership and borrowing apply to all methods:
 ```rust
 fn main() {
-	let a = String::from("Hello"); let b = return_param(a);
+	let a = String::from("Hello"); 
+	let b = return_param(a);
 	let c = length(b);
     println!("{}", c);
 }
@@ -39,10 +40,7 @@ fn length(param: String) -> usize {
 	return param.len();
 }
 ```
-When main is executed both a and b are lost, length takes ownership of the string and it is dropped
-
-
-at the end of length, to keep b in memory either of the following changes could be made:
+When main is executed both `a` and `b` are lost, length takes ownership of the string and it is dropped at the end of length, to keep `b` in memory either of the following changes could be made:
 ```rust
 # fn main() {
 # let str = String::from("test");
@@ -66,5 +64,42 @@ fn length(param: String) -> (String, usize) {
 ```
 References are just pointers and so don’t take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).
 
-Rust supports generics like Kotlin and they are expressed like this: `Vec<Item>`, occasionally you might see `Vec<'a Item>` the `'a` is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn’t matter but the standard names are `'a`, `'b` and `'c`, except for `'static` which means the variable must always be available, i.e. a hardcoded value.
+Rust supports generics like Kotlin and they are expressed like this: `Vec<Item>`, occasionally you might see `Vec<&'a Item>` the `'a` is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn’t matter but the standard names are `'a`, `'b` and `'c`, except for `'static` which means the variable must always be available, i.e. a hardcoded value.
  
+If a parameter has the lifetime `a` and a result also has the lifetime `a` like this:
+```rust
+struct Foo {
+	contents: String
+}
+
+impl Foo {
+	//like with generics the lifetime has to specified in advance with <>
+	fn get_first<'a>(&'a self) -> &'a str {
+		&self.contents[0..1]
+	}
+}
+```
+then this is saying the instance of `Foo` must live as long as the reference returned by `get_first`.
+
+However, in the example above the lifetimes aren't because the method has one parameter that is a reference and one result that is a reference and they share the same lifetime, so Rust will automatically assume the lifetime.
+
+This would not compile:
+```rust,does_not_compile,ignore
+# struct Foo {	contents: String }
+
+# impl Foo {
+# fn get_first<'a>(&'a self) -> &'a str {&self.contents[0..1]}
+# }
+
+fn main() {
+	let result = get_char();
+}
+
+fn get_char() -> &str {
+	let foo = Foo { contents: String::from("example") };
+	let chr = foo.get_first();
+	return chr;
+}
+```
+
+as there's no lifetime on the result of `get_char` and there can't be as `foo` is dropped at the end of `get_char` and so `chr` would be pointing to an invalid section of memory.

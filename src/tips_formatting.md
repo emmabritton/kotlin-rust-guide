@@ -22,7 +22,11 @@ Padding:
 
 Padding with any character:
 
-`"{:_>5}"` Left pad with up to 5 underscores "{:#<7}" Right pad with up to 7 hashes "{:c^22}" Centre with up to 11 ’c’s on both sides
+`"{:_>5}"` Left pad with up to 5 underscores 
+
+`"{:#<7}"` Right pad with up to 7 hashes 
+
+`"{:c^22}"` Centre with up to 11 ’c’s on both sides
 
 Numbers:
 

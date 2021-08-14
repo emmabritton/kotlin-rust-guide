@@ -35,18 +35,17 @@ You can call `unwrap()` on a `Result` to get the success value or crash the app.
 ```rust,ignore
 fn unwrap_example() {
 	let foo = open().unwrap();
-	let bar = foo.run().unwrap();
 }
 
 //the question mark operator is only valid in methods that return Result
 fn better_example() -> Result<(), Error> { 
-	let bar = open()?.run()?;
+	let bar = open()?;
 
 	Ok(())
 }
 ```
 
-Some crates errors aren't compatible with each other and so have to converted to something before the error can be returned:
+Some crates errors aren't compatible with each other and so have to be converted to something before the error can be returned:
 
 ```rust,does_not_compile,ignore
 fn main() -> Result<(), Error> { 
@@ -57,17 +56,17 @@ fn main() -> Result<(), Error> {
 }
 ```
 
-This example wouldn't be valid as IoError and NetError don't implement Error, you have two options here:
+This example wouldn't compile because the size in memory of a return type must be known at compile time and `Error` is a trait (an `interface` in Kotlin). So it must be wrapped like so `Box<dyn Error>`, `Box` moves the value to the heap and is essentially a pointer, `dyn` just means the type is dynamically dispatched (i.e. a trait). (see https://doc.rust-lang.org/std/keyword.dyn.html)
 
 1. Create a wrapper type and implement it for all error types that you have to handle
-2. Use [anyhow](https://github.com/dtolnay/anyhow)
+2. Use [eyre](https://github.com/yaahc/eyre)
 
 I highly recommend anyhow for all apps, it automatically handles all error types and reduces boilerplate:
 
 ```rust,ignore
-use anyhow::Result; //import anyhow Result and Error instead of std as needed
+use eyre::Result; //import eyre Result and Error instead of std as needed
 
 fn main() -> Result<()> { //Result only has single parameter
-
+	Ok(())
 }
 ```

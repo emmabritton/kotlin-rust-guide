@@ -7,7 +7,7 @@ Some functionality built in to Java/Kotlin isn’t part of the Rust std lib and 
 | Random numbers | rand | Maintained by Rust team |
 | Serialization | serde | Does XML, JSON, protobuf, etc |
 | Lazy static variables | lazy_static | |
-| Regix | regex | Maintained by Rust team |
+| Regex | regex | Maintained by Rust team |
 | Base64 | base64 | |
 | UUID | uuid | | 
 | Enums | strum | Enum features variant names, properties, count, list, ordinal |

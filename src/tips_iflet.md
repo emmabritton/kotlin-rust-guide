@@ -1,6 +1,6 @@
 # if let
 
-Like in Swift an Option can be unwrapped in an if if there is a value:
+Like in Swift an Option can be unwrapped with an if, if there is a value match:
 ```rust
 fn some_method(optional_string: Option<String>) {
   if let Some(string_value) = optional_string {

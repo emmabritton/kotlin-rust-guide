@@ -7,7 +7,7 @@ Please also read the following books for a much more complete understanding of R
 
 | | |
 | ----------- | - |
-| *The* book on Rust (often called the rust book or just the book in discussions) | [Link](https://doc.rust-lang.org/stable/book) |
+| The official docs (often called the rust book or just the book in discussions) | [Link](https://doc.rust-lang.org/stable/book) |
 | A collection of examples for common patterns and tasks | [Link](https://doc.rust-lang.org/stable/rust-by-example) |
 | Guide for Cargo (see also the [Cargo chapter](./cargo.md)) | [Link](https://doc.rust-lang.org/cargo/) |
 

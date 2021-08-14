@@ -1,6 +1,38 @@
 # Tools
 
-//TODO cargo-edit
+To install a tool use `cargo install <tool>`, for example `cargo install cargo-edit`
+
+## Dependency management
+
+**Description**
+
+Allows you to add, remove or update dependencies from the command line
+
+**Usage**
+
+`cargo add <crate>`, e.g. `cargo add chrono`
+
+`cargo rm <crate>`
+	
+`cargo upgrade`
+
+**Link**
+
+[cargo-edit](https://github.com/killercup/cargo-edit)
+
+## Dependency graph
+
+**Description**
+
+Generates a dependency graph for your project
+
+**Usage**
+
+`cargo deps`
+
+**Link**
+
+[cargo-deps](https://github.com/m-cat/cargo-deps)
 
 ## Security Audit
 
@@ -18,7 +50,7 @@ Audit Cargo.lock files for crates with security vulnerabilities reported to the 
 
 **Link**
 
-https://github.com/RustSec/cargo-audit
+[cargo-audit](https://github.com/RustSec/cargo-audit)
 
 ## Macro Expansion
 
@@ -36,7 +68,7 @@ Prints out the result of macro expansion and `#[derive]` expansion applied to th
 
 **Link**
 
-https://github.com/dtolnay/cargo-expand
+[cargo-expand](https://github.com/dtolnay/cargo-expand)
 
 ## Outdated dependencies
 
@@ -54,4 +86,4 @@ Prints out report of out of date dependencies.
 
 **Link**
 
-https://github.com/kbknapp/cargo-outdated
+[cargo-outdated](https://github.com/kbknapp/cargo-outdated)
