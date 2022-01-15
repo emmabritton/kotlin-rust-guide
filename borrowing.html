@@ -143,7 +143,7 @@ let bar = foo;
 println!(&quot;{}&quot;, foo);
 </code></pre>
 <p>This will compile however as numbers have Copy implemented for them and so num2 automatically makes a copy of num1s data:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let num1 = 54;
@@ -152,7 +152,7 @@ println!(&quot;{}&quot;, num1);
 <span class="boring">}
 </span></code></pre></pre>
 <p>but this can be replicated for the string example by doing:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let foo = String::from(&quot;Hello&quot;); 
@@ -162,7 +162,7 @@ println!(&quot;{}&quot;, foo);
 </span></code></pre></pre>
 <p>This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data, for example with network streams.
 Ownership and borrowing apply to all methods:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
 	let a = String::from(&quot;Hello&quot;); 
 	let b = return_param(a);
 	let c = length(b);
@@ -178,7 +178,7 @@ fn length(param: String) -&gt; usize {
 }
 </code></pre></pre>
 <p>When main is executed both <code>a</code> and <code>b</code> are lost, length takes ownership of the string and it is dropped at the end of length, to keep <code>b</code> in memory either of the following changes could be made:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">fn main() {
 </span><span class="boring">let str = String::from(&quot;test&quot;);
 </span><span class="boring">let _ref_len = length_ref(&amp;str);
 </span><span class="boring">let (nstr, len) = length(str);
@@ -201,7 +201,7 @@ fn length(param: String) -&gt; (String, usize) {
 <p>References are just pointers and so don’t take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).</p>
 <p>Rust supports generics like Kotlin and they are expressed like this: <code>Vec&lt;Item&gt;</code>, occasionally you might see <code>Vec&lt;&amp;'a Item&gt;</code> the <code>'a</code> is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn’t matter but the standard names are <code>'a</code>, <code>'b</code> and <code>'c</code>, except for <code>'static</code> which means the variable must always be available, i.e. a hardcoded value.</p>
 <p>If a parameter has the lifetime <code>a</code> and a result also has the lifetime <code>a</code> like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>struct Foo {

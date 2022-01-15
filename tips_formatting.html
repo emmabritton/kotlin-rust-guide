@@ -166,6 +166,22 @@ x = dbg!(1 * 4);
 </code></pre>
 <p>prints
 <code>[src/main.rs:3] 1 * 4 = 4</code></p>
+<h1 id="direct-variable-usage"><a class="header" href="#direct-variable-usage">Direct variable usage</a></h1>
+<p>As of Rust <code>1.58.0</code> and edition <code>2021</code> you can use variables name in the string directly:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let part = &quot;world&quot;;
+println!(&quot;Hello {part}&quot;);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Unforutantely this doesn't support complex expressions yet, so you can't do:</p>
+<pre><code class="language-rust ignore">println!(&quot;{some_method()}&quot;);
+</code></pre>
+<p>or</p>
+<pre><code class="language-rust ignore">println!(&quot;{struct.field}&quot;);
+</code></pre>
+<p>This should work with any macro that uses <code>format_args</code> </p>
 
                     </main>
 

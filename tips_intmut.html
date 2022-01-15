@@ -143,7 +143,7 @@
 <p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads. </p>
 <p>All of these are safe, they use reference counting and/or memory swapping to update values.</p>
 <p>Example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use std::cell::RefCell;
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::cell::RefCell;
 </span>
 fn main() {
     let not_mutable = Person {

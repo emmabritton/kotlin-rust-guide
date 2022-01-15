@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="result-and-exceptions"><a class="header" href="#result-and-exceptions">Result and exceptions</a></h1>
 <p>Result&lt;V, E&gt; is used for when a method may fail, it can contain the result or an error. It is created via <code>Ok()</code> and <code>Err()</code></p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn get(idx: u32) -&gt; Result&lt;bool, usize&gt; {
+<pre><pre class="playground"><code class="language-rust edition2021">fn get(idx: u32) -&gt; Result&lt;bool, usize&gt; {
 	if idx &gt; 10 {
 		Ok(true)
 	} else if idx &gt; 20 {

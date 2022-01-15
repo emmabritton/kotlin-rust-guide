@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="reference-counting"><a class="header" href="#reference-counting">Reference counting</a></h1>
 <p>Sometimes you need bypass the borrow checker, for example, you want to use a reference as a pointer to an item in a collection or you’re passing values between threads. To do this you use the Arc (Atomically Reference Counted) class, it adds a small overhead in the form of a count and some extra code to monitor and update the count. Arc will keep the value alive as long as any Arc value is still alive, when the last Arc value is dropped the value will be as well. To make multiple references to an value protected by Arc clone it:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">use std::sync::Arc;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::sync::Arc;
 
 fn main() {
   let some_heap_thing = Thing::new();

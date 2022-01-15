@@ -200,7 +200,7 @@ fn main() {
 </code></pre>
 <p>The <code>'a</code> lifetime tells Rust that the <code>&amp;str</code>s will be available as long as the parent <code>Person</code> is.
 The sample uses the <code>chrono</code> crate, it is a simple to use and common date and time library. If we want to print the object we must implement the Display like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::fmt;
@@ -223,7 +223,7 @@ impl fmt::Display for Person {
 </span></code></pre></pre>
 <p>You can now write <code>println!(&quot;{}&quot;, person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
 To avoid boilerplate Rust can automatically derive some traits for structs like so:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash, Default)]

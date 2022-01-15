@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="constants"><a class="header" href="#constants">Constants</a></h1>
 <p>In Rust there are two types of constants <code>const</code> and <code>static</code>. <code>const</code> are immutable values hardcoded into the program. statics are optionally mutable values that are globally available. Using mutable statics is unsafe unless wrapped in thread safe structs such as <code>Arc</code> and <code>Mutex</code>. (See <a href="./concurrency.html">Concurrency</a>)</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const VERSION: u32 = 1;
@@ -153,7 +153,7 @@ lazy_static! {
 </code></pre>
 <p>const values are inserted at compile time where ever they were used, and so if you make a a mutable constant every use will be it's own instance.</p>
 <p>A method can be constant if it's all of it's internal are constant as well, for example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const FOO: usize = 1;

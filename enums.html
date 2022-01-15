@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
 <p>Unfortunately enums in Rust work they do in Swift and so no default values can be provided and instead you have to add methods which use matches to provide values:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">enum MobileOs {
+<pre><pre class="playground"><code class="language-rust edition2021">enum MobileOs {
   Android, Ios, Windows
 }
 
@@ -156,7 +156,7 @@ fn main() {
 }
 </code></pre></pre>
 <p>Thankfully they can also work like sealed classes:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">enum Example {
+<pre><pre class="playground"><code class="language-rust edition2021">enum Example {
   Foo { named_value: i32 },
   Tuple(u8, u8),
   Empty

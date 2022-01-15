@@ -137,21 +137,21 @@
                     <main>
                         <h1 id="primitives"><a class="header" href="#primitives">Primitives</a></h1>
 <p>In Kotlin there are few commonly used primitive types:</p>
-<table><thead><tr><th>Name</th><th align="center">Bits</th><th>Type</th></tr></thead><tbody>
-<tr><td>Byte</td><td align="center">8</td><td>Integer</td></tr>
-<tr><td>Int</td><td align="center">32</td><td>Integer</td></tr>
-<tr><td>Long</td><td align="center">64</td><td>Integer</td></tr>
-<tr><td>Float</td><td align="center">32</td><td>Floating Point</td></tr>
-<tr><td>Double</td><td align="center">64</td><td>Floating Point</td></tr>
-<tr><td>Char</td><td align="center">16</td><td>UTF-16 Character</td></tr>
-<tr><td>Boolean</td><td align="center">N/A</td><td>Boolean</td></tr>
+<table><thead><tr><th>Name</th><th style="text-align: center">Bits</th><th>Type</th></tr></thead><tbody>
+<tr><td>Byte</td><td style="text-align: center">8</td><td>Integer</td></tr>
+<tr><td>Int</td><td style="text-align: center">32</td><td>Integer</td></tr>
+<tr><td>Long</td><td style="text-align: center">64</td><td>Integer</td></tr>
+<tr><td>Float</td><td style="text-align: center">32</td><td>Floating Point</td></tr>
+<tr><td>Double</td><td style="text-align: center">64</td><td>Floating Point</td></tr>
+<tr><td>Char</td><td style="text-align: center">16</td><td>UTF-16 Character</td></tr>
+<tr><td>Boolean</td><td style="text-align: center">N/A</td><td>Boolean</td></tr>
 </tbody></table>
 <p>In Kotlin the Integer types are signed but there unsigned versions, i.e UByte.</p>
 <p>Rust uses a prefix followed by the bit size to create a number type (e.g. i32 meaning a 32 bit signed integer), these are the prefixes:</p>
-<table><thead><tr><th align="center">Character</th><th>Type</th></tr></thead><tbody>
-<tr><td align="center">i</td><td>Signed Integer</td></tr>
-<tr><td align="center">u</td><td>Unsigned Integer</td></tr>
-<tr><td align="center">f</td><td>Floating Point</td></tr>
+<table><thead><tr><th style="text-align: center">Character</th><th>Type</th></tr></thead><tbody>
+<tr><td style="text-align: center">i</td><td>Signed Integer</td></tr>
+<tr><td style="text-align: center">u</td><td>Unsigned Integer</td></tr>
+<tr><td style="text-align: center">f</td><td>Floating Point</td></tr>
 </tbody></table>
 <p>Floating points are 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: <code>isize</code> and <code>usize</code> these are whatever the pointer size is for the CPU (for most new computers and phones that is 64 bits). 
 As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> and a <code>Double</code> is <code>f64</code>. </p>

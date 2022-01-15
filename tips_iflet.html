@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="if-let"><a class="header" href="#if-let">if let</a></h1>
 <p>Like in Swift an Option can be unwrapped with an if, if there is a value match:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn some_method(optional_string: Option&lt;String&gt;) {
@@ -148,10 +148,10 @@
 <span class="boring">}
 </span></code></pre></pre>
 <p>This also works for Result but use Ok and Err instead of Some and None. If you need to handle both states you should use match as an if let throws away the other value:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">type Error = Box&lt;std::error::Error&gt;;
+</span><span class="boring">type Error = Box&lt;dyn std::error::Error&gt;;
 </span>
 fn some_method(optional_string: Option&lt;String&gt;) {
   match optional_string {

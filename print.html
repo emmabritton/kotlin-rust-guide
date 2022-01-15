@@ -197,21 +197,21 @@ struct Foo {
 <p>Most programs don't need their own macros but will often use ones from std or crates.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="primitives"><a class="header" href="#primitives">Primitives</a></h1>
 <p>In Kotlin there are few commonly used primitive types:</p>
-<table><thead><tr><th>Name</th><th align="center">Bits</th><th>Type</th></tr></thead><tbody>
-<tr><td>Byte</td><td align="center">8</td><td>Integer</td></tr>
-<tr><td>Int</td><td align="center">32</td><td>Integer</td></tr>
-<tr><td>Long</td><td align="center">64</td><td>Integer</td></tr>
-<tr><td>Float</td><td align="center">32</td><td>Floating Point</td></tr>
-<tr><td>Double</td><td align="center">64</td><td>Floating Point</td></tr>
-<tr><td>Char</td><td align="center">16</td><td>UTF-16 Character</td></tr>
-<tr><td>Boolean</td><td align="center">N/A</td><td>Boolean</td></tr>
+<table><thead><tr><th>Name</th><th style="text-align: center">Bits</th><th>Type</th></tr></thead><tbody>
+<tr><td>Byte</td><td style="text-align: center">8</td><td>Integer</td></tr>
+<tr><td>Int</td><td style="text-align: center">32</td><td>Integer</td></tr>
+<tr><td>Long</td><td style="text-align: center">64</td><td>Integer</td></tr>
+<tr><td>Float</td><td style="text-align: center">32</td><td>Floating Point</td></tr>
+<tr><td>Double</td><td style="text-align: center">64</td><td>Floating Point</td></tr>
+<tr><td>Char</td><td style="text-align: center">16</td><td>UTF-16 Character</td></tr>
+<tr><td>Boolean</td><td style="text-align: center">N/A</td><td>Boolean</td></tr>
 </tbody></table>
 <p>In Kotlin the Integer types are signed but there unsigned versions, i.e UByte.</p>
 <p>Rust uses a prefix followed by the bit size to create a number type (e.g. i32 meaning a 32 bit signed integer), these are the prefixes:</p>
-<table><thead><tr><th align="center">Character</th><th>Type</th></tr></thead><tbody>
-<tr><td align="center">i</td><td>Signed Integer</td></tr>
-<tr><td align="center">u</td><td>Unsigned Integer</td></tr>
-<tr><td align="center">f</td><td>Floating Point</td></tr>
+<table><thead><tr><th style="text-align: center">Character</th><th>Type</th></tr></thead><tbody>
+<tr><td style="text-align: center">i</td><td>Signed Integer</td></tr>
+<tr><td style="text-align: center">u</td><td>Unsigned Integer</td></tr>
+<tr><td style="text-align: center">f</td><td>Floating Point</td></tr>
 </tbody></table>
 <p>Floating points are 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: <code>isize</code> and <code>usize</code> these are whatever the pointer size is for the CPU (for most new computers and phones that is 64 bits). 
 As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> and a <code>Double</code> is <code>f64</code>. </p>
@@ -238,7 +238,7 @@ As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> an
 
 </code></pre>
 <p><strong>Rust</strong></p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use std::error::Error as StdError;
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::error::Error as StdError;
 </span><span class="boring">type Error = Box&lt;dyn StdError&gt;;
 </span>
 fn main() {
@@ -285,7 +285,7 @@ fn main() -&gt; Result&lt;()&gt; { //Result only has single parameter
 <div style="break-before: page; page-break-before: always;"></div><h1 id="types-and-variables"><a class="header" href="#types-and-variables">Types and variables</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mutability"><a class="header" href="#mutability">Mutability</a></h1>
 <p>Because of the limitations imposed by the JVM in Kotlin variables are mutable or immutable sometimes based on type and sometimes by declaration. In Rust (and some other languages such as Swift) mutability is controlled via declaration:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn main() { 
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() { 
 	let foo: i32 = 1;     //immutable
 	let mut bar: i32 = 2; //mutable
 }
@@ -357,7 +357,7 @@ If you attempt to slice a string so it would cause a Unicode character to be bro
 <p><sup class="footnote-reference"><a href="#1">1</a></sup> Crates such as <a href="https://github.com/bluss/maplit">maplit</a> do provide macros for this.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="constants"><a class="header" href="#constants">Constants</a></h1>
 <p>In Rust there are two types of constants <code>const</code> and <code>static</code>. <code>const</code> are immutable values hardcoded into the program. statics are optionally mutable values that are globally available. Using mutable statics is unsafe unless wrapped in thread safe structs such as <code>Arc</code> and <code>Mutex</code>. (See <a href="./concurrency.html">Concurrency</a>)</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const VERSION: u32 = 1;
@@ -373,7 +373,7 @@ lazy_static! {
 </code></pre>
 <p>const values are inserted at compile time where ever they were used, and so if you make a a mutable constant every use will be it's own instance.</p>
 <p>A method can be constant if it's all of it's internal are constant as well, for example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const FOO: usize = 1;
@@ -388,7 +388,7 @@ const fn add(lhs: usize, rhs: usize) -&gt; usize {
 </span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="references"><a class="header" href="#references">References</a></h1>
 <p>All variables can be passed as a reference by prefixing with a <code>&amp;</code>, for example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
 	let foo = 10; 
 	print(foo); 
 	print_ref(&amp;foo);
@@ -425,7 +425,7 @@ let bar = foo;
 println!(&quot;{}&quot;, foo);
 </code></pre>
 <p>This will compile however as numbers have Copy implemented for them and so num2 automatically makes a copy of num1s data:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let num1 = 54;
@@ -434,7 +434,7 @@ println!(&quot;{}&quot;, num1);
 <span class="boring">}
 </span></code></pre></pre>
 <p>but this can be replicated for the string example by doing:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let foo = String::from(&quot;Hello&quot;); 
@@ -444,7 +444,7 @@ println!(&quot;{}&quot;, foo);
 </span></code></pre></pre>
 <p>This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data, for example with network streams.
 Ownership and borrowing apply to all methods:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021">fn main() {
 	let a = String::from(&quot;Hello&quot;); 
 	let b = return_param(a);
 	let c = length(b);
@@ -460,7 +460,7 @@ fn length(param: String) -&gt; usize {
 }
 </code></pre></pre>
 <p>When main is executed both <code>a</code> and <code>b</code> are lost, length takes ownership of the string and it is dropped at the end of length, to keep <code>b</code> in memory either of the following changes could be made:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">fn main() {
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">fn main() {
 </span><span class="boring">let str = String::from(&quot;test&quot;);
 </span><span class="boring">let _ref_len = length_ref(&amp;str);
 </span><span class="boring">let (nstr, len) = length(str);
@@ -483,7 +483,7 @@ fn length(param: String) -&gt; (String, usize) {
 <p>References are just pointers and so don’t take ownership but instead the value is borrowed, there are some rules around this for example only one mutable reference can exist at once. Because of this a potential helpful way to think about this is shared vs unique, you can as many read only references as you want shared around but when writeable only a single unique reference can exist (to avoid race conditions, etc).</p>
 <p>Rust supports generics like Kotlin and they are expressed like this: <code>Vec&lt;Item&gt;</code>, occasionally you might see <code>Vec&lt;&amp;'a Item&gt;</code> the <code>'a</code> is a lifetime notation and these are used to guide the compiler as to how long references will be alive. The lifetime name doesn’t matter but the standard names are <code>'a</code>, <code>'b</code> and <code>'c</code>, except for <code>'static</code> which means the variable must always be available, i.e. a hardcoded value.</p>
 <p>If a parameter has the lifetime <code>a</code> and a result also has the lifetime <code>a</code> like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>struct Foo {
@@ -560,7 +560,7 @@ fun ParentFoo.example1() {} //Adds method called example1 to all
 //implementations and children of ParentA
 </code></pre>
 <p>Some Rust examples:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>struct StructFoo { //variables only 
@@ -649,7 +649,7 @@ fn main() {
 </code></pre>
 <p>The <code>'a</code> lifetime tells Rust that the <code>&amp;str</code>s will be available as long as the parent <code>Person</code> is.
 The sample uses the <code>chrono</code> crate, it is a simple to use and common date and time library. If we want to print the object we must implement the Display like this:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use std::fmt;
@@ -672,7 +672,7 @@ impl fmt::Display for Person {
 </span></code></pre></pre>
 <p>You can now write <code>println!(&quot;{}&quot;, person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
 To avoid boilerplate Rust can automatically derive some traits for structs like so:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Debug, Copy, Clone, PartialEq, PartialOrd, Hash, Default)]
@@ -693,7 +693,7 @@ struct Foo {}
 <p>All of these require all the fields in the struct to implement the same traits. Numbers, strings, etc implement all the built in derivable types. As with <code>PartialEq</code> and <code>Eq</code> Rust often has two versions of a trait, one that is allowed to fail (and so will generally return <code>Result</code> or <code>Option</code>) and another that is not allowed to fail. In this case <code>Eq</code> will panic if something goes wrong, likewise there is <code>From</code> and <code>TryFrom</code> for converting structs, <code>From</code> will panic if it fails and <code>TryFrom</code> will return <code>Err</code> if it fails.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="default"><a class="header" href="#default">Default</a></h1>
 <p>If you implement a struct where all the fields have all implemented Default then you don’t have to write out every field when making a new instance of the struct:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">#[derive(Default)]
+<pre><pre class="playground"><code class="language-rust edition2021">#[derive(Default)]
 struct Foo { 
 	a: i32,
 	b: i32,
@@ -753,7 +753,7 @@ impl Foo {
 <p>See also <a href="https://rust-lang.github.io/api-guidelines/naming.html">https://rust-lang.github.io/api-guidelines/naming.html</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="functional-programming"><a class="header" href="#functional-programming">Functional Programming</a></h1>
 <p>Rust supports lambdas, the parameters are written comma separated in pipes and the body only requires curly braces if it goes over multiple lines:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>	let x = vec![1,2,3];
@@ -863,7 +863,7 @@ mod inner;
 <div style="break-before: page; page-break-before: always;"></div><h1 id="result-option-and-exceptions"><a class="header" href="#result-option-and-exceptions">Result, Option and Exceptions</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="result-and-exceptions"><a class="header" href="#result-and-exceptions">Result and exceptions</a></h1>
 <p>Result&lt;V, E&gt; is used for when a method may fail, it can contain the result or an error. It is created via <code>Ok()</code> and <code>Err()</code></p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn get(idx: u32) -&gt; Result&lt;bool, usize&gt; {
+<pre><pre class="playground"><code class="language-rust edition2021">fn get(idx: u32) -&gt; Result&lt;bool, usize&gt; {
 	if idx &gt; 10 {
 		Ok(true)
 	} else if idx &gt; 20 {
@@ -886,7 +886,7 @@ fn main() {
 <p>To crash a Rust program you should use <code>panic!(&quot;message&quot;)</code>. This will print the message and stacktrace to the command line.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="option-and-nulls"><a class="header" href="#option-and-nulls">Option and nulls</a></h1>
 <p><code>Option&lt;T&gt;</code>s are the same as <code>Optional&lt;T&gt;</code>s and quite like nullable values and are created via <code>Some()</code> and <code>None</code></p>
-<pre><pre class="playground"><code class="language-rust edition2018">fn divide(numerator: f64, denominator: f64) -&gt; Option&lt;f64&gt; { 
+<pre><pre class="playground"><code class="language-rust edition2021">fn divide(numerator: f64, denominator: f64) -&gt; Option&lt;f64&gt; { 
 	if denominator == 0.0 {
 		None //notice no return and no semicolon 
 	} else {
@@ -904,7 +904,7 @@ fn main() {
 </code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h1>
 <p>To pass values safely between threads you need to use Mutexes or Atomic values in most languages, Rust is no different. For example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">use std::thread;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::thread;
 use std::sync::atomic::{AtomicI8, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
@@ -950,7 +950,7 @@ fn main() {
 <p>This program will continually print out the value stored in <code>number</code> until the thread reaches 10</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
 <p>The standard in Rust is to have the tests in a module inside the module being tested, the test module needs to be annotated as do all the tests:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>//foo.rs 
@@ -1043,7 +1043,7 @@ rustup component add clippy
 <p><a href="https://github.com/kbknapp/cargo-outdated">cargo-outdated</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="enums"><a class="header" href="#enums">Enums</a></h1>
 <p>Unfortunately enums in Rust work they do in Swift and so no default values can be provided and instead you have to add methods which use matches to provide values:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">enum MobileOs {
+<pre><pre class="playground"><code class="language-rust edition2021">enum MobileOs {
   Android, Ios, Windows
 }
 
@@ -1062,7 +1062,7 @@ fn main() {
 }
 </code></pre></pre>
 <p>Thankfully they can also work like sealed classes:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">enum Example {
+<pre><pre class="playground"><code class="language-rust edition2021">enum Example {
   Foo { named_value: i32 },
   Tuple(u8, u8),
   Empty
@@ -1091,7 +1091,7 @@ fn main() {
 <p>Reading a line from the command prompt using <code>std::io::stdin().read_line()</code> will include the return character, remove it using <code>trim()</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="if-let"><a class="header" href="#if-let">if let</a></h1>
 <p>Like in Swift an Option can be unwrapped with an if, if there is a value match:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn some_method(optional_string: Option&lt;String&gt;) {
@@ -1102,10 +1102,10 @@ fn main() {
 <span class="boring">}
 </span></code></pre></pre>
 <p>This also works for Result but use Ok and Err instead of Some and None. If you need to handle both states you should use match as an if let throws away the other value:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">type Error = Box&lt;std::error::Error&gt;;
+</span><span class="boring">type Error = Box&lt;dyn std::error::Error&gt;;
 </span>
 fn some_method(optional_string: Option&lt;String&gt;) {
   match optional_string {
@@ -1124,7 +1124,7 @@ fn another_method(result: Result&lt;String, Error&gt;) {
 </span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reference-counting"><a class="header" href="#reference-counting">Reference counting</a></h1>
 <p>Sometimes you need bypass the borrow checker, for example, you want to use a reference as a pointer to an item in a collection or you’re passing values between threads. To do this you use the Arc (Atomically Reference Counted) class, it adds a small overhead in the form of a count and some extra code to monitor and update the count. Arc will keep the value alive as long as any Arc value is still alive, when the last Arc value is dropped the value will be as well. To make multiple references to an value protected by Arc clone it:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">use std::sync::Arc;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::sync::Arc;
 
 fn main() {
   let some_heap_thing = Thing::new();
@@ -1169,7 +1169,7 @@ fn print&lt;S: Into&lt;String&gt;&gt;(value: S) {
 <p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads. </p>
 <p>All of these are safe, they use reference counting and/or memory swapping to update values.</p>
 <p>Example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">use std::cell::RefCell;
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::cell::RefCell;
 </span>
 fn main() {
     let not_mutable = Person {
@@ -1201,7 +1201,7 @@ list.forEachIndexed { i, element -&gt;
 } 
 </code></pre>
 <p>Rust also has this feature but it works differently, instead of different methods the iterator type is changed via enumerate:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">
+<pre><pre class="playground"><code class="language-rust edition2021">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">let list = vec![&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];
@@ -1245,6 +1245,22 @@ x = dbg!(1 * 4);
 </code></pre>
 <p>prints
 <code>[src/main.rs:3] 1 * 4 = 4</code></p>
+<h1 id="direct-variable-usage"><a class="header" href="#direct-variable-usage">Direct variable usage</a></h1>
+<p>As of Rust <code>1.58.0</code> and edition <code>2021</code> you can use variables name in the string directly:</p>
+<pre><pre class="playground"><code class="language-rust edition2021">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let part = &quot;world&quot;;
+println!(&quot;Hello {part}&quot;);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Unforutantely this doesn't support complex expressions yet, so you can't do:</p>
+<pre><code class="language-rust ignore">println!(&quot;{some_method()}&quot;);
+</code></pre>
+<p>or</p>
+<pre><code class="language-rust ignore">println!(&quot;{struct.field}&quot;);
+</code></pre>
+<p>This should work with any macro that uses <code>format_args</code> </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="for-crates"><a class="header" href="#for-crates">For crates</a></h1>
 <h2 id="date-formatting"><a class="header" href="#date-formatting">Date Formatting</a></h2>
 <h3 id="chrono"><a class="header" href="#chrono">Chrono</a></h3>
@@ -1292,7 +1308,7 @@ fn convert(json: String, example: Example) {
 <p>This can because the struct doesn’t implement/derive <code>Clone</code></p>
 <h3 id="cannot-move-out-of-borrowed-content-when-using-unwrap"><a class="header" href="#cannot-move-out-of-borrowed-content-when-using-unwrap">cannot move out of borrowed content when using unwrap()</a></h3>
 <p>This is because <code>unwrap()</code> consumes the reference (it’s self parameter is just <code>self</code>), to fix this use <code>variable.as_ref().unwrap()</code>.</p>
-<h3 id="no-method-named--found-for-rcrefcellx"><a class="header" href="#no-method-named--found-for-rcrefcellx">No method named <code>..</code> found for Rc&lt;RefCell<X>&gt;</a></h3>
+<h3 id="no-method-named--found-for-rcrefcell"><a class="header" href="#no-method-named--found-for-rcrefcell">No method named <code>..</code> found for Rc&lt;RefCell<X>&gt;</a></h3>
 <p>Most likely you have imported <code>use std::borrow::BorrowMut</code>, remove it.
 The error is caused because there are two methods named <code>borrow_mut</code> and importing the trait causes the wrong one to be called. See <a href="https://github.com/rust-lang/rust/issues/39232">GitHub issue</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>

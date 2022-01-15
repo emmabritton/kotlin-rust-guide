@@ -137,7 +137,7 @@
                     <main>
                         <h1 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h1>
 <p>To pass values safely between threads you need to use Mutexes or Atomic values in most languages, Rust is no different. For example:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">use std::thread;
+<pre><pre class="playground"><code class="language-rust edition2021">use std::thread;
 use std::sync::atomic::{AtomicI8, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
