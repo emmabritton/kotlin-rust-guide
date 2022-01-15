@@ -58,3 +58,23 @@ x = dbg!(1 * 4);
 
 prints
 `[src/main.rs:3] 1 * 4 = 4`
+
+# Direct variable usage
+
+As of Rust 1.58.0 you can use variables name in the string directly:
+
+```rust
+let part = "world";
+println!("Hello {part}");
+```
+
+Unforutantely this doesn't support complex expressions yet, so you can't do:
+```rust,ignore
+println!("{some_method()}");
+```
+or
+```rust,ignore
+println!("{struct.field}");
+```
+
+This should work with any macro that uses `format_args` 
