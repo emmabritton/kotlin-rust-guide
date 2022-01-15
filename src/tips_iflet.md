@@ -10,7 +10,7 @@ fn some_method(optional_string: Option<String>) {
 ```
 This also works for Result but use Ok and Err instead of Some and None. If you need to handle both states you should use match as an if let throws away the other value:
 ```rust
-# type Error = Box<std::error::Error>;
+# type Error = Box<dyn std::error::Error>;
 
 fn some_method(optional_string: Option<String>) {
   match optional_string {

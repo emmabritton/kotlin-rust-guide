@@ -61,7 +61,7 @@ prints
 
 # Direct variable usage
 
-As of Rust 1.58.0 you can use variables name in the string directly:
+As of Rust `1.58.0` and edition `2021` you can use variables name in the string directly:
 
 ```rust
 let part = "world";
