@@ -2,7 +2,7 @@
 
 This is book comparing the differences and similarities between Kotlin and Rust, it also has a few useful tips and links.
 
-View at <https://raybritton.github.io/kotlin-rust-guide>
+View at <https://emmabritton.github.io/kotlin-rust-guide>
 
 # Building/Testing
 
