@@ -9,6 +9,10 @@ View at <https://emmabritton.github.io/kotlin-rust-guide>
 [mdBook](https://github.com/rust-lang/mdBook) must be installed:
 `cargo install mdbook`
 
+# Translations
+
+🇷🇺 Russian/русский: https://github.com/aqude/kotlin-rust-guide-ru (wip)
+
 ## License 
 
 ```
