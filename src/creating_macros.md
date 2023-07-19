@@ -148,6 +148,18 @@ macro_rules! add_nums {
 
 This can be called with `add_nums!(1,2);` and `add_nums!(1,2,3);`
 
+### Hygiene
+
+Macros have 'hygiene' which means to access something from your crate you'll have to spell out the full path:
+```rust,ignore
+$crate::path::some_method(..)
+```
+`$crate` refers to your crate.
+
+### Visibility
+
+Macros have to be annotated with `#[macro_export]` for it to be usable by other modules/crates.
+
 ### Advanced
 
 Macros will accept extra text which can be required to invoke the macro:
