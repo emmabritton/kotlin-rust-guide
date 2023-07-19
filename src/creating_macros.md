@@ -2,7 +2,7 @@
 
 ## Macro template
 
-```rust
+```rust, ignore
 macro_rules! <name> {
     (<args>) => {
         <body>
@@ -66,7 +66,7 @@ Anything can be optional using this syntax `$( <thing> )?`, this include commas,
 
 The body must be an expression or single line, to support multiple lines surround the code in {}, this is often written as 
 
-```rust
+```rust, ignore
 macro_rules! <name> {
     (<args>) => {{
         <body>
@@ -153,11 +153,18 @@ This can be called with `add_nums!(1,2);` and `add_nums!(1,2,3);`
 Macros will accept extra text which can be required to invoke the macro:
 ```rust
 macro_rules! add_nums {
-    ($num1: expr + $num2: expr) => {
-        $num1 + $num2 
+    ($num1: literal + $num2: expr) => {
+        $num1 + $num2
+    };
+    (($num1: expr) + $num2: expr) => {
+        $num1 + $num2
     };
 }
 ```
-Would have be called like this `add_nums!(1 + 2)`
 
-See more [Macros by example](https://doc.rust-lang.org/reference/)macros-by-example.html
+Would have be called like this `add_nums!(1 + 2)` or `add_nums!((some_var) + 2)`
+
+With custom text in the arguments then either commas are needed to separate them 
+`macro_rules! example($thing1:expr, $thing2:expr)` or all but the last expr must be declared and called surrounded by parentheses `macro_rules! example(($thing1:expr) $thing2:expr)` and `example!((thing1) thing2);`
+
+See more [Macros by example](https://doc.rust-lang.org/reference/macros-by-example.html)
