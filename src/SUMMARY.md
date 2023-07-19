@@ -38,6 +38,8 @@
   - [Result and exceptions](./result_exception.md)
   - [Option and nulls](./result_option.md)
 
+- [Creating macros](./creating_macros.md)
+
 - [Concurrency](./concurrency.md)
 
 - [Testing](./testing.md)
