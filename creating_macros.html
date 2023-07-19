@@ -294,6 +294,12 @@ macro_rules! or_else {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>This can be called with <code>add_nums!(1,2);</code> and <code>add_nums!(1,2,3);</code></p>
+<h3 id="hygiene"><a class="header" href="#hygiene">Hygiene</a></h3>
+<p>Macros have 'hygiene' which means to access something from your crate you'll have to spell out the full path:</p>
+<pre><code class="language-rust ignore">$crate::path::some_method(..)</code></pre>
+<p><code>$crate</code> refers to your crate.</p>
+<h3 id="visibility"><a class="header" href="#visibility">Visibility</a></h3>
+<p>Macros have to be annotated with <code>#[macro_export]</code> for it to be usable by other modules/crates.</p>
 <h3 id="advanced"><a class="header" href="#advanced">Advanced</a></h3>
 <p>Macros will accept extra text which can be required to invoke the macro:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
