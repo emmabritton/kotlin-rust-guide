@@ -55,4 +55,24 @@ fn convert(json: String, example: Example) {
 }
 ```
 
+## Dependency Injection
 
+### Silhouette
+
+**Rust**
+```rust,ignore
+use silhouette::facade::Container;
+
+// will always use the same pool
+Container::singleton(&|_| DBPool::new())?;
+
+// will resolve a new connection each time
+Container::bind(&|container| -> DBConnection {
+    let shared_pool = container.resolve::<DBPool>().unwrap();
+
+    shared_pool.get_conn()
+})?;
+
+// somewhere else in your app...
+let connection: DBConnection = Container::resolve()?;
+```
