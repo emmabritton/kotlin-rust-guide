@@ -177,11 +177,11 @@
                         <h1 id="converting-strings"><a class="header" href="#converting-strings">Converting strings</a></h1>
 <p>Often when writing a function that takes a piece of text you’ll want to support both <code>String</code> and <code>&amp;str</code> to be more convenient to the caller. This is best achieved by using <code>&amp;str</code> or <code>Into&lt;String&gt;</code>. </p>
 <p><code>String</code> can be converted to <code>&amp;str</code> like this:</p>
-<pre><code class="language-rust ignore does_not_compile">let text = String::new();
+<pre><code class="language-rust ignore">let text = String::new();
 print(&amp;text);</code></pre>
 <p>(Actually it's converted to <code>&amp;String</code> as adding a <code>&amp;</code> just makes it a reference but rust treats <code>&amp;String</code> as <code>&amp;str</code> when passed a parameter)</p>
 <p>The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. <code>&amp;str</code> already has the <code>Into&lt;String&gt;</code> trait but it can also be implemented for any struct. <code>Into&lt;X&gt;</code> for Y is automatically implemented for any type that implements <code>From&lt;Y&gt;</code> for X which is actually how it’s implemented for Strings and is the recommended approach. </p>
-<pre><code class="language-rust ignore does_not_compile">fn print(value: &amp;str) { 
+<pre><code class="language-rust ignore">fn print(value: &amp;str) { 
 	println!(&quot;{}&quot;, value;
 }
 

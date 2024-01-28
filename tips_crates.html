@@ -220,17 +220,13 @@ fn convert(json: String, example: Example) {
 <h3 id="silhouette"><a class="header" href="#silhouette">Silhouette</a></h3>
 <p><strong>Rust</strong></p>
 <pre><code class="language-rust ignore">use silhouette::facade::Container;
-
 // will always use the same pool
 Container::singleton(&amp;|_| DBPool::new())?;
-
 // will resolve a new connection each time
 Container::bind(&amp;|container| -&gt; DBConnection {
     let shared_pool = container.resolve::&lt;DBPool&gt;().unwrap();
-
     shared_pool.get_conn()
 })?;
-
 // somewhere else in your app...
 let connection: DBConnection = Container::resolve()?;</code></pre>
 

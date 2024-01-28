@@ -195,11 +195,10 @@
 </ul>
 <div class="table-wrapper"><table><thead><tr><th>type</th><th>description</th></tr></thead><tbody>
 <tr><td>literal</td><td>Rust literal, such as a number</td></tr>
-<tr><td>block</td><td>Block of code</td></tr>
 <tr><td>expr</td><td>A single expression</td></tr>
 <tr><td>ty</td><td>Rust type</td></tr>
 <tr><td>ident</td><td>Rust ident</td></tr>
-<tr><td>and others</td><td></td></tr>
+<tr><td>and <a href="https://doc.rust-lang.org/reference/macros-by-example.html#metavariables">others</a></td><td></td></tr>
 </tbody></table>
 </div>
 <p>For example, this macro makes methods that adds two numbers:</p>
@@ -213,7 +212,7 @@
 	}
 }
 <span class="boring">}</span></code></pre></pre>
-<p>When called with <code>add_number(add_i32, i32);</code> this code is generated:</p>
+<p>When called with <code>add_number!(add_i32, i32);</code> this code is generated:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn add_i32(lhs: i32, rhs: i32) -&gt; i32 {
