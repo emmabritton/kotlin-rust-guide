@@ -19,7 +19,7 @@ Example:
 
 fn main() {
     let not_mutable = Person {
-        name: RefCell::new(String::from("Ray Britton"))
+        name: RefCell::new(String::from("Emma Britton"))
     };
 
     not_mutable.change_name(String::from("New Name"));

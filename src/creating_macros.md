@@ -26,11 +26,10 @@ Each arg must be the format `$<name>:<type>`. (i.e. `$example:literal` )
 | type | description |
 |------|-------------|
 | literal | Rust literal, such as a number |
-| block | Block of code |
 | expr | A single expression |
 | ty | Rust type |
 | ident | Rust ident |
-and others
+and [others](https://doc.rust-lang.org/reference/macros-by-example.html#metavariables)
 
 For example, this macro makes methods that adds two numbers:
 ```rust
@@ -43,7 +42,7 @@ macro_rules! add_numbers {
 }
 ```
 
-When called with `add_number(add_i32, i32);` this code is generated:
+When called with `add_number!(add_i32, i32);` this code is generated:
 ```rust
 fn add_i32(lhs: i32, rhs: i32) -> i32 {
 	lhs + rhs
