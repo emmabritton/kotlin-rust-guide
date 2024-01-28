@@ -62,6 +62,7 @@ fn convert(json: String, example: Example) {
 **Rust**
 ```rust,ignore
 use silhouette::facade::Container;
+<<<<<<< HEAD
 
 // will always use the same pool
 Container::singleton(&|_| DBPool::new())?;
@@ -76,3 +77,17 @@ Container::bind(&|container| -> DBConnection {
 // somewhere else in your app...
 let connection: DBConnection = Container::resolve()?;
 ```
+=======
+// will always use the same pool
+Container::singleton(&|_| DBPool::new())?;
+// will resolve a new connection each time
+Container::bind(&|container| -> DBConnection {
+    let shared_pool = container.resolve::<DBPool>().unwrap();
+    shared_pool.get_conn()
+})?;
+// somewhere else in your app...
+let connection: DBConnection = Container::resolve()?;
+```
+
+
+>>>>>>> f698240 (Add another common error)
