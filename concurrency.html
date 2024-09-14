@@ -208,11 +208,11 @@ fn main() {
                 break;
             }
         }
-        println!(&quot;Done&quot;);
+        println!("Done");
     });
 
     loop {
-        println!(&quot;{}&quot;, number.load(Ordering::SeqCst));
+        println!("{}", number.load(Ordering::SeqCst));
         if number.load(Ordering::SeqCst) &gt;= 10 {
             break;
         }

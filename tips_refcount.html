@@ -195,7 +195,7 @@ fn thread1(thing: Arc&lt;Thing&gt;) {
 </span><span class="boring">fn new() -&gt; Thing {Thing {} } 
 </span><span class="boring">fn methods_accessed_in_normal_way(&amp;self) {}
 </span><span class="boring">}</span></code></pre></pre>
-<p>The value in the Arc can not be mutable unless it’s contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are Mutex and RwLock. The differences are that RwLock will allow any number of concurrent readers but only one writer and Mutex only allows one reader or writer at a time. </p>
+<p>The value in the Arc can not be mutable unless it’s contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are Mutex and RwLock. The differences are that RwLock will allow any number of concurrent readers but only one writer and Mutex only allows one reader or writer at a time.</p>
 
                     </main>
 

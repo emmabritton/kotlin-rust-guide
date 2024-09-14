@@ -210,7 +210,7 @@ impl &lt;'a&gt; Person&lt;'a&gt; {
 	//as it's a reference this method does not consume 
 	//the object
 	fn whole_name(&amp;self) -&gt; String {
-		return format!(&quot;{} {}&quot;, self.first_name, self.last_name); 
+		return format!("{} {}", self.first_name, self.last_name); 
 	}
 
 	fn age_in_years(&amp;self) -&gt; i32 {
@@ -228,10 +228,10 @@ impl &lt;'a&gt; Person&lt;'a&gt; {
 
 fn main() {
 	//Double colon is for static methods
-	let person = Person::new(&quot;John&quot;, &quot;Smith&quot;, 1988, 07, 10, &quot;Author&quot;);
+	let person = Person::new("John", "Smith", 1988, 07, 10, "Author");
 	 
 	//Period is for instance methods
-	println!(&quot;{} is a {} who is {} years old.&quot;, 
+	println!("{} is a {} who is {} years old.", 
 		person.whole_name(), 
 		person.occupation, 
 		person.age_in_years());
@@ -250,14 +250,14 @@ The sample uses the <code>chrono</code> crate, it is a simple to use and common 
 </span>
 impl fmt::Display for Person {
 	fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-		return write!(f, &quot;({} {}, {})&quot;, 
+		return write!(f, "({} {}, {})", 
 			self.first_name, 
 			self.last_name, 
 			self.occupation);
 	} 
 }
 <span class="boring">}</span></code></pre></pre>
-<p>You can now write <code>println!(&quot;{}&quot;, person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
+<p>You can now write <code>println!("{}", person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
 To avoid boilerplate Rust can automatically derive some traits for structs like so:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

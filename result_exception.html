@@ -189,13 +189,13 @@
 fn main() {
 	let result = get(10);
 	match result {
-		Ok(item) =&gt; println!(&quot;{}&quot;, item),
-		Err(e) =&gt; println!(&quot;{}&quot;, e)
+		Ok(item) =&gt; println!("{}", item),
+		Err(e) =&gt; println!("{}", e)
 	}
 }</code></pre></pre>
-<p>You can also do the equivalent of <code>var!!</code> with both Option and Result by using <code>var.unwrap()</code> and <code>var.expect(&quot;some message&quot;)</code>. Both methods will crash the app if it’s Err/None, expect() will also write the message to the console.</p>
+<p>You can also do the equivalent of <code>var!!</code> with both Option and Result by using <code>var.unwrap()</code> and <code>var.expect("some message")</code>. Both methods will crash the app if it’s Err/None, expect() will also write the message to the console.</p>
 <p>To avoid having to write unwrap() every time if you’re in a method that returns a Result you can just write <code>var?</code>, if <code>var</code> is an Err the method will return the Err immediately.</p>
-<p>To crash a Rust program you should use <code>panic!(&quot;message&quot;)</code>. This will print the message and stacktrace to the command line.</p>
+<p>To crash a Rust program you should use <code>panic!("message")</code>. This will print the message and stacktrace to the command line.</p>
 
                     </main>
 

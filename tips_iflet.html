@@ -180,7 +180,7 @@
 </span><span class="boring">fn main() {
 </span>fn some_method(optional_string: Option&lt;String&gt;) {
   if let Some(string_value) = optional_string {
-    println!(&quot;Does exist: {}&quot;, string_value);
+    println!("Does exist: {}", string_value);
   }
 }
 <span class="boring">}</span></code></pre></pre>
@@ -191,15 +191,15 @@
 </span>
 fn some_method(optional_string: Option&lt;String&gt;) {
   match optional_string {
-    Some(string_value) =&gt; println!(&quot;Does exist: {}&quot;, string_value),
-    None =&gt; println!(&quot;No content&quot;)
+    Some(string_value) =&gt; println!("Does exist: {}", string_value),
+    None =&gt; println!("No content")
   }
 }
 
 fn another_method(result: Result&lt;String, Error&gt;) {
   match result {
-    Ok(string_value) =&gt; println!(&quot;Success: {}&quot;, string_value),
-    Err(err) =&gt; println!(&quot;Failure: {}&quot;, err)
+    Ok(string_value) =&gt; println!("Success: {}", string_value),
+    Err(err) =&gt; println!("Failure: {}", err)
   }
 }
 <span class="boring">}</span></code></pre></pre>

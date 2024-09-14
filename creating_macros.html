@@ -223,13 +223,13 @@
 <p>Arguments can be written as <code>$( &lt;arg&gt; )*</code> for 0 or more and <code>$( &lt;arg&gt; )+</code> for 1 or more values. (i.e. <code>$( $name:literal )+</code>), this would allow <code>example!(1 2 3)</code>.</p>
 <p>To support commas you can write <code>$( &lt;arg&gt; ),*</code>, this would allow <code>example!(1,2,3)</code>.</p>
 <h4 id="optional"><a class="header" href="#optional">Optional</a></h4>
-<p>Anything can be optional using this syntax <code>$( &lt;thing&gt; )?</code>, this include commas, such as </p>
+<p>Anything can be optional using this syntax <code>$( &lt;thing&gt; )?</code>, this include commas, such as</p>
 <ul>
 <li>optional trailing comma: <code>macro_rules! example($var1:literal, $var2:literal $(,)?)</code></li>
 <li>optional commas in variadic: <code>macro_rules! list($( $items:literal )$(,)?*)</code></li>
 </ul>
 <h3 id="body"><a class="header" href="#body">Body</a></h3>
-<p>The body must be an expression or single line, to support multiple lines surround the code in {}, this is often written as </p>
+<p>The body must be an expression or single line, to support multiple lines surround the code in {}, this is often written as</p>
 <pre><code class="language-rust  ignore">macro_rules! &lt;name&gt; {
     (&lt;args&gt;) =&gt; {{
         &lt;body&gt;
@@ -243,16 +243,16 @@ Anything can be written in the parentheses and it will be repeated once per item
 </span><span class="boring">fn main() {
 </span>macro_rules! print_nums {
     ($( $numbers:literal ),+) =&gt; {{
-        $( println!(&quot;{}&quot;, $numbers); )*
+        $( println!("{}", $numbers); )*
     }};
 }
 <span class="boring">}</span></code></pre></pre>
 <p>If called with <code>print_nums(1,2,3);</code> This generates</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>println!(&quot;{}&quot;, 1);
-println!(&quot;{}&quot;, 2);
-println!(&quot;{}&quot;, 3);
+</span>println!("{}", 1);
+println!("{}", 2);
+println!("{}", 3);
 <span class="boring">}</span></code></pre></pre>
 <h4 id="optional-1"><a class="header" href="#optional-1">Optional</a></h4>
 <p>Optional arguments should also be surrounded like <code>$( &lt;name&gt; )*</code>, anything can be written inside like before.</p>
@@ -320,7 +320,7 @@ macro_rules! or_else {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>Would have be called like this <code>add_nums!(1 + 2)</code> or <code>add_nums!((some_var) + 2)</code></p>
-<p>With custom text in the arguments then either commas are needed to separate them 
+<p>With custom text in the arguments then either commas are needed to separate them
 <code>macro_rules! example($thing1:expr, $thing2:expr)</code> or all but the last expr must be declared and called surrounded by parentheses <code>macro_rules! example(($thing1:expr) $thing2:expr)</code> and <code>example!((thing1) thing2);</code></p>
 <p>See more <a href="https://doc.rust-lang.org/reference/macros-by-example.html">Macros by example</a></p>
 

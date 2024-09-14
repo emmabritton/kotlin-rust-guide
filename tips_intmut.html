@@ -179,19 +179,19 @@
 <p><code>Cell</code> is a wrapper around a value that can be changed at any point.</p>
 <p><code>RefCell</code> is the same as <code>Cell</code> but allows the value to be exposed as a reference.</p>
 <p><code>RwLock</code> is the same as <code>RefCell</code> but can be shared across threads.</p>
-<p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads. </p>
+<p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads.</p>
 <p>All of these are safe, they use reference counting and/or memory swapping to update values.</p>
 <p>Example:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::cell::RefCell;
 </span>
 fn main() {
     let not_mutable = Person {
-        name: RefCell::new(String::from(&quot;Emma Britton&quot;))
+        name: RefCell::new(String::from("Emma Britton"))
     };
 
-    not_mutable.change_name(String::from(&quot;New Name&quot;));
+    not_mutable.change_name(String::from("New Name"));
 
-    println!(&quot;{}&quot;, not_mutable.name.borrow());
+    println!("{}", not_mutable.name.borrow());
 }
 
 struct Person {

@@ -180,19 +180,19 @@
 	println(element)
 }
 list.forEachIndexed { i, element -&gt; 
-	println(&quot;${i}: ${element}&quot;)
+	println("${i}: ${element}")
 } 
 </code></pre>
 <p>Rust also has this feature but it works differently, instead of different methods the iterator type is changed via enumerate:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">let list = vec![&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];
+</span><span class="boring">let list = vec!["a", "b", "c"];
 </span>list.iter()
-	.for_each(|element| println!(&quot;{}&quot;, element));
+	.for_each(|element| println!("{}", element));
 
 list.iter()
 	.enumerate()
-	.for_each(|(i, element)| println!(&quot;{}: {}&quot;, i, element));
+	.for_each(|(i, element)| println!("{}: {}", i, element));
 <span class="boring">}</span></code></pre></pre>
 <p>This has the downside that all later operators must also handle the index as well.</p>
 

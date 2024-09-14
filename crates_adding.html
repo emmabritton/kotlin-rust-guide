@@ -176,12 +176,12 @@
                     <main>
                         <h1 id="adding-crates"><a class="header" href="#adding-crates">Adding crates</a></h1>
 <p>Third party libraries are called Crates (and are available from https://crates.io). To add a crate, for example Serde, add this line to Cargo.toml after the [dependencies] line:</p>
-<pre><code class="language-toml">serde = &quot;1.0.0&quot;
+<pre><code class="language-toml">serde = "1.0.0"
 </code></pre>
 <p>You’ll still need to import the individual parts of the crate you want to use, for example:</p>
 <pre><code class="language-rust ignore">use serde::json::Serialize;</code></pre>
 <p><code>::Foo</code> means import just Foo</p>
-<p><code>::{Foo, Bar}</code> means import Foo and Bar </p>
+<p><code>::{Foo, Bar}</code> means import Foo and Bar</p>
 <p><code>::*</code> means import everything in the module.</p>
 <p>You can rename when importing:</p>
 <pre><code class="language-rust ignore">use example::Foo as Bar;</code></pre>
@@ -189,7 +189,7 @@
 <pre><code class="language-rust ignore">use chrono::prelude::*</code></pre>
 <h3 id="features"><a class="header" href="#features">Features</a></h3>
 <p>Some crates have optional features, often these include macros or provide interop with other crates:</p>
-<p><code>serde = &quot;1.0.0&quot;</code> can also be written as <code>serde = { version = &quot;1.0.0&quot; }</code>. To include a feature this gets expanded to <code>serde = { version = &quot;1.0&quot;, features = [&quot;derive&quot;] }</code>.</p>
+<p><code>serde = "1.0.0"</code> can also be written as <code>serde = { version = "1.0.0" }</code>. To include a feature this gets expanded to <code>serde = { version = "1.0", features = ["derive"] }</code>.</p>
 <p>Some crates will have features that you almost always want:</p>
 <div class="table-wrapper"><table><thead><tr><th>Crate</th><th>Feature(s)</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>serde</code></td><td><code>derive</code></td><td>Adds macros to automatically serialize structs</td></tr>

@@ -185,23 +185,23 @@ The error is caused because there are two methods named <code>borrow_mut</code> 
 <h3 id="closures-can-only-be-coerced-to-fn-types-if-they-do-not-capture-any-variables"><a class="header" href="#closures-can-only-be-coerced-to-fn-types-if-they-do-not-capture-any-variables">closures can only be coerced to <code>fn</code> types if they do not capture any variables</a></h3>
 <p>You need to change the param to a generic, for example:</p>
 <pre><code class="language-rust ignore">fn main() {
-    let value = &quot;example&quot;;
+    let value = "example";
     
-    print(|text| format!(&quot;{text}{value}&quot;));
+    print(|text| format!("{text}{value}"));
 }
 
 fn print(method: fn(&amp;str) -&gt; String) {
-    println!(&quot;{}&quot;, method(&quot;hi&quot;));
+    println!("{}", method("hi"));
 }</code></pre>
 <p>into</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-    let value = &quot;example&quot;;
+    let value = "example";
     
-    print(|text| format!(&quot;{text}{value}&quot;));
+    print(|text| format!("{text}{value}"));
 }
 
 fn print&lt;F: Fn(&amp;str) -&gt; String&gt;(method: F) {
-    println!(&quot;{}&quot;, method(&quot;hi&quot;));
+    println!("{}", method("hi"));
 }</code></pre></pre>
 
                     </main>

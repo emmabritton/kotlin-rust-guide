@@ -183,15 +183,15 @@
 impl MobileOs {
   fn status(&amp;self) -&gt; &amp;str {
     match self {
-      MobileOs::Android =&gt; return &quot;alive&quot;,
-      MobileOs::Ios =&gt; return &quot;alive&quot;,
-      MobileOs::Windows =&gt; return &quot;dead&quot;,
+      MobileOs::Android =&gt; return "alive",
+      MobileOs::Ios =&gt; return "alive",
+      MobileOs::Windows =&gt; return "dead",
     }
   }
 }
 
 fn main() {
-  println!(&quot;{}&quot;, MobileOs::Android.status());
+  println!("{}", MobileOs::Android.status());
 }</code></pre></pre>
 <p>Thankfully they can also work like sealed classes:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">enum Example {

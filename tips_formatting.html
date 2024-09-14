@@ -176,46 +176,91 @@
                     <main>
                         <h1 id="formatting-strings"><a class="header" href="#formatting-strings">Formatting strings</a></h1>
 <p>To format a string, the easiest (and correct) way is to use <code>format!(string, parameters...)</code>. String formatting in Rust uses {} as placeholders for parameters.</p>
-<p>Basics:</p>
-<p><code>&quot;{}&quot;</code> will print the result of Display::fmt(), this must be manually implemented &quot;{:?}&quot; will print the result of Debug::fmt(), this can be derived</p>
-<p><code>&quot;{:#?}&quot;</code> will pretty print the result of Debug::fmt()</p>
-<p><code>&quot;{example}&quot;</code> will print parameter named example</p>
-<p><code>&quot;{2}&quot;</code> will print the third parameter</p>
-<p>Padding:</p>
-<p><code>&quot;{:&gt;5}&quot;</code> Left pad with up to 5 spaces</p>
-<p><code>&quot;{:&lt;7}&quot;</code> Right pad with up to 7 spaces</p>
-<p><code>&quot;{:^22}&quot;</code> Centre with up to 11 spaces on both sides</p>
+<p>Formatting is supported by several methods:</p>
+<ul>
+<li><code>format!(fmt, values...)</code> - returns a formatted string</li>
+<li><code>print!(fmt, values...)</code> and <code>println!(fmt, values...)</code> - writes a formatted string to stdout</li>
+<li><code>write!(Formatter, fmt, values...)</code> - writes the formatted string into the first parameter</li>
+</ul>
+<p>You can pass values into these macros without making them a reference first as they will be turned into references, and so the macros don't take ownership.</p>
+<h3 id="basics"><a class="header" href="#basics">Basics</a></h3>
+<p>With</p>
+<p><code>format!("{}", some_value)</code></p>
+<p>If <code>some_value</code> implements Display then it will printed otherwise you'll get a compile error saying the type doesn't implement Display. All primitives implement Display, but other std types like arrays and collections do not.</p>
+<p>How to implement Display for a custom type:</p>
+<pre><code class="language-rust  ignore">struct Point {
+    x: i32,
+    y: i32
+}
+
+impl Display for Point {
+    fn fmt(&amp;self, f: &amp;mut Formatter) -&gt; Result&lt;(),fmt::Error&gt; {
+        write!(f, "Point({},{})", self.x, self.y)
+    }
+}</code></pre>
+<p>then when calling <code>format!("{}", Point {x: 2, y: 3})</code> results in <code>Point(2,3)</code>.</p>
+<p>Another option exists though, for example if you don't really care about the formatting: <code>Debug</code>, which is implemented like this</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32
+}
+<span class="boring">}</span></code></pre></pre>
+<p>To print the debug version of a value use <code>{:?}</code> (or <code>{:#?}</code> to pretty print), calling this <code>format!("{:?}", Point { x: 3, y: 5})</code> results in <code>Point { x: 3, y: 5 }</code></p>
+<p>All primitives and std types like arrays and collections, and most structs from third party crates, implement <code>Debug</code>.</p>
+<h3 id="param-selection"><a class="header" href="#param-selection">Param selection</a></h3>
+<p>There are several ways to order the params</p>
+<h5 id="default"><a class="header" href="#default">Default</a></h5>
+<p>They are used in the order supplied</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("{}, {}, {}", 1, 2, 3);
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>1, 2, 3</code></p>
+<h5 id="positionalindexed"><a class="header" href="#positionalindexed">Positional/Indexed</a></h5>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("{1}, {2}, {0}", 1, 2, 3);
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>2, 3, 1</code></p>
+<h5 id="named"><a class="header" href="#named">Named</a></h5>
+<p>Non named parameters must come before any named parameters</p>
+<pre><code>println!("{0}, {foo}, {bar}", 3, bar = 1, foo = 2);
+</code></pre>
+<p>produces <code>3, 2, 1</code></p>
+<h5 id="referencing-variables"><a class="header" href="#referencing-variables">Referencing variables</a></h5>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let foo = 1;
+println!("{foo} = {}", 2);	
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>1 = 2</code></p>
+<p>Named params can formatted with debug by adding <code>:?</code>, <code>format!("{foo:?}")</code></p>
+<h3 id="padding"><a class="header" href="#padding">Padding</a></h3>
+<p><code>"{:&gt;5}"</code> Left pad with up to 5 spaces</p>
+<p><code>"{:&lt;7}"</code> Right pad with up to 7 spaces</p>
+<p><code>"{:^22}"</code> Centre with up to 11 spaces on both sides</p>
 <p>Padding with any character:</p>
-<p><code>&quot;{:_&gt;5}&quot;</code> Left pad with up to 5 underscores </p>
-<p><code>&quot;{:#&lt;7}&quot;</code> Right pad with up to 7 hashes </p>
-<p><code>&quot;{:c^22}&quot;</code> Centre with up to 11 ’c’s on both sides</p>
-<p>Numbers:</p>
-<p><code>&quot;{:.3}&quot;</code> Will print 3 fractional digits (adding 0s on the end if necessary) but only if it’s a floating point number</p>
-<p><code>&quot;{:+3}&quot;</code> Print sign</p>
-<p><code>&quot;{:03}&quot;</code> Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0</p>
-<p>Example: <code>format!(&quot;{:&gt;5} {named}&quot;, &quot;Foo&quot;, named=123)</code></p>
+<p><code>"{:_&gt;5}"</code> Left pad with up to 5 underscores</p>
+<p><code>"{:#&lt;7}"</code> Right pad with up to 7 hashes</p>
+<p><code>"{:c^22}"</code> Centre with up to 11 ’c’s on both sides</p>
+<h3 id="numbers"><a class="header" href="#numbers">Numbers</a></h3>
+<p><code>"{:.3}"</code> Will print 3 fractional digits (adding 0s on the end if necessary) but only if it’s a floating point number</p>
+<p><code>"{:+3}"</code> Print sign</p>
+<p><code>"{:03}"</code> Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0</p>
+<p>Example: <code>format!("{:&gt;5} {named}", "Foo", named=123)</code></p>
 <p>To have variable parts (such as variable length padding) use this syntax:</p>
-<p><code>(&quot;{1:.0$}&quot;, 1, 1.22)</code></p>
+<p><code>("{1:.0$}", 1, 1.22)</code></p>
 <p>This will print 1.2, the syntax is <code>{value_index:.precision_index$}</code></p>
-<p><code>(&quot;{1:=&lt;0$}&quot;, 10, &quot;test&quot;)</code></p>
+<p><code>("{1:=&lt;0$}", 10, "test")</code></p>
 <p>This will print test======, the syntax is <code>{value_index:padding_char&lt;length_index$}</code></p>
 <p>Note that invalid parameter details are ignored silently and treated as {}. If debugging via logging consider using dgb!():</p>
 <pre><code class="language-rust ignore">let x;
 x = dbg!(1 * 4); </code></pre>
 <p>prints
 <code>[src/main.rs:3] 1 * 4 = 4</code></p>
-<h1 id="direct-variable-usage"><a class="header" href="#direct-variable-usage">Direct variable usage</a></h1>
-<p>As of Rust <code>1.58.0</code> and edition <code>2021</code> you can use variables name in the string directly:</p>
-<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let part = &quot;world&quot;;
-println!(&quot;Hello {part}&quot;);
-<span class="boring">}</span></code></pre></pre>
-<p>Unforutantely this doesn't support complex expressions yet, so you can't do:</p>
-<pre><code class="language-rust ignore">println!(&quot;{some_method()}&quot;);</code></pre>
-<p>or</p>
-<pre><code class="language-rust ignore">println!(&quot;{struct.field}&quot;);</code></pre>
-<p>This should work with any macro that uses <code>format_args</code> </p>
 
                     </main>
 

@@ -177,30 +177,30 @@
                         <h1 id="borrowing-and-ownership"><a class="header" href="#borrowing-and-ownership">Borrowing and Ownership</a></h1>
 <p>In Kotlin a variable exists, and is available, while in it’s scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods execution. Rust is basically the same and generally you’ll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.</p>
 <p>This will not compile as <code>bar</code> has taken ownership of the data in <code>foo</code> and so <code>foo</code> can no longer be used:</p>
-<pre><code class="language-rust does_not_compile ignore">let foo = String::from(&quot;Hello&quot;); 
+<pre><code class="language-rust does_not_compile ignore">let foo = String::from("Hello"); 
 let bar = foo;
-println!(&quot;{}&quot;, foo);</code></pre>
+println!("{}", foo);</code></pre>
 <p>This will compile however as numbers have Copy implemented for them and so num2 automatically makes a copy of num1s data:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let num1 = 54;
 let num2 = num1; 
-println!(&quot;{}&quot;, num1);
+println!("{}", num1);
 <span class="boring">}</span></code></pre></pre>
 <p>but this can be replicated for the string example by doing:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let foo = String::from(&quot;Hello&quot;); 
+</span>let foo = String::from("Hello"); 
 let bar = foo.clone();
-println!(&quot;{}&quot;, foo);
+println!("{}", foo);
 <span class="boring">}</span></code></pre></pre>
 <p>This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data, for example with network streams.
 Ownership and borrowing apply to all methods:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-	let a = String::from(&quot;Hello&quot;); 
+	let a = String::from("Hello"); 
 	let b = return_param(a);
 	let c = length(b);
-    println!(&quot;{}&quot;, c);
+    println!("{}", c);
 }
 
 fn return_param(param: String) -&gt; String { 
@@ -212,10 +212,10 @@ fn length(param: String) -&gt; usize {
 }</code></pre></pre>
 <p>When main is executed both <code>a</code> and <code>b</code> are lost, length takes ownership of the string and it is dropped at the end of length, to keep <code>b</code> in memory either of the following changes could be made:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">fn main() {
-</span><span class="boring">let str = String::from(&quot;test&quot;);
+</span><span class="boring">let str = String::from("test");
 </span><span class="boring">let _ref_len = length_ref(&amp;str);
 </span><span class="boring">let (nstr, len) = length(str);
-</span><span class="boring">println!(&quot;({},{})&quot;, nstr, len);
+</span><span class="boring">println!("({},{})", nstr, len);
 </span><span class="boring">}
 </span>
 fn length_ref(param: &amp;String) -&gt; usize {
@@ -260,7 +260,7 @@ fn main() {
 }
 
 fn get_char() -&gt; &amp;str {
-	let foo = Foo { contents: String::from(&quot;example&quot;) };
+	let foo = Foo { contents: String::from("example") };
 	let chr = foo.get_first();
 	return chr;
 }</code></pre>

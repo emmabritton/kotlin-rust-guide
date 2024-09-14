@@ -179,7 +179,7 @@
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const VERSION: u32 = 1;
-static PROGRAM_NAME: &amp;'static str = &quot;Example&quot;;
+static PROGRAM_NAME: &amp;'static str = "Example";
 <span class="boring">}</span></code></pre></pre>
 <p>Currently const and static values must be known at compile time. To get around this you can use the <a href="https://github.com/rust-lang-nursery/lazy-static.rs">lazy_static</a> crate, it works like <code>by lazy {}</code> in Kotlin:</p>
 <pre><code class="language-rust ignore">use lazy_static::lazy_static;

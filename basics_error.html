@@ -180,9 +180,9 @@
 <pre><code class="language-kotlin">fun main() {
   try {
     openSocket()
-    println(&quot;Worked&quot;)
+    println("Worked")
   } catch (e: IOException) {
-    println(&quot;Error: &quot; + e.message)
+    println("Error: " + e.message)
   }
 }
 
@@ -193,8 +193,8 @@
 </span>
 fn main() {
 	match open_socket() {
-		Ok(()) =&gt; println!(&quot;Worked&quot;),
-		Err(e) =&gt; println!(&quot;Error: {}&quot;, e)
+		Ok(()) =&gt; println!("Worked"),
+		Err(e) =&gt; println!("Error: {}", e)
 	}
 }
 

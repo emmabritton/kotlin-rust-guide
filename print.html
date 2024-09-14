@@ -216,9 +216,9 @@ Please also read the following books for a much more complete understanding of R
 <li>annotations are written like <code>#[Example]</code> instead of <code>@Example</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="macros"><a class="header" href="#macros">Macros</a></h1>
-<p>Rust uses macros a lot as they provide ways to shortened code, and provide variadic and optional parameters, and overloaded methods. Macros are invoked by the macro name then an exclamation mark, i.e. <code>example!</code>.</p>
+<p>Rust uses macros a lot as they provide ways to shorten code, and provide variadic and optional parameters, and also overloaded methods. Macros are invoked by the macro name then an exclamation mark, i.e. <code>example!</code>.</p>
 <p>Macros can be used like functions <code>example!()</code> but anything can follow the exclamation mark as macros are very powerful, for example:</p>
-<pre><code class="language-rust ignore">println!(&quot;Hello World&quot;);
+<pre><code class="language-rust ignore">println!("Hello World");
 
 let list = vec![1, 2, 3];
 
@@ -233,7 +233,7 @@ struct Foo {
 
 }</code></pre>
 <p>The annotation macros will generate code for Structs like in Kotlin.</p>
-<p>Macros can generate Rust code at compile time or run and return a result at runtime like a method. </p>
+<p>Macros can generate Rust code at compile time or run and return a result at runtime like a method.</p>
 <p>Most programs don't need their own macros but will often use ones from std or crates.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="primitives"><a class="header" href="#primitives">Primitives</a></h1>
 <p>In Kotlin there are few commonly used primitive types:</p>
@@ -255,8 +255,8 @@ struct Foo {
 <tr><td style="text-align: center">f</td><td>Floating Point</td></tr>
 </tbody></table>
 </div>
-<p>Floating points are 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: <code>isize</code> and <code>usize</code> these are whatever the pointer size is for the CPU (for most new computers and phones that is 64 bits). 
-As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> and a <code>Double</code> is <code>f64</code>. </p>
+<p>Floating points are 32 and 64 bit only but integers can be 8, 16, 32, 64, and 128 bits; there are also two architecture dependent sizes: <code>isize</code> and <code>usize</code> these are whatever the pointer size is for the CPU (for most new computers and phones that is 64 bits).
+As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> and a <code>Double</code> is <code>f64</code>.</p>
 <p><code>usize</code> is important as it's the primary number type: it's used in array, list and string formatting indexing and lengths/sizes of objects.</p>
 <p>Suffixes for literals exist in Rust like in Kotlin but rather being for some types, suffixes exist for all primitives and they are the name of type, e.g. <code>3_i32</code> or <code>10.3f32</code>, the suffixes are only necessary if the compiler can not infer the type or if you want to specify it; also floating point numbers can be written without the 0, e.g. <code>1.</code></p>
 <p>Booleans are the same in both languages except it's <code>bool</code> instead of <code>Boolean</code>.</p>
@@ -273,9 +273,9 @@ As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> an
 <pre><code class="language-kotlin">fun main() {
   try {
     openSocket()
-    println(&quot;Worked&quot;)
+    println("Worked")
   } catch (e: IOException) {
-    println(&quot;Error: &quot; + e.message)
+    println("Error: " + e.message)
   }
 }
 
@@ -286,8 +286,8 @@ As an example the equivalent to a Kotlin <code>Int</code> is <code>i32</code> an
 </span>
 fn main() {
 	match open_socket() {
-		Ok(()) =&gt; println!(&quot;Worked&quot;),
-		Err(e) =&gt; println!(&quot;Error: {}&quot;, e)
+		Ok(()) =&gt; println!("Worked"),
+		Err(e) =&gt; println!("Error: {}", e)
 	}
 }
 
@@ -359,7 +359,7 @@ fn change_val(value: mut i32) {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="strings"><a class="header" href="#strings">Strings</a></h1>
 <p>In both Kotlin and Java, essentially, there is just one String type: String. Whether the text is hardcoded, from a file or user input the same class is used. Rust has two String types: String and str. A hardcoded string will be of type <code>&amp;'static str</code> and a string read from anywhere else maybe a <code>String</code> or <code>&amp;str</code> depending on what the method returns. They can be converted between themselves, in most circumstances.</p>
 <p><code>String</code> is a pointer to a string in heap with a capacity, this means it can grow and can be mutable. A <code>&amp;str</code> is a char array and so has a fixed length.
-If you attempt to slice a string so it would cause a Unicode character to be broken Rust will panic. Use the .chars() method to access each character independently. So to get the length of a string in bytes you use foo.len() and to get the number of characters you use foo.chars().count(). </p>
+If you attempt to slice a string so it would cause a Unicode character to be broken Rust will panic. Use the .chars() method to access each character independently. So to get the length of a string in bytes you use foo.len() and to get the number of characters you use foo.chars().count().</p>
 <p>Note that std Rust has limited supported for unicode and you may need to use crates to add missing features, this is because unicode changes regularly and the unicode table is quite large and has to be compiled into your program.</p>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>unicode-segmentation</td><td>Used to iterate over grapheme clusters</td></tr>
@@ -367,40 +367,36 @@ If you attempt to slice a string so it would cause a Unicode character to be bro
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="common-types"><a class="header" href="#common-types">Common types</a></h1>
 <h3 id="lists"><a class="header" href="#lists">Lists</a></h3>
-<div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin</th><th>Rust</th></tr></thead><tbody>
-<tr><td>Type</td><td><code>List&lt;T&gt;</code>, <code>MutableList&lt;T&gt;</code>, <code>ArrayList&lt;T&gt;</code></td><td><code>Vec&lt;T&gt;</code></td></tr>
-<tr><td>Constructor</td><td><code>ArrayList(size)</code>, <code>ArrayList(collection)</code></td><td><code>Vec::new()</code>, <code>Vec::with_capacity(size)</code></td></tr>
-<tr><td>Shorthand</td><td><code>listOf(items...)</code>, <code>mutableListOf(items...)</code>, <code>arrayListOf(items...)</code></td><td><code>vec![size; default]</code>, <code>vec![items...]</code></td></tr>
-</tbody></table>
-</div>
+<p>| | Kotlin | Rust |
+| - | | |
+| Type | <code>List&lt;T&gt;</code>, <code>MutableList&lt;T&gt;</code>, <code>ArrayList&lt;T&gt;</code> | <code>Vec&lt;T&gt;</code> |
+| Constructor | <code>ArrayList(size)</code>, <code>ArrayList(collection)</code> | <code>Vec::new()</code>, <code>Vec::with_capacity(size)</code> |
+| Shorthand | <code>listOf(items...)</code>, <code>mutableListOf(items...)</code>, <code>arrayListOf(items...)</code> | <code>vec![size; default]</code>, <code>vec![items...]</code> |</p>
 <h3 id="maps"><a class="header" href="#maps">Maps</a></h3>
-<div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin</th><th>Rust</th></tr></thead><tbody>
-<tr><td>Type</td><td><code>Map&lt;K, V&gt;</code>, <code>MutableMap&lt;K, V&gt;</code>, <code>HashMap&lt;K, V&gt;</code></td><td><code>HashMap&lt;K, V&gt;</code></td></tr>
-<tr><td>Constructor</td><td><code>HashMap(size)</code>, <code>HashMap(map)</code></td><td><code>HashMap::new()</code></td></tr>
-<tr><td>Shorthand</td><td><code>mapOf(items...)</code>, <code>mutableMapOf(items...)</code>, <code>hashMapOf(items...)</code></td><td>N/A <sup class="footnote-reference"><a href="#1">1</a></sup></td></tr>
-</tbody></table>
-</div>
+<p>| | Kotlin | Rust |
+| - | | |
+| Type | <code>Map&lt;K, V&gt;</code>, <code>MutableMap&lt;K, V&gt;</code>, <code>HashMap&lt;K, V&gt;</code> | <code>HashMap&lt;K, V&gt;</code> |
+| Constructor | <code>HashMap(size)</code>, <code>HashMap(map)</code> | <code>HashMap::new()</code> |
+| Shorthand | <code>mapOf(items...)</code>, <code>mutableMapOf(items...)</code>, <code>hashMapOf(items...)</code> | N/A [^1] |</p>
 <h3 id="tuples"><a class="header" href="#tuples">Tuples</a></h3>
-<div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin</th><th>Rust</th></tr></thead><tbody>
-<tr><td>Type</td><td><code>Pair&lt;T1, T2&gt;</code>, <code>Triple&lt;T1, T2, T3&gt;</code></td><td><code>(T1, T2, ...)</code></td></tr>
-<tr><td>Constructor</td><td><code>Pair(value1, value2)</code>, <code>Triple(value1, value2, value3)</code></td><td>N/A</td></tr>
-<tr><td>Shorthand</td><td><code>value1 to value2</code></td><td><code>(value1, value2, ...)</code></td></tr>
-</tbody></table>
-</div>
+<p>| | Kotlin | Rust |
+| - | | |
+| Type | <code>Pair&lt;T1, T2&gt;</code>, <code>Triple&lt;T1, T2, T3&gt;</code> | <code>(T1, T2, ...)</code> |
+| Constructor | <code>Pair(value1, value2)</code>, <code>Triple(value1, value2, value3)</code> | N/A |
+| Shorthand | <code>value1 to value2</code> | <code>(value1, value2, ...)</code> |</p>
 <h3 id="arrays"><a class="header" href="#arrays">Arrays</a></h3>
-<div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin</th><th>Rust</th></tr></thead><tbody>
-<tr><td>Type</td><td><code>Array&lt;T&gt;</code></td><td><code>[T]</code></td></tr>
-<tr><td>Constructor</td><td><code>Array(size, builder_method)</code></td><td>N/A</td></tr>
-<tr><td>Shorthand</td><td><code>arrayOf(items...)</code></td><td><code>[items...]</code></td></tr>
-</tbody></table>
-</div>
-<p><sup class="footnote-reference"><a href="#1">1</a></sup> Crates such as <a href="https://github.com/bluss/maplit">maplit</a> do provide macros for this.</p>
+<p>| | Kotlin | Rust |
+| - | | |
+| Type | <code>Array&lt;T&gt;</code> | <code>[T]</code> |
+| Constructor | <code>Array(size, builder_method)</code> | N/A |
+| Shorthand | <code>arrayOf(items...)</code> | <code>[items...]</code> |</p>
+<p>[^1] Crates such as <a href="https://github.com/bluss/maplit">maplit</a> do provide macros for this.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="constants"><a class="header" href="#constants">Constants</a></h1>
 <p>In Rust there are two types of constants <code>const</code> and <code>static</code>. <code>const</code> are immutable values hardcoded into the program. statics are optionally mutable values that are globally available. Using mutable statics is unsafe unless wrapped in thread safe structs such as <code>Arc</code> and <code>Mutex</code>. (See <a href="./concurrency.html">Concurrency</a>)</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const VERSION: u32 = 1;
-static PROGRAM_NAME: &amp;'static str = &quot;Example&quot;;
+static PROGRAM_NAME: &amp;'static str = "Example";
 <span class="boring">}</span></code></pre></pre>
 <p>Currently const and static values must be known at compile time. To get around this you can use the <a href="https://github.com/rust-lang-nursery/lazy-static.rs">lazy_static</a> crate, it works like <code>by lazy {}</code> in Kotlin:</p>
 <pre><code class="language-rust ignore">use lazy_static::lazy_static;
@@ -454,30 +450,30 @@ fn example(value: i32) {
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="borrowing-and-ownership"><a class="header" href="#borrowing-and-ownership">Borrowing and Ownership</a></h1>
 <p>In Kotlin a variable exists, and is available, while in it’s scope. A global static variable is always available but a variable created in a method (unless returned) only exists during that instance of the methods execution. Rust is basically the same and generally you’ll be able to write code without having to think about the borrowing system, but sometimes you will have to deal with it.</p>
 <p>This will not compile as <code>bar</code> has taken ownership of the data in <code>foo</code> and so <code>foo</code> can no longer be used:</p>
-<pre><code class="language-rust does_not_compile ignore">let foo = String::from(&quot;Hello&quot;); 
+<pre><code class="language-rust does_not_compile ignore">let foo = String::from("Hello"); 
 let bar = foo;
-println!(&quot;{}&quot;, foo);</code></pre>
+println!("{}", foo);</code></pre>
 <p>This will compile however as numbers have Copy implemented for them and so num2 automatically makes a copy of num1s data:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>let num1 = 54;
 let num2 = num1; 
-println!(&quot;{}&quot;, num1);
+println!("{}", num1);
 <span class="boring">}</span></code></pre></pre>
 <p>but this can be replicated for the string example by doing:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>let foo = String::from(&quot;Hello&quot;); 
+</span>let foo = String::from("Hello"); 
 let bar = foo.clone();
-println!(&quot;{}&quot;, foo);
+println!("{}", foo);
 <span class="boring">}</span></code></pre></pre>
 <p>This will only work when the type implemented Clone. Not all types support Clone as it may be impossible to copy it’s data, for example with network streams.
 Ownership and borrowing apply to all methods:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-	let a = String::from(&quot;Hello&quot;); 
+	let a = String::from("Hello"); 
 	let b = return_param(a);
 	let c = length(b);
-    println!(&quot;{}&quot;, c);
+    println!("{}", c);
 }
 
 fn return_param(param: String) -&gt; String { 
@@ -489,10 +485,10 @@ fn length(param: String) -&gt; usize {
 }</code></pre></pre>
 <p>When main is executed both <code>a</code> and <code>b</code> are lost, length takes ownership of the string and it is dropped at the end of length, to keep <code>b</code> in memory either of the following changes could be made:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">fn main() {
-</span><span class="boring">let str = String::from(&quot;test&quot;);
+</span><span class="boring">let str = String::from("test");
 </span><span class="boring">let _ref_len = length_ref(&amp;str);
 </span><span class="boring">let (nstr, len) = length(str);
-</span><span class="boring">println!(&quot;({},{})&quot;, nstr, len);
+</span><span class="boring">println!("({},{})", nstr, len);
 </span><span class="boring">}
 </span>
 fn length_ref(param: &amp;String) -&gt; usize {
@@ -537,13 +533,13 @@ fn main() {
 }
 
 fn get_char() -&gt; &amp;str {
-	let foo = Foo { contents: String::from(&quot;example&quot;) };
+	let foo = Foo { contents: String::from("example") };
 	let chr = foo.get_first();
 	return chr;
 }</code></pre>
 <p>as there's no lifetime on the result of <code>get_char</code> and there can't be as <code>foo</code> is dropped at the end of <code>get_char</code> and so <code>chr</code> would be pointing to an invalid section of memory.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="classes-or-the-lack-there-of"><a class="header" href="#classes-or-the-lack-there-of">Classes, or the lack there of</a></h1>
-<p>In Kotlin has Classes, Abstract Classes, Interfaces, and extension methods. Rust has Traits, Structs, and Impls. </p>
+<p>In Kotlin has Classes, Abstract Classes, Interfaces, and extension methods. Rust has Traits, Structs, and Impls.</p>
 <h4 id="kotlin"><a class="header" href="#kotlin">Kotlin</a></h4>
 <ul>
 <li>An interface can have methods but can not have variables with values, and may extend another Interface. It can be supplemented with extension methods or sub classed by other Classes, Abstract Classes or Interfaces.</li>
@@ -642,7 +638,7 @@ impl &lt;'a&gt; Person&lt;'a&gt; {
 	//as it's a reference this method does not consume 
 	//the object
 	fn whole_name(&amp;self) -&gt; String {
-		return format!(&quot;{} {}&quot;, self.first_name, self.last_name); 
+		return format!("{} {}", self.first_name, self.last_name); 
 	}
 
 	fn age_in_years(&amp;self) -&gt; i32 {
@@ -660,10 +656,10 @@ impl &lt;'a&gt; Person&lt;'a&gt; {
 
 fn main() {
 	//Double colon is for static methods
-	let person = Person::new(&quot;John&quot;, &quot;Smith&quot;, 1988, 07, 10, &quot;Author&quot;);
+	let person = Person::new("John", "Smith", 1988, 07, 10, "Author");
 	 
 	//Period is for instance methods
-	println!(&quot;{} is a {} who is {} years old.&quot;, 
+	println!("{} is a {} who is {} years old.", 
 		person.whole_name(), 
 		person.occupation, 
 		person.age_in_years());
@@ -682,14 +678,14 @@ The sample uses the <code>chrono</code> crate, it is a simple to use and common 
 </span>
 impl fmt::Display for Person {
 	fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-		return write!(f, &quot;({} {}, {})&quot;, 
+		return write!(f, "({} {}, {})", 
 			self.first_name, 
 			self.last_name, 
 			self.occupation);
 	} 
 }
 <span class="boring">}</span></code></pre></pre>
-<p>You can now write <code>println!(&quot;{}&quot;, person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
+<p>You can now write <code>println!("{}", person)</code>, there are many traits that can be implemented for any struct that’s part of your project.
 To avoid boilerplate Rust can automatically derive some traits for structs like so:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -725,7 +721,7 @@ fn main() {
 	//You can also supply some of the fields and leave the rest to Default:
 	let foo2 = Foo { 
 		b: 45,
-		d: &quot;Foobar&quot;.to_string(), 
+		d: "Foobar".to_string(), 
 		..Foo::default()
 	};
 	
@@ -777,7 +773,7 @@ impl Foo {
 		.map(|it| it + 1)
 		.collect();
 
-<span class="boring">println!(&quot;{:?}&quot;, y);
+<span class="boring">println!("{:?}", y);
 </span><span class="boring">}</span></code></pre></pre>
 <p>Unfortunately with Rust (like Dart) <code>map()</code>, etc return a Map object that has to be converted back into a list using <code>collect()</code></p>
 <p>Rust also supports higher order functions:</p>
@@ -830,12 +826,12 @@ mod inner;</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="crates"><a class="header" href="#crates">Crates</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="adding-crates"><a class="header" href="#adding-crates">Adding crates</a></h1>
 <p>Third party libraries are called Crates (and are available from https://crates.io). To add a crate, for example Serde, add this line to Cargo.toml after the [dependencies] line:</p>
-<pre><code class="language-toml">serde = &quot;1.0.0&quot;
+<pre><code class="language-toml">serde = "1.0.0"
 </code></pre>
 <p>You’ll still need to import the individual parts of the crate you want to use, for example:</p>
 <pre><code class="language-rust ignore">use serde::json::Serialize;</code></pre>
 <p><code>::Foo</code> means import just Foo</p>
-<p><code>::{Foo, Bar}</code> means import Foo and Bar </p>
+<p><code>::{Foo, Bar}</code> means import Foo and Bar</p>
 <p><code>::*</code> means import everything in the module.</p>
 <p>You can rename when importing:</p>
 <pre><code class="language-rust ignore">use example::Foo as Bar;</code></pre>
@@ -843,7 +839,7 @@ mod inner;</code></pre>
 <pre><code class="language-rust ignore">use chrono::prelude::*</code></pre>
 <h3 id="features"><a class="header" href="#features">Features</a></h3>
 <p>Some crates have optional features, often these include macros or provide interop with other crates:</p>
-<p><code>serde = &quot;1.0.0&quot;</code> can also be written as <code>serde = { version = &quot;1.0.0&quot; }</code>. To include a feature this gets expanded to <code>serde = { version = &quot;1.0&quot;, features = [&quot;derive&quot;] }</code>.</p>
+<p><code>serde = "1.0.0"</code> can also be written as <code>serde = { version = "1.0.0" }</code>. To include a feature this gets expanded to <code>serde = { version = "1.0", features = ["derive"] }</code>.</p>
 <p>Some crates will have features that you almost always want:</p>
 <div class="table-wrapper"><table><thead><tr><th>Crate</th><th>Feature(s)</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>serde</code></td><td><code>derive</code></td><td>Adds macros to automatically serialize structs</td></tr>
@@ -884,13 +880,13 @@ mod inner;</code></pre>
 fn main() {
 	let result = get(10);
 	match result {
-		Ok(item) =&gt; println!(&quot;{}&quot;, item),
-		Err(e) =&gt; println!(&quot;{}&quot;, e)
+		Ok(item) =&gt; println!("{}", item),
+		Err(e) =&gt; println!("{}", e)
 	}
 }</code></pre></pre>
-<p>You can also do the equivalent of <code>var!!</code> with both Option and Result by using <code>var.unwrap()</code> and <code>var.expect(&quot;some message&quot;)</code>. Both methods will crash the app if it’s Err/None, expect() will also write the message to the console.</p>
+<p>You can also do the equivalent of <code>var!!</code> with both Option and Result by using <code>var.unwrap()</code> and <code>var.expect("some message")</code>. Both methods will crash the app if it’s Err/None, expect() will also write the message to the console.</p>
 <p>To avoid having to write unwrap() every time if you’re in a method that returns a Result you can just write <code>var?</code>, if <code>var</code> is an Err the method will return the Err immediately.</p>
-<p>To crash a Rust program you should use <code>panic!(&quot;message&quot;)</code>. This will print the message and stacktrace to the command line.</p>
+<p>To crash a Rust program you should use <code>panic!("message")</code>. This will print the message and stacktrace to the command line.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="option-and-nulls"><a class="header" href="#option-and-nulls">Option and nulls</a></h1>
 <p><code>Option&lt;T&gt;</code>s are the same as <code>Optional&lt;T&gt;</code>s and quite like nullable values and are created via <code>Some()</code> and <code>None</code></p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn divide(numerator: f64, denominator: f64) -&gt; Option&lt;f64&gt; { 
@@ -904,8 +900,8 @@ fn main() {
 fn main() {
 	let result = divide(2.0, 3.0);
 	match result {
-		Some(x) =&gt; println!(&quot;Result: {}&quot;, x), 
-		None =&gt; println!(&quot;Cannot divide by 0&quot;),
+		Some(x) =&gt; println!("Result: {}", x), 
+		None =&gt; println!("Cannot divide by 0"),
 	}
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="creating-macros"><a class="header" href="#creating-macros">Creating macros</a></h1>
@@ -957,13 +953,13 @@ fn main() {
 <p>Arguments can be written as <code>$( &lt;arg&gt; )*</code> for 0 or more and <code>$( &lt;arg&gt; )+</code> for 1 or more values. (i.e. <code>$( $name:literal )+</code>), this would allow <code>example!(1 2 3)</code>.</p>
 <p>To support commas you can write <code>$( &lt;arg&gt; ),*</code>, this would allow <code>example!(1,2,3)</code>.</p>
 <h4 id="optional"><a class="header" href="#optional">Optional</a></h4>
-<p>Anything can be optional using this syntax <code>$( &lt;thing&gt; )?</code>, this include commas, such as </p>
+<p>Anything can be optional using this syntax <code>$( &lt;thing&gt; )?</code>, this include commas, such as</p>
 <ul>
 <li>optional trailing comma: <code>macro_rules! example($var1:literal, $var2:literal $(,)?)</code></li>
 <li>optional commas in variadic: <code>macro_rules! list($( $items:literal )$(,)?*)</code></li>
 </ul>
 <h3 id="body"><a class="header" href="#body">Body</a></h3>
-<p>The body must be an expression or single line, to support multiple lines surround the code in {}, this is often written as </p>
+<p>The body must be an expression or single line, to support multiple lines surround the code in {}, this is often written as</p>
 <pre><code class="language-rust  ignore">macro_rules! &lt;name&gt; {
     (&lt;args&gt;) =&gt; {{
         &lt;body&gt;
@@ -977,16 +973,16 @@ Anything can be written in the parentheses and it will be repeated once per item
 </span><span class="boring">fn main() {
 </span>macro_rules! print_nums {
     ($( $numbers:literal ),+) =&gt; {{
-        $( println!(&quot;{}&quot;, $numbers); )*
+        $( println!("{}", $numbers); )*
     }};
 }
 <span class="boring">}</span></code></pre></pre>
 <p>If called with <code>print_nums(1,2,3);</code> This generates</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>println!(&quot;{}&quot;, 1);
-println!(&quot;{}&quot;, 2);
-println!(&quot;{}&quot;, 3);
+</span>println!("{}", 1);
+println!("{}", 2);
+println!("{}", 3);
 <span class="boring">}</span></code></pre></pre>
 <h4 id="optional-1"><a class="header" href="#optional-1">Optional</a></h4>
 <p>Optional arguments should also be surrounded like <code>$( &lt;name&gt; )*</code>, anything can be written inside like before.</p>
@@ -1054,7 +1050,7 @@ macro_rules! or_else {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>Would have be called like this <code>add_nums!(1 + 2)</code> or <code>add_nums!((some_var) + 2)</code></p>
-<p>With custom text in the arguments then either commas are needed to separate them 
+<p>With custom text in the arguments then either commas are needed to separate them
 <code>macro_rules! example($thing1:expr, $thing2:expr)</code> or all but the last expr must be declared and called surrounded by parentheses <code>macro_rules! example(($thing1:expr) $thing2:expr)</code> and <code>example!((thing1) thing2);</code></p>
 <p>See more <a href="https://doc.rust-lang.org/reference/macros-by-example.html">Macros by example</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="concurrency"><a class="header" href="#concurrency">Concurrency</a></h1>
@@ -1091,11 +1087,11 @@ fn main() {
                 break;
             }
         }
-        println!(&quot;Done&quot;);
+        println!("Done");
     });
 
     loop {
-        println!(&quot;{}&quot;, number.load(Ordering::SeqCst));
+        println!("{}", number.load(Ordering::SeqCst));
         if number.load(Ordering::SeqCst) &gt;= 10 {
             break;
         }
@@ -1202,15 +1198,15 @@ rustup component add clippy
 impl MobileOs {
   fn status(&amp;self) -&gt; &amp;str {
     match self {
-      MobileOs::Android =&gt; return &quot;alive&quot;,
-      MobileOs::Ios =&gt; return &quot;alive&quot;,
-      MobileOs::Windows =&gt; return &quot;dead&quot;,
+      MobileOs::Android =&gt; return "alive",
+      MobileOs::Ios =&gt; return "alive",
+      MobileOs::Windows =&gt; return "dead",
     }
   }
 }
 
 fn main() {
-  println!(&quot;{}&quot;, MobileOs::Android.status());
+  println!("{}", MobileOs::Android.status());
 }</code></pre></pre>
 <p>Thankfully they can also work like sealed classes:</p>
 <pre><pre class="playground"><code class="language-rust edition2021">enum Example {
@@ -1245,7 +1241,7 @@ fn main() {
 </span><span class="boring">fn main() {
 </span>fn some_method(optional_string: Option&lt;String&gt;) {
   if let Some(string_value) = optional_string {
-    println!(&quot;Does exist: {}&quot;, string_value);
+    println!("Does exist: {}", string_value);
   }
 }
 <span class="boring">}</span></code></pre></pre>
@@ -1256,15 +1252,15 @@ fn main() {
 </span>
 fn some_method(optional_string: Option&lt;String&gt;) {
   match optional_string {
-    Some(string_value) =&gt; println!(&quot;Does exist: {}&quot;, string_value),
-    None =&gt; println!(&quot;No content&quot;)
+    Some(string_value) =&gt; println!("Does exist: {}", string_value),
+    None =&gt; println!("No content")
   }
 }
 
 fn another_method(result: Result&lt;String, Error&gt;) {
   match result {
-    Ok(string_value) =&gt; println!(&quot;Success: {}&quot;, string_value),
-    Err(err) =&gt; println!(&quot;Failure: {}&quot;, err)
+    Ok(string_value) =&gt; println!("Success: {}", string_value),
+    Err(err) =&gt; println!("Failure: {}", err)
   }
 }
 <span class="boring">}</span></code></pre></pre>
@@ -1289,39 +1285,39 @@ fn thread1(thing: Arc&lt;Thing&gt;) {
 </span><span class="boring">fn new() -&gt; Thing {Thing {} } 
 </span><span class="boring">fn methods_accessed_in_normal_way(&amp;self) {}
 </span><span class="boring">}</span></code></pre></pre>
-<p>The value in the Arc can not be mutable unless it’s contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are Mutex and RwLock. The differences are that RwLock will allow any number of concurrent readers but only one writer and Mutex only allows one reader or writer at a time. </p>
+<p>The value in the Arc can not be mutable unless it’s contained in another class, as the value will need to be protected against concurrent updates, the wrapper types are Mutex and RwLock. The differences are that RwLock will allow any number of concurrent readers but only one writer and Mutex only allows one reader or writer at a time.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="converting-strings"><a class="header" href="#converting-strings">Converting strings</a></h1>
-<p>Often when writing a function that takes a piece of text you’ll want to support both <code>String</code> and <code>&amp;str</code> to be more convenient to the caller. This is best achieved by using <code>&amp;str</code> or <code>Into&lt;String&gt;</code>. </p>
+<p>Often when writing a function that takes a piece of text you’ll want to support both <code>String</code> and <code>&amp;str</code> to be more convenient to the caller. This is best achieved by using <code>&amp;str</code> or <code>Into&lt;String&gt;</code>.</p>
 <p><code>String</code> can be converted to <code>&amp;str</code> like this:</p>
 <pre><code class="language-rust ignore">let text = String::new();
 print(&amp;text);</code></pre>
-<p>(Actually it's converted to <code>&amp;String</code> as adding a <code>&amp;</code> just makes it a reference but rust treats <code>&amp;String</code> as <code>&amp;str</code> when passed a parameter)</p>
-<p>The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. <code>&amp;str</code> already has the <code>Into&lt;String&gt;</code> trait but it can also be implemented for any struct. <code>Into&lt;X&gt;</code> for Y is automatically implemented for any type that implements <code>From&lt;Y&gt;</code> for X which is actually how it’s implemented for Strings and is the recommended approach. </p>
+<p>(Actually it's converted to <code>&amp;String</code> as adding a <code>&amp;</code> just makes it a reference but <code>&amp;String</code> implements <code>AsRef&lt;str&gt;</code> allowing it to be automatically converted)</p>
+<p>The Into trait tells the compiler to allow any parameter that be coerced as that type to be passed in. <code>&amp;str</code> already has the <code>Into&lt;String&gt;</code> trait but it can also be implemented for any struct. <code>Into&lt;X&gt;</code> for Y is automatically implemented for any type that implements <code>From&lt;Y&gt;</code> for X which is actually how it’s implemented for Strings and is the recommended approach.</p>
 <pre><code class="language-rust ignore">fn print(value: &amp;str) { 
-	println!(&quot;{}&quot;, value;
+	println!("{}", value;
 }
 
 fn print&lt;S: Into&lt;String&gt;&gt;(value: S) { 
-	println!(&quot;{}&quot;, value.into());
+	println!("{}", value.into());
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="interior-mutability"><a class="header" href="#interior-mutability">Interior mutability</a></h1>
 <p>Sometimes you need to have a mutable value but can only pass it around as a value or reference, to achieve you can use the <code>Cell</code> structs.</p>
 <p><code>Cell</code> is a wrapper around a value that can be changed at any point.</p>
 <p><code>RefCell</code> is the same as <code>Cell</code> but allows the value to be exposed as a reference.</p>
 <p><code>RwLock</code> is the same as <code>RefCell</code> but can be shared across threads.</p>
-<p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads. </p>
+<p><code>Mutex</code> is the same as <code>RefCell</code> but can make references that can be shared across threads.</p>
 <p>All of these are safe, they use reference counting and/or memory swapping to update values.</p>
 <p>Example:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">use std::cell::RefCell;
 </span>
 fn main() {
     let not_mutable = Person {
-        name: RefCell::new(String::from(&quot;Emma Britton&quot;))
+        name: RefCell::new(String::from("Emma Britton"))
     };
 
-    not_mutable.change_name(String::from(&quot;New Name&quot;));
+    not_mutable.change_name(String::from("New Name"));
 
-    println!(&quot;{}&quot;, not_mutable.name.borrow());
+    println!("{}", not_mutable.name.borrow());
 }
 
 struct Person {
@@ -1339,67 +1335,112 @@ impl Person {
 	println(element)
 }
 list.forEachIndexed { i, element -&gt; 
-	println(&quot;${i}: ${element}&quot;)
+	println("${i}: ${element}")
 } 
 </code></pre>
 <p>Rust also has this feature but it works differently, instead of different methods the iterator type is changed via enumerate:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">let list = vec![&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];
+</span><span class="boring">let list = vec!["a", "b", "c"];
 </span>list.iter()
-	.for_each(|element| println!(&quot;{}&quot;, element));
+	.for_each(|element| println!("{}", element));
 
 list.iter()
 	.enumerate()
-	.for_each(|(i, element)| println!(&quot;{}: {}&quot;, i, element));
+	.for_each(|(i, element)| println!("{}: {}", i, element));
 <span class="boring">}</span></code></pre></pre>
 <p>This has the downside that all later operators must also handle the index as well.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="formatting-strings"><a class="header" href="#formatting-strings">Formatting strings</a></h1>
 <p>To format a string, the easiest (and correct) way is to use <code>format!(string, parameters...)</code>. String formatting in Rust uses {} as placeholders for parameters.</p>
-<p>Basics:</p>
-<p><code>&quot;{}&quot;</code> will print the result of Display::fmt(), this must be manually implemented &quot;{:?}&quot; will print the result of Debug::fmt(), this can be derived</p>
-<p><code>&quot;{:#?}&quot;</code> will pretty print the result of Debug::fmt()</p>
-<p><code>&quot;{example}&quot;</code> will print parameter named example</p>
-<p><code>&quot;{2}&quot;</code> will print the third parameter</p>
-<p>Padding:</p>
-<p><code>&quot;{:&gt;5}&quot;</code> Left pad with up to 5 spaces</p>
-<p><code>&quot;{:&lt;7}&quot;</code> Right pad with up to 7 spaces</p>
-<p><code>&quot;{:^22}&quot;</code> Centre with up to 11 spaces on both sides</p>
+<p>Formatting is supported by several methods:</p>
+<ul>
+<li><code>format!(fmt, values...)</code> - returns a formatted string</li>
+<li><code>print!(fmt, values...)</code> and <code>println!(fmt, values...)</code> - writes a formatted string to stdout</li>
+<li><code>write!(Formatter, fmt, values...)</code> - writes the formatted string into the first parameter</li>
+</ul>
+<p>You can pass values into these macros without making them a reference first as they will be turned into references, and so the macros don't take ownership.</p>
+<h3 id="basics-1"><a class="header" href="#basics-1">Basics</a></h3>
+<p>With</p>
+<p><code>format!("{}", some_value)</code></p>
+<p>If <code>some_value</code> implements Display then it will printed otherwise you'll get a compile error saying the type doesn't implement Display. All primitives implement Display, but other std types like arrays and collections do not.</p>
+<p>How to implement Display for a custom type:</p>
+<pre><code class="language-rust  ignore">struct Point {
+    x: i32,
+    y: i32
+}
+
+impl Display for Point {
+    fn fmt(&amp;self, f: &amp;mut Formatter) -&gt; Result&lt;(),fmt::Error&gt; {
+        write!(f, "Point({},{})", self.x, self.y)
+    }
+}</code></pre>
+<p>then when calling <code>format!("{}", Point {x: 2, y: 3})</code> results in <code>Point(2,3)</code>.</p>
+<p>Another option exists though, for example if you don't really care about the formatting: <code>Debug</code>, which is implemented like this</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32
+}
+<span class="boring">}</span></code></pre></pre>
+<p>To print the debug version of a value use <code>{:?}</code> (or <code>{:#?}</code> to pretty print), calling this <code>format!("{:?}", Point { x: 3, y: 5})</code> results in <code>Point { x: 3, y: 5 }</code></p>
+<p>All primitives and std types like arrays and collections, and most structs from third party crates, implement <code>Debug</code>.</p>
+<h3 id="param-selection"><a class="header" href="#param-selection">Param selection</a></h3>
+<p>There are several ways to order the params</p>
+<h5 id="default-1"><a class="header" href="#default-1">Default</a></h5>
+<p>They are used in the order supplied</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("{}, {}, {}", 1, 2, 3);
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>1, 2, 3</code></p>
+<h5 id="positionalindexed"><a class="header" href="#positionalindexed">Positional/Indexed</a></h5>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("{1}, {2}, {0}", 1, 2, 3);
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>2, 3, 1</code></p>
+<h5 id="named"><a class="header" href="#named">Named</a></h5>
+<p>Non named parameters must come before any named parameters</p>
+<pre><code>println!("{0}, {foo}, {bar}", 3, bar = 1, foo = 2);
+</code></pre>
+<p>produces <code>3, 2, 1</code></p>
+<h5 id="referencing-variables"><a class="header" href="#referencing-variables">Referencing variables</a></h5>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let foo = 1;
+println!("{foo} = {}", 2);	
+<span class="boring">}</span></code></pre></pre>
+<p>produces <code>1 = 2</code></p>
+<p>Named params can formatted with debug by adding <code>:?</code>, <code>format!("{foo:?}")</code></p>
+<h3 id="padding"><a class="header" href="#padding">Padding</a></h3>
+<p><code>"{:&gt;5}"</code> Left pad with up to 5 spaces</p>
+<p><code>"{:&lt;7}"</code> Right pad with up to 7 spaces</p>
+<p><code>"{:^22}"</code> Centre with up to 11 spaces on both sides</p>
 <p>Padding with any character:</p>
-<p><code>&quot;{:_&gt;5}&quot;</code> Left pad with up to 5 underscores </p>
-<p><code>&quot;{:#&lt;7}&quot;</code> Right pad with up to 7 hashes </p>
-<p><code>&quot;{:c^22}&quot;</code> Centre with up to 11 ’c’s on both sides</p>
-<p>Numbers:</p>
-<p><code>&quot;{:.3}&quot;</code> Will print 3 fractional digits (adding 0s on the end if necessary) but only if it’s a floating point number</p>
-<p><code>&quot;{:+3}&quot;</code> Print sign</p>
-<p><code>&quot;{:03}&quot;</code> Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0</p>
-<p>Example: <code>format!(&quot;{:&gt;5} {named}&quot;, &quot;Foo&quot;, named=123)</code></p>
+<p><code>"{:_&gt;5}"</code> Left pad with up to 5 underscores</p>
+<p><code>"{:#&lt;7}"</code> Right pad with up to 7 hashes</p>
+<p><code>"{:c^22}"</code> Centre with up to 11 ’c’s on both sides</p>
+<h3 id="numbers"><a class="header" href="#numbers">Numbers</a></h3>
+<p><code>"{:.3}"</code> Will print 3 fractional digits (adding 0s on the end if necessary) but only if it’s a floating point number</p>
+<p><code>"{:+3}"</code> Print sign</p>
+<p><code>"{:03}"</code> Print at least 3 digits (padding with 0s on the start if necessary), if negative the minus symbol will replace a 0</p>
+<p>Example: <code>format!("{:&gt;5} {named}", "Foo", named=123)</code></p>
 <p>To have variable parts (such as variable length padding) use this syntax:</p>
-<p><code>(&quot;{1:.0$}&quot;, 1, 1.22)</code></p>
+<p><code>("{1:.0$}", 1, 1.22)</code></p>
 <p>This will print 1.2, the syntax is <code>{value_index:.precision_index$}</code></p>
-<p><code>(&quot;{1:=&lt;0$}&quot;, 10, &quot;test&quot;)</code></p>
+<p><code>("{1:=&lt;0$}", 10, "test")</code></p>
 <p>This will print test======, the syntax is <code>{value_index:padding_char&lt;length_index$}</code></p>
 <p>Note that invalid parameter details are ignored silently and treated as {}. If debugging via logging consider using dgb!():</p>
 <pre><code class="language-rust ignore">let x;
 x = dbg!(1 * 4); </code></pre>
 <p>prints
 <code>[src/main.rs:3] 1 * 4 = 4</code></p>
-<h1 id="direct-variable-usage"><a class="header" href="#direct-variable-usage">Direct variable usage</a></h1>
-<p>As of Rust <code>1.58.0</code> and edition <code>2021</code> you can use variables name in the string directly:</p>
-<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let part = &quot;world&quot;;
-println!(&quot;Hello {part}&quot;);
-<span class="boring">}</span></code></pre></pre>
-<p>Unforutantely this doesn't support complex expressions yet, so you can't do:</p>
-<pre><code class="language-rust ignore">println!(&quot;{some_method()}&quot;);</code></pre>
-<p>or</p>
-<pre><code class="language-rust ignore">println!(&quot;{struct.field}&quot;);</code></pre>
-<p>This should work with any macro that uses <code>format_args</code> </p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="for-crates"><a class="header" href="#for-crates">For crates</a></h1>
 <h2 id="date-formatting"><a class="header" href="#date-formatting">Date Formatting</a></h2>
 <h3 id="chrono"><a class="header" href="#chrono">Chrono</a></h3>
-<p>Using <code>DateTimeFormat.forPattern(&quot;&lt;pattern&gt;&quot;).print(DateTime.now())</code> for Kotlin and <code>Utc::now().format(&quot;&lt;pattern&gt;&quot;)</code> for Rust.</p>
+<p>Using <code>DateTimeFormat.forPattern("&lt;pattern&gt;").print(DateTime.now())</code> for Kotlin and <code>Utc::now().format("&lt;pattern&gt;")</code> for Rust.</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin/JodaTime</th><th>Rust/Chrono</th><th>Example</th></tr></thead><tbody>
 <tr><td>Date</td><td><code>yyyy-MM-dd</code></td><td><code>%Y-%M-%D</code></td><td>2000-01-01</td></tr>
 <tr><td>Text Date</td><td><code>dd MMM yyyy</code></td><td><code>%e %b %Y</code></td><td>15 Jun 2004</td></tr>
@@ -1411,13 +1452,13 @@ println!(&quot;Hello {part}&quot;);
 <h2 id="json-parsing"><a class="header" href="#json-parsing">JSON Parsing</a></h2>
 <h3 id="serde"><a class="header" href="#serde">Serde</a></h3>
 <p>Add this to <code>cargo.toml</code>:</p>
-<pre><code class="language-toml">serde = { version = &quot;1.0&quot;, features = [&quot;derive&quot;] }
-serde_json = &quot;1.0&quot;
+<pre><code class="language-toml">serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 </code></pre>
 <p><strong>Kotlin</strong></p>
 <pre><code class="language-kotlin">data class Example(
     val name: String,
-    @SerializedName(&quot;num&quot;)
+    @SerializedName("num")
     val someNumber: Int
 )
 
@@ -1430,7 +1471,7 @@ fun convert(json: String, example: Example) {
 <pre><code class="language-rust ignore">#[derive(Serialize,Deserialize)]
 struct Example {
     name: String,
-    #[serde(rename = &quot;num&quot;)]
+    #[serde(rename = "num")]
     some_number: i32
 }
 
@@ -1442,13 +1483,17 @@ fn convert(json: String, example: Example) {
 <h3 id="silhouette"><a class="header" href="#silhouette">Silhouette</a></h3>
 <p><strong>Rust</strong></p>
 <pre><code class="language-rust ignore">use silhouette::facade::Container;
+
 // will always use the same pool
 Container::singleton(&amp;|_| DBPool::new())?;
+
 // will resolve a new connection each time
 Container::bind(&amp;|container| -&gt; DBConnection {
     let shared_pool = container.resolve::&lt;DBPool&gt;().unwrap();
+
     shared_pool.get_conn()
 })?;
+
 // somewhere else in your app...
 let connection: DBConnection = Container::resolve()?;</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="common-bugsissues"><a class="header" href="#common-bugsissues">Common bugs/issues</a></h1>
@@ -1462,23 +1507,23 @@ The error is caused because there are two methods named <code>borrow_mut</code> 
 <h3 id="closures-can-only-be-coerced-to-fn-types-if-they-do-not-capture-any-variables"><a class="header" href="#closures-can-only-be-coerced-to-fn-types-if-they-do-not-capture-any-variables">closures can only be coerced to <code>fn</code> types if they do not capture any variables</a></h3>
 <p>You need to change the param to a generic, for example:</p>
 <pre><code class="language-rust ignore">fn main() {
-    let value = &quot;example&quot;;
+    let value = "example";
     
-    print(|text| format!(&quot;{text}{value}&quot;));
+    print(|text| format!("{text}{value}"));
 }
 
 fn print(method: fn(&amp;str) -&gt; String) {
-    println!(&quot;{}&quot;, method(&quot;hi&quot;));
+    println!("{}", method("hi"));
 }</code></pre>
 <p>into</p>
 <pre><pre class="playground"><code class="language-rust edition2021">fn main() {
-    let value = &quot;example&quot;;
+    let value = "example";
     
-    print(|text| format!(&quot;{text}{value}&quot;));
+    print(|text| format!("{text}{value}"));
 }
 
 fn print&lt;F: Fn(&amp;str) -&gt; String&gt;(method: F) {
-    println!(&quot;{}&quot;, method(&quot;hi&quot;));
+    println!("{}", method("hi"));
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
 <p>Kotlin is an object orientated language which means that generally data and methods are grouped together in classes and it’s very rare to have methods outside of classes even though Kotlin fully supports this. Also classes can extend each other so a lot of frameworks (such as Android or AWT) rely heavily on inheritance to provide functionality to classes.</p>

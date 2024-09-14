@@ -177,7 +177,7 @@
                         <h1 id="for-crates"><a class="header" href="#for-crates">For crates</a></h1>
 <h2 id="date-formatting"><a class="header" href="#date-formatting">Date Formatting</a></h2>
 <h3 id="chrono"><a class="header" href="#chrono">Chrono</a></h3>
-<p>Using <code>DateTimeFormat.forPattern(&quot;&lt;pattern&gt;&quot;).print(DateTime.now())</code> for Kotlin and <code>Utc::now().format(&quot;&lt;pattern&gt;&quot;)</code> for Rust.</p>
+<p>Using <code>DateTimeFormat.forPattern("&lt;pattern&gt;").print(DateTime.now())</code> for Kotlin and <code>Utc::now().format("&lt;pattern&gt;")</code> for Rust.</p>
 <div class="table-wrapper"><table><thead><tr><th></th><th>Kotlin/JodaTime</th><th>Rust/Chrono</th><th>Example</th></tr></thead><tbody>
 <tr><td>Date</td><td><code>yyyy-MM-dd</code></td><td><code>%Y-%M-%D</code></td><td>2000-01-01</td></tr>
 <tr><td>Text Date</td><td><code>dd MMM yyyy</code></td><td><code>%e %b %Y</code></td><td>15 Jun 2004</td></tr>
@@ -189,13 +189,13 @@
 <h2 id="json-parsing"><a class="header" href="#json-parsing">JSON Parsing</a></h2>
 <h3 id="serde"><a class="header" href="#serde">Serde</a></h3>
 <p>Add this to <code>cargo.toml</code>:</p>
-<pre><code class="language-toml">serde = { version = &quot;1.0&quot;, features = [&quot;derive&quot;] }
-serde_json = &quot;1.0&quot;
+<pre><code class="language-toml">serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 </code></pre>
 <p><strong>Kotlin</strong></p>
 <pre><code class="language-kotlin">data class Example(
     val name: String,
-    @SerializedName(&quot;num&quot;)
+    @SerializedName("num")
     val someNumber: Int
 )
 
@@ -208,7 +208,7 @@ fun convert(json: String, example: Example) {
 <pre><code class="language-rust ignore">#[derive(Serialize,Deserialize)]
 struct Example {
     name: String,
-    #[serde(rename = &quot;num&quot;)]
+    #[serde(rename = "num")]
     some_number: i32
 }
 
@@ -220,13 +220,17 @@ fn convert(json: String, example: Example) {
 <h3 id="silhouette"><a class="header" href="#silhouette">Silhouette</a></h3>
 <p><strong>Rust</strong></p>
 <pre><code class="language-rust ignore">use silhouette::facade::Container;
+
 // will always use the same pool
 Container::singleton(&amp;|_| DBPool::new())?;
+
 // will resolve a new connection each time
 Container::bind(&amp;|container| -&gt; DBConnection {
     let shared_pool = container.resolve::&lt;DBPool&gt;().unwrap();
+
     shared_pool.get_conn()
 })?;
+
 // somewhere else in your app...
 let connection: DBConnection = Container::resolve()?;</code></pre>
 
