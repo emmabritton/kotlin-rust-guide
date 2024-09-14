@@ -2,17 +2,87 @@
 
 To format a string, the easiest (and correct) way is to use `format!(string, parameters...)`. String formatting in Rust uses {} as placeholders for parameters.
 
-Basics:
+Formatting is supported by several methods:
+* `format!(fmt, values...)` - returns a formatted string
+* `print!(fmt, values...)` and `println!(fmt, values...)` - writes a formatted string to stdout
+* `write!(Formatter, fmt, values...)` - writes the formatted string into the first parameter
 
-`"{}"` will print the result of Display::fmt(), this must be manually implemented "{:?}" will print the result of Debug::fmt(), this can be derived
+You can pass values into these macros without making them a reference first as they will be turned into references, and so the macros don't take ownership.
 
-`"{:#?}"` will pretty print the result of Debug::fmt()
+### Basics
 
-`"{example}"` will print parameter named example
+With
 
-`"{2}"` will print the third parameter
+`format!("{}", some_value)`
 
-Padding:
+If `some_value` implements Display then it will printed otherwise you'll get a compile error saying the type doesn't implement Display. All primitives implement Display, but other std types like arrays and collections do not.
+
+How to implement Display for a custom type:
+
+```rust, ignore
+struct Point {
+    x: i32,
+    y: i32
+}
+
+impl Display for Point {
+    fn fmt(&self, f: &mut Formatter) -> Result<(),fmt::Error> {
+        write!(f, "Point({},{})", self.x, self.y)
+    }
+}
+```
+
+then when calling `format!("{}", Point {x: 2, y: 3})` results in `Point(2,3)`. 
+
+Another option exists though, for example if you don't really care about the formatting: `Debug`, which is implemented like this 
+
+```rust
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32
+}
+```
+
+To print the debug version of a value use `{:?}` (or `{:#?}` to pretty print), calling this `format!("{:?}", Point { x: 3, y: 5})` results in `Point { x: 3, y: 5 }`
+
+All primitives and std types like arrays and collections, and most structs from third party crates, implement `Debug`.
+
+### Param selection
+
+There are several ways to order the params
+
+##### Default
+They are used in the order supplied
+```rust
+println!("{}, {}, {}", 1, 2, 3);
+```
+produces `1, 2, 3`
+
+##### Positional/Indexed
+```rust
+println!("{1}, {2}, {0}", 1, 2, 3);
+```
+produces `2, 3, 1`
+
+##### Named
+Non named parameters must come before any named parameters
+```
+println!("{0}, {foo}, {bar}", 3, bar = 1, foo = 2);
+```
+produces `3, 2, 1`
+
+##### Referencing variables
+```rust
+let foo = 1;
+println!("{foo} = {}", 2);	
+```
+
+produces `1 = 2`
+
+Named params can formatted with debug by adding `:?`, `format!("{foo:?}")`
+
+### Padding
 
 `"{:>5}"` Left pad with up to 5 spaces
 
@@ -28,7 +98,7 @@ Padding with any character:
 
 `"{:c^22}"` Centre with up to 11 ’c’s on both sides
 
-Numbers:
+### Numbers
 
 `"{:.3}"` Will print 3 fractional digits (adding 0s on the end if necessary) but only if it’s a floating point number
 
@@ -58,23 +128,3 @@ x = dbg!(1 * 4);
 
 prints
 `[src/main.rs:3] 1 * 4 = 4`
-
-# Direct variable usage
-
-As of Rust `1.58.0` and edition `2021` you can use variables name in the string directly:
-
-```rust
-let part = "world";
-println!("Hello {part}");
-```
-
-Unforutantely this doesn't support complex expressions yet, so you can't do:
-```rust,ignore
-println!("{some_method()}");
-```
-or
-```rust,ignore
-println!("{struct.field}");
-```
-
-This should work with any macro that uses `format_args` 

@@ -1,6 +1,6 @@
 # Macros
 
-Rust uses macros a lot as they provide ways to shortened code, and provide variadic and optional parameters, and overloaded methods. Macros are invoked by the macro name then an exclamation mark, i.e. `example!`.
+Rust uses macros a lot as they provide ways to shorten code, and provide variadic and optional parameters, and also overloaded methods. Macros are invoked by the macro name then an exclamation mark, i.e. `example!`.
 
 Macros can be used like functions `example!()` but anything can follow the exclamation mark as macros are very powerful, for example:
 
