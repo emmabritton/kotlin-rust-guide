@@ -2,7 +2,6 @@
 authors = ["Emma Britton"]
 description = "This book should help experienced Kotlin developers to quickly get up to speed with Rust"
 language = "en"
-multilingual = false
 title = "A guide to Rust for Kotlin developers"
 
 [rust]
